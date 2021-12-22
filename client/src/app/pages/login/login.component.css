@@ -10,6 +10,7 @@
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
   border-radius: 15px;
   margin-top: 40px;
+  color: rgb(32, 32, 32);
 }
 .form-signin .checkbox {
   font-weight: 400;
@@ -34,7 +35,14 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.submit {
-  background-color: #40476d;
+.btn-submit {
+  background-color: #2e86ab;
   color: white;
+}
+.btn-submit:hover {
+  background-color: #205e79;
+}
+.img {
+  padding: 20px;
+  padding-top: 30px;
 }

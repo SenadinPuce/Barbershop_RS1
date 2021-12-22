@@ -1,11 +1,2 @@
-<div
-  class="d-flex justify-content-around mt-2"
-  *ngIf="accountService.currentUser$ | async"
->
-  <h3 style="color: white">
-    Hello, {{ (accountService.currentUser$ | async)?.username }}
-  </h3>
-  <button (click)="logout()" class="btn btn-light">Logout</button>
-</div>
-
-<app-login></app-login>
+<app-navbar></app-navbar>
+<router-outlet></router-outlet>

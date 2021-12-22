@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
 import { User } from './models/user';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +11,16 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'Barber Shop';
 
-  constructor(public accountService: AccountService) {}
+  constructor(public accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {
     this.setCurrentUser();
   }
   setCurrentUser() {
     const user: User = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      this.router.navigateByUrl('/login');
+    }
     this.accountService.setCurrentUser(user);
-  }
-  logout() {
-    console.log('log out in app.ts');
-    this.accountService.logout();
   }
 }

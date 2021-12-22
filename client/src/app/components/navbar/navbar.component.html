@@ -1,0 +1,57 @@
+<nav class="nav-bar" *ngIf="accountService.currentUser$ | async">
+  <a routerLink="/">
+    <div>
+      <img src="/assets/images/barbershop-logo.png" width="180" height="60" />
+    </div>
+  </a>
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/services" routerLinkActive="active-link"
+        >Services</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/staff" routerLinkActive="active-link"
+        >Staff</a
+      >
+    </li>
+  </ul>
+
+  <div class="btn-group" dropdown>
+    <button
+      id="button-basic"
+      dropdownToggle
+      type="button"
+      class="btn btn-dropdown dropdown-toggle"
+      aria-controls="dropdown-basic"
+    >
+      Hello, <span>{{ (accountService.currentUser$ | async)?.username }}</span>
+      <span class="caret"></span>
+    </button>
+    <ul
+      id="dropdown-basic"
+      *dropdownMenu
+      class="dropdown-menu"
+      role="menu"
+      aria-labelledby="button-basic"
+    >
+      <li role="menuitem">
+        <a class="dropdown-item" href="#">Account</a>
+      </li>
+
+      <li class="divider dropdown-divider"></li>
+      <li role="menuitem">
+        <a class="dropdown-item" href="#" (click)="logout()">Sign out</a>
+      </li>
+    </ul>
+  </div>
+</nav>

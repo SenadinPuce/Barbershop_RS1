@@ -3,12 +3,15 @@
   *ngIf="(accountService.currentUser$ | async) === null"
 >
   <form #loginForm="ngForm" class="form-signin" (ngSubmit)="login()">
-    <img
-      src="../../../assets/images/barbershop-logo-png-transparent.png"
-      alt=""
-      width="170"
-      height="150"
-    />
+    <div class="img">
+      <img
+        src="/assets/images/barbershop-logo.png"
+        alt=""
+        width="150"
+        height="50"
+      />
+    </div>
+
     <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
     <label for="username" class="sr-only">Username</label>
     <input
@@ -31,9 +34,15 @@
       required=""
     />
     <div>
-      <p>Do not have an account? <a href="#">Register</a></p>
+      <p style="color: gray">
+        Do not have an account? <a href="#">Register</a>
+      </p>
     </div>
-    <button id="submit-btn" class="submit btn btn-lg btn-block" type="submit">
+    <button
+      id="submit-btn"
+      class="btn btn-submit btn-lg btn-block"
+      type="submit"
+    >
       Submit
     </button>
   </form>
