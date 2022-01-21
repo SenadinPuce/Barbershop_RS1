@@ -2,7 +2,7 @@
   class="container text-center"
   *ngIf="(accountService.currentUser$ | async) === null"
 >
-  <form #loginForm="ngForm" class="form-signin" (ngSubmit)="login()">
+  <form *ngIf="!registerMode" #loginForm="ngForm" class="form-signin" (ngSubmit)="login()">
     <div class="img">
       <img
         src="/assets/images/barbershop-logo.png"
@@ -35,7 +35,7 @@
     />
     <div>
       <p style="color: gray">
-        Do not have an account? <a href="#">Register</a>
+        Do not have an account? <a (click)="registerToggle()" style="cursor: pointer; color: blue;">Register</a>
       </p>
     </div>
     <button
@@ -46,4 +46,13 @@
       Submit
     </button>
   </form>
+
+  <div *ngIf="registerMode" class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <app-register (cancelRegister)="cancelRegisterMode($event)" ></app-register>
+        </div>
+    </div>
+</div>
+
 </div>

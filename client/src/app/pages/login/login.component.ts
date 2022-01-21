@@ -9,6 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class LoginComponent implements OnInit {
   model: any = {};
+  registerMode = false;
 
   constructor(public accountService: AccountService) {}
 
@@ -26,4 +27,13 @@ export class LoginComponent implements OnInit {
   logout() {
     this.accountService.logout();
   }
+
+  registerToggle(){
+    this.registerMode = !this.registerMode;
+  }
+
+  cancelRegisterMode(event: boolean){
+    this.registerMode = event;
+  }
+
 }
