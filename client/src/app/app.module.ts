@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
@@ -14,6 +14,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { StaffComponent } from './pages/staff/staff.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { SharedModule } from './_modules/shared.module';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,11 @@ import { RegisterComponent } from './components/register/register.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    BsDropdownModule.forRoot(),
+    SharedModule
   ],
-  providers: [],
+  providers: [
+     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
