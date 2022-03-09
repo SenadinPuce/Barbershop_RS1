@@ -1,62 +1,31 @@
-<nav class="nav-bar" *ngIf="accountService.currentUser$ | async">
-  <a routerLink="/">
-    <div>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/" routerLinkActive="active">
       <img src="/assets/images/barbershop-logo.png" width="180" height="60" />
-    </div>
-  </a>
-  <ul class="nav justify-content-center">
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/"
-        routerLinkActive="active-link"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Home</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/services" routerLinkActive="active-link"
-        >Services</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/staff" routerLinkActive="active-link"
-        >Staff</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/errors" routerLinkActive="active-link"
-        >Errors</a
-      >
-    </li>
-  </ul>
+    </a>
 
-  <div class="btn-group" dropdown>
-    <button
-      id="button-basic"
-      dropdownToggle
-      type="button"
-      class="btn btn-dropdown dropdown-toggle"
-      aria-controls="dropdown-basic"
-    >
-      Hello, <span>{{ (accountService.currentUser$ | async)?.username }}</span>
-      <span class="caret"></span>
-    </button>
-    <ul
-      id="dropdown-basic"
-      *dropdownMenu
-      class="dropdown-menu"
-      role="menu"
-      aria-labelledby="button-basic"
-    >
-      <li role="menuitem">
-        <a class="dropdown-item" href="#">Account</a>
-      </li>
-
-      <li class="divider dropdown-divider"></li>
-      <li role="menuitem">
-        <a class="dropdown-item" href="#" (click)="logout()">Sign out</a>
+    <ul class="navbar-nav mr-auto">
+      <ng-container *ngIf="accountService.currentUser$ | async">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/services" routerLinkActive="active">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/staff" routerLinkActive="active">Staff</a>
+        </li>
+      </ng-container>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/errors" routerLinkActive="active">Errors</a>
       </li>
     </ul>
-  </div>
-</nav>
+
+    <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+      <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.username | titlecase}}</a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item">Account</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+    </div>
+  </nav>
+

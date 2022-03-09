@@ -5,17 +5,24 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
-import { LoginComponent } from './pages/login/login.component';
+
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { StaffComponent } from './pages/staff/staff.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.component';
+import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
+import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { SharedModule } from './_modules/shared.module';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
+import { DateInputComponent } from './_forms/date-input/date-input.component';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +33,12 @@ import { SharedModule } from './_modules/shared.module';
     ServicesComponent,
     StaffComponent,
     RegisterComponent,
+    LoginComponent,
+    TestErrorsComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
+    TextInputComponent,
+    DateInputComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +46,7 @@ import { SharedModule } from './_modules/shared.module';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule
   ],
   providers: [
