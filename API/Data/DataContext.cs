@@ -13,6 +13,9 @@ namespace API.Data
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<AppointmentType> AppointmentType { get; set; }
+        public DbSet<Service> Service { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }
