@@ -22,6 +22,8 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { SharedModule } from './_modules/shared.module';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
+import { AppointmentTypeComponent } from './components/appointment-type/appointment-type.component';
+import { AppointmentsComponent } from './pages/appointments/appointments.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     NotFoundComponent,
     ServerErrorComponent,
     TextInputComponent,
-    DateInputComponent
+    DateInputComponent,
+    AppointmentTypeComponent,
+    AppointmentsComponent
   ],
   imports: [
     BrowserModule,
