@@ -24,6 +24,7 @@ import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { AppointmentTypeComponent } from './components/appointment-type/appointment-type.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { AppointmentCreateComponent } from './pages/appointments/appointment-create/appointment-create.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
     TextInputComponent,
     DateInputComponent,
     AppointmentTypeComponent,
-    AppointmentsComponent
+    AppointmentsComponent,
+    AppointmentCreateComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,77 @@
+<div>
+  <h3>New Appointment Type</h3>
+  <hr />
+
+  <form
+    #apptTypeForm="ngForm"
+    (ngSubmit)="insertAppointmentType()"
+    autocomplete="off"
+    class="col-6 mt-5"
+  >
+    <div class="row align-items">
+      <div class="form-group col-10 p-0">
+        <label>Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          [(ngModel)]="model.name"
+          placeholder="Enter name"
+          required
+        />
+      </div>
+      <div class="form-group col-2">
+        <label>Color</label>
+        <input
+          [(colorPicker)]="model.color"
+          [style.background]="model.color"
+          class="form-control color-picker"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-4 p-0">
+        <label>Duration</label>
+        <input
+          type="number"
+          class="form-control"
+          name="duration"
+          [(ngModel)]="model.duration"
+          placeholder="Duration"
+          step="5"
+          value="0"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col p-0">
+        <label for="service">Choose services</label>
+        <ng-select
+          [items]="services"
+          bindLabel="name"
+          bindValue="id"
+          [(ngModel)]="selectedServices"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          [markFirst]="true"
+          [hideSelected]="true"
+          name="services"
+          required
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="form-group text-center">
+      <button
+        class="btn btn-success mr-2"
+        type="submit"
+        [disabled]="!apptTypeForm.valid"
+      >
+        Save
+      </button>
+      <button class="btn btn-danger mr-2" (click)="cancel()" type="button">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
