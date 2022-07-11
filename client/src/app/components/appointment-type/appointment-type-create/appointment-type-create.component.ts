@@ -7,23 +7,23 @@ import { AppointmentTypeService } from 'src/app/_services/appointment-type.servi
 import { ServiceService } from 'src/app/_services/service.service';
 
 @Component({
-  selector: 'app-appointment-create',
-  templateUrl: './appointment-create.component.html',
-  styleUrls: ['./appointment-create.component.css'],
+  selector: 'app-appointment-type-create',
+  templateUrl: './appointment-type-create.component.html',
+  styleUrls: ['./appointment-type-create.component.css'],
 })
-export class AppointmentCreateComponent implements OnInit {
+export class AppointmentTypeCreateComponent implements OnInit {
   model: IAppointmentType = {
     id: undefined,
     name: '',
     duration: 0,
-    color: '',
+    color: '#ffffff',
     services: [],
   };
   selectedServices: [];
   services: IService[];
 
   constructor(
-    private serviceService: ServiceService,
+    private servicesService: ServiceService,
     private appointmentTypeService: AppointmentTypeService,
     private location: Location,
     private router: Router
@@ -53,7 +53,7 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   loadServices() {
-    this.serviceService.getServices().subscribe((response) => {
+    this.servicesService.getServices().subscribe((response) => {
       this.services = response;
     });
   }

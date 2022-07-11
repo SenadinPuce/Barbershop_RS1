@@ -1,5 +1,5 @@
-<div class="mt-3 container">
-  <div class="d-flex justify-content-end my-2">
+<div class="mt-3">
+  <div class="d-flex justify-content-end mt-4 mb-2">
     <button class="btn btn-primary" routerLink="/appointments/create">
       Add New
     </button>
@@ -9,20 +9,28 @@
     <thead>
       <th>Appointment Type</th>
       <th>Duration</th>
-      <th>Actions</th>
+      <th style="width: 13%">Actions</th>
     </thead>
     <tbody>
       <tr *ngFor="let type of appointmentTypes">
         <td>
           <span
             [style.backgroundColor]="type.color"
-            class="color-circle"></span>
+            class="color-circle mr-2"
+          ></span>
           {{ type.name }}
         </td>
         <td>
           {{ type.duration }}
         </td>
-        <td><button class="btn btn-info"></button></td>
+        <td style="text-align: center">
+          <button class="btn btn-info mr-1" (click)="onEdit(type.id)">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-danger" (click)="onDelete(type.id)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>

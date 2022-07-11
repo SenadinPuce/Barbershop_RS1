@@ -8,7 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
-
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ServicesComponent } from './pages/services/services.component';
@@ -24,8 +23,9 @@ import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { AppointmentTypeComponent } from './components/appointment-type/appointment-type.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
-import { AppointmentCreateComponent } from './pages/appointments/appointment-create/appointment-create.component';
-
+import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
+import { ConfirmModalComponent } from './common/modal/confirm-modal/confirm-modal.component';
+import { AppointmentTypeEditComponent } from './components/appointment-type/appointment-type-edit/appointment-type-edit.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,9 @@ import { AppointmentCreateComponent } from './pages/appointments/appointment-cre
     DateInputComponent,
     AppointmentTypeComponent,
     AppointmentsComponent,
-    AppointmentCreateComponent
+    AppointmentTypeCreateComponent,
+    ConfirmModalComponent,
+    AppointmentTypeEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,10 +55,10 @@ import { AppointmentCreateComponent } from './pages/appointments/appointment-cre
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [
-     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
