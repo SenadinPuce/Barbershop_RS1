@@ -15,6 +15,10 @@ namespace API.Data
     {
         public DbSet<AppointmentType> AppointmentType { get; set; }
         public DbSet<Service> Service { get; set; }
+        public DbSet<Appointment> Appointment { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
+        public DbSet<Barber> Barber { get; set; }
+        public DbSet<Client> Client { get; set; }
 
         public DataContext(DbContextOptions options) : base(options)
         {
@@ -37,7 +41,7 @@ namespace API.Data
 
             builder.Entity<AppointmentTypeService>().HasKey(apptTypeService => new { apptTypeService.AppointmentTypeId, apptTypeService.ServiceId });
 
-            }
+        }
 
     }
 }
