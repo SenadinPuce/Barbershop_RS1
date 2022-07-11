@@ -13,6 +13,9 @@ namespace API.Data
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<AppointmentType> AppointmentType { get; set; }
+        public DbSet<Service> Service { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }
@@ -20,7 +23,6 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
             builder.Entity<AppUser>()
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.User)
@@ -28,11 +30,14 @@ namespace API.Data
                 .IsRequired();
 
             builder.Entity<AppRole>()
-           .HasMany(ur => ur.UserRoles)
-           .WithOne(u => u.Role)
-           .HasForeignKey(ur => ur.RoleId)
-           .IsRequired();
-        }
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
+            builder.Entity<AppointmentTypeService>().HasKey(apptTypeService => new { apptTypeService.AppointmentTypeId, apptTypeService.ServiceId });
+
+            }
 
     }
 }

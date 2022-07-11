@@ -13,6 +13,13 @@ namespace API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<RegisterDto, AppUser>();
+
+            CreateMap<AppointmentType, AppointmentTypeDto>()
+            .ForMember(x => x.Services, y => y.MapFrom(z => z.AppointmentTypeServices.Select(q => q.Service)));
+            CreateMap<AppointmentTypeDto, AppointmentType>();
+
+            CreateMap<Service, ServiceDto>().ReverseMap();
+
         }
     }
 }
