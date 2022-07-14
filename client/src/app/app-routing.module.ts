@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
+import { AppointmentCreateComponent } from './pages/appointments/appointment-create/appointment-create.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
@@ -12,7 +13,11 @@ import { StaffComponent } from './pages/staff/staff.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'appointments/create', component: AppointmentTypeCreateComponent },
+  {
+    path: 'appointment-types/create',
+    component: AppointmentTypeCreateComponent,
+  },
+  { path: 'appointments/create', component: AppointmentCreateComponent },
   { path: 'appointments', component: AppointmentsComponent },
   { path: 'staff', component: StaffComponent },
   { path: 'errors', component: TestErrorsComponent },

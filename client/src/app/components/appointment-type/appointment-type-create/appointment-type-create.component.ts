@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAppointmentType } from 'src/app/models/appointmentType';
-import { IService } from 'src/app/models/service';
+import { AppointmentType } from 'src/app/models/appointmentType';
+import { Service } from 'src/app/models/service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { ServiceService } from 'src/app/_services/service.service';
 
@@ -12,7 +12,7 @@ import { ServiceService } from 'src/app/_services/service.service';
   styleUrls: ['./appointment-type-create.component.css'],
 })
 export class AppointmentTypeCreateComponent implements OnInit {
-  model: IAppointmentType = {
+  model: AppointmentType = {
     id: undefined,
     name: '',
     duration: 0,
@@ -20,7 +20,7 @@ export class AppointmentTypeCreateComponent implements OnInit {
     services: [],
   };
   selectedServices: [];
-  services: IService[];
+  services: Service[];
 
   constructor(
     private servicesService: ServiceService,

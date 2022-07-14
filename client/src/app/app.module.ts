@@ -26,6 +26,9 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
 import { ConfirmModalComponent } from './common/modal/confirm-modal/confirm-modal.component';
 import { AppointmentTypeEditComponent } from './components/appointment-type/appointment-type-edit/appointment-type-edit.component';
+import { AppointmentCreateComponent } from './pages/appointments/appointment-create/appointment-create.component';
+import { AppointmentListComponent } from './components/appointment/appointment-list/appointment-list.component';
+import { RequiredMarkDirective } from './_directives/required-mark.directive';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,9 @@ import { AppointmentTypeEditComponent } from './components/appointment-type/appo
     AppointmentTypeCreateComponent,
     ConfirmModalComponent,
     AppointmentTypeEditComponent,
+    AppointmentCreateComponent,
+    AppointmentListComponent,
+    RequiredMarkDirective,
   ],
   imports: [
     BrowserModule,

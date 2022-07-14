@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { IAppointmentType } from '../models/appointmentType';
+import { AppointmentType } from '../models/appointmentType';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class AppointmentTypeService {
   constructor(private http: HttpClient) {}
 
   getAppointmentTypes() {
-    return this.http.get<IAppointmentType[]>(this.baseUrl);
+    return this.http.get<AppointmentType[]>(this.baseUrl);
   }
 
   post(resource) {

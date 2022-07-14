@@ -1,9 +1,9 @@
-import { IService } from "./service";
+import { Service } from './service';
 
-export interface IAppointmentType {
-    id: number,
-    name: string,
-    color: string,
-    duration: number,
-    services: IService[]
+export interface AppointmentType {
+  id: number;
+  name: string;
+  color: string;
+  duration: number;
+  services: Service[];
 }

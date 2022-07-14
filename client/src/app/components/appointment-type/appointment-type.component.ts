@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { IAppointmentType } from 'src/app/models/appointmentType';
+import { AppointmentType } from 'src/app/models/appointmentType';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
@@ -12,7 +12,7 @@ import { AppointmentTypeEditComponent } from './appointment-type-edit/appointmen
   providers: [BsModalRef, BsModalService],
 })
 export class AppointmentTypeComponent implements OnInit {
-  appointmentTypes: IAppointmentType[];
+  appointmentTypes: AppointmentType[];
   deleteModalRef: BsModalRef;
   editModalRef: BsModalRef;
 
