@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { IService } from 'src/app/models/service';
+import { Service } from 'src/app/models/service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { ServiceService } from 'src/app/_services/service.service';
 
@@ -13,7 +13,7 @@ export class AppointmentTypeEditComponent implements OnInit {
   appointmentTypeId: any;
   resource: any;
   selectedServices: [];
-  services: IService[];
+  services: Service[];
 
   edited: boolean;
 

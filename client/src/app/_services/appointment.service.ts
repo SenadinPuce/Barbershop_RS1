@@ -1,16 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Service } from '../models/service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceService {
-  baseUrl = environment.apiUrl;
+export class AppointmentService {
+  baseUrl = environment.apiUrl + 'appointments';
   constructor(private http: HttpClient) {}
 
-  getServices() {
-    return this.http.get<Service[]>(this.baseUrl + 'services');
+  post(resource) {
+    return this.http.post(this.baseUrl, resource);
   }
 }
