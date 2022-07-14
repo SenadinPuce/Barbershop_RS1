@@ -5,6 +5,7 @@ import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { Client } from 'src/app/models/client';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
+import { AppointmentService } from 'src/app/_services/appointment.service';
 import { BarberService } from 'src/app/_services/barber.service';
 import { ClientService } from 'src/app/_services/client.service';
 
@@ -19,9 +20,9 @@ export class AppointmentCreateComponent implements OnInit {
     duration: 0,
     id: 0,
     endsAt: new Date(new Date().setHours(0, 0, 0, 0)),
-    appointmentTypeId: 0,
-    barberId: 0,
-    clientId: 0,
+    appointmentTypeId: undefined,
+    barberId: undefined,
+    clientId: undefined,
     appointmentType: undefined,
     client: undefined,
     barber: undefined,
@@ -36,6 +37,7 @@ export class AppointmentCreateComponent implements OnInit {
   selectedClient: any;
 
   constructor(
+    private appointmentService: AppointmentService,
     private appointmentTypeService: AppointmentTypeService,
     private barberService: BarberService,
     private clientService: ClientService,
@@ -49,7 +51,14 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   insertAppointment() {
-    console.log(this.model);
+    this.model.appointmentTypeId = this.selectedApptType;
+    this.model.barberId = this.selectedBarber;
+    if (this.selectedClient) {
+      this.model.clientId = this.selectedClient;
+    }
+    this.appointmentService
+      .post(this.model)
+      .subscribe((res) => console.log(res));
   }
 
   setAppointmentDuration() {

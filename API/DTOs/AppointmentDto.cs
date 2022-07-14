@@ -7,6 +7,7 @@ namespace API.DTOs
         public int Id { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
+        public int Duration { get; set; }
 
         public int? ClientId { get; set; }
         public ClientDto Client { get; set; }

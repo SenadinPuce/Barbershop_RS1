@@ -39,6 +39,9 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
         {
             var appt = _mapper.Map<Appointment>(model);
+            var scheduledStatus = await _context.AppointmentStatus.SingleOrDefaultAsync(x => x.Name == "Scheduled");
+            appt.AppointmentStatusId = scheduledStatus.Id;
+
             await _context.AddAsync(appt);
             await _context.SaveChangesAsync();
 
