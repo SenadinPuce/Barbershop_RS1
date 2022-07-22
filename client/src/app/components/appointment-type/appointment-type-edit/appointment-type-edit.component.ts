@@ -52,6 +52,10 @@ export class AppointmentTypeEditComponent implements OnInit {
     );
   }
 
+  cancel() {
+    this.modal.hide();
+  }
+
   loadServices() {
     this.servicesService.getServices().subscribe((response) => {
       this.services = response;

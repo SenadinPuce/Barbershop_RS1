@@ -85,7 +85,7 @@ namespace API.Data.Migrations
                         column: x => x.AppointmentTypeId,
                         principalTable: "AppointmentType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointment_Barber_BarberId",
                         column: x => x.BarberId,
