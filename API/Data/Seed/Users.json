@@ -1,0 +1,92 @@
+[
+  {
+    "UserName": "deni.brkan",
+    "Email": "brkandeni@gmail.com",
+    "PhoneNumber": "38761043837",
+    "FirstName": "Deni",
+    "LastName": "Brkan",
+    "Created": "2019-06-10",
+    "DateOfBirth": "1999-11-28"
+  },
+  {
+    "UserName": "amina.madzak",
+    "Email": "amadzak@gmail.com",
+    "PhoneNumber": "38762908154",
+    "FirstName": "Amina",
+    "LastName": "Madzak",
+    "Created": "2021-06-15",
+    "DateOfBirth": "1999-10-10"
+  },
+  {
+    "UserName": "senadin.puce",
+    "Email": "spuce@gmail.com",
+    "PhoneNumber": "38761567128",
+    "FirstName": "Senadin",
+    "LastName": "Puce",
+    "Created": "2020-10-15",
+    "DateOfBirth": "1999-02-10"
+  },
+  {
+    "UserName": "ajdin.karic",
+    "Email": "akaric@gmail.com",
+    "PhoneNumber": "38762804756",
+    "FirstName": "Ajdin",
+    "LastName": "Karic",
+    "Created": "2020-10-30",
+    "DateOfBirth": "2002-02-05"
+  },
+  {
+    "UserName": "hana.rizvanovic",
+    "Email": "hrizvanovic@gmail.com",
+    "PhoneNumber": "3876391230",
+    "FirstName": "Hana",
+    "LastName": "Rizvanovic",
+    "Created": "2020-10-15",
+    "DateOfBirth": "2002-07-21"
+  },
+  {
+    "FirstName": "Harper",
+    "LastName": "Porter",
+    "UserName": "harper.porter",
+    "DateOfBirth": "1967-02-23",
+    "Created": "2019-04-07",
+    "Email": "hporter@gmail.com",
+    "PhoneNumber": "(890)54-729-94"
+  },
+  {
+    "FirstName": "Michele",
+    "LastName": "Kidd",
+    "UserName": "michele.kidd",
+    "DateOfBirth": "1989-01-14",
+    "Created": "2019-04-04",
+    "Email": "mkidd@gmail.com",
+    "PhoneNumber": "(937)46-720-36"
+  },
+  {
+    "FirstName": "Tamra",
+    "LastName": "Lester",
+    "UserName": "tamra.lester",
+    "DateOfBirth": "1994-03-06",
+    "Created": "2019-01-15",
+    "Email": "tlester@gmail.com",
+    "PhoneNumber": "(838)51-135-82"
+  },
+  {
+    "FirstName": "Glenn",
+    "LastName": "Mccray",
+    "UserName": "glenn.mccray",
+    "DateOfBirth": "1995-04-18",
+    "Created": "2019-05-19",
+    "Email": "gmccray@gmail.com",
+    "PhoneNumber": "(840)42-327-93"
+  },
+  {
+    "FirstName": "Frye",
+    "LastName": "Cruz",
+    "UserName": "frye.cruz",
+    "DateOfBirth": "1955-12-21",
+    "Created": "2019-06-23",
+    "Email": "fcruz@gmail.com",
+    "PhoneNumber": "(990)44-323-31"
+  }
+]
