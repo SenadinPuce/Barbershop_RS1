@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Musko sisanje",
+    "Duration": 25,
+    "Description": "Ko i prosli put",
+    "DefaultPrice": 15
+  },
+  {
+    "Name": "Zensko sisanje",
+    "Duration": 30,
+    "Description": "Skidanje tri dlake, sljedece se naplacuju.",
+    "DefaultPrice": 25
+  },
+  {
+    "Name": "Oblikovanje i skracenje brade",
+    "Duration": 20,
+    "Description": "Cut ko na instagramu",
+    "DefaultPrice": 10
+  },
+  {
+    "Name": "Feniranje",
+    "Duration": 15,
+    "Description": "Da se kosa izravna, blista i sjaji",
+    "DefaultPrice": 12
+  },
+  {
+    "Name": "Farbanje",
+    "Duration": 120,
+    "Description": "Farbanje u razne nijanse po vasoj zelji. Tradicionalna i laserska metoda.",
+    "DefaultPrice": 40
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Scheduled"
+  },
+  {
+    "Name": "Finished"
+  },
+  {
+    "Name": "Pending"
+  },
+  {
+    "Name": "Canceled"
+  }
+]

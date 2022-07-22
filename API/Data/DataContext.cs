@@ -14,6 +14,7 @@ namespace API.Data
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DbSet<AppointmentType> AppointmentType { get; set; }
+        public DbSet<AppointmentTypeService> AppointmentTypeService { get; set; }
         public DbSet<Service> Service { get; set; }
         public DbSet<Appointment> Appointment { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
