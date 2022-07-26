@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -18,7 +17,6 @@ import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.comp
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-import { SharedModule } from './_modules/shared.module';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { AppointmentTypeComponent } from './components/appointment-type/appointment-type.component';
@@ -29,6 +27,9 @@ import { AppointmentTypeEditComponent } from './components/appointment-type/appo
 import { AppointmentCreateComponent } from './pages/appointments/appointment-create/appointment-create.component';
 import { AppointmentListComponent } from './components/appointment/appointment-list/appointment-list.component';
 import { RequiredMarkDirective } from './_directives/required-mark.directive';
+
+import { ScheduleModule } from './_modules/schedule.module';
+import { SharedModule } from './_modules/shared.module';
 
 @NgModule({
   declarations: [
@@ -56,12 +57,13 @@ import { RequiredMarkDirective } from './_directives/required-mark.directive';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    ScheduleModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
