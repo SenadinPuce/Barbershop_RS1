@@ -24,8 +24,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync()
         {
-            var appointmentTypes = await _context.Appointment.ToListAsync();
-            return _mapper.Map<AppointmentDto[]>(appointmentTypes);
+            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client).ThenInclude(x => x.AppUser).ToListAsync();
+            return _mapper.Map<AppointmentDto[]>(appointments);
         }
 
         [HttpGet("{id}")]
@@ -39,6 +39,7 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
         {
             var appt = _mapper.Map<Appointment>(model);
+
             var scheduledStatus = await _context.AppointmentStatus.SingleOrDefaultAsync(x => x.Name == "Scheduled");
             appt.AppointmentStatusId = scheduledStatus.Id;
 
