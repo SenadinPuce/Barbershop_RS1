@@ -1,6 +1,4 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentType } from 'src/app/models/appointmentType';

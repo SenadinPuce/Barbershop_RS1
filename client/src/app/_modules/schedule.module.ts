@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +14,6 @@ import { SharedModule } from './shared.module';
     FormsModule,
     AppRoutingModule,
     NgbModalModule,
-    FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
