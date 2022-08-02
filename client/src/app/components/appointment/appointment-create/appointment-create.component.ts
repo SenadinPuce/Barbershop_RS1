@@ -1,5 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
@@ -15,7 +17,7 @@ import { ClientService } from 'src/app/_services/client.service';
   styleUrls: ['./appointment-create.component.css'],
 })
 export class AppointmentCreateComponent implements OnInit {
-  model: Appointment = {
+  model: Partial<Appointment> = {
     startsAt: new Date(new Date().setHours(0, 0, 0, 0)),
     duration: 0,
     id: 0,
@@ -41,7 +43,7 @@ export class AppointmentCreateComponent implements OnInit {
     private appointmentTypeService: AppointmentTypeService,
     private barberService: BarberService,
     private clientService: ClientService,
-    private location: Location
+    private modal: BsModalRef
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +60,7 @@ export class AppointmentCreateComponent implements OnInit {
     }
     this.appointmentService
       .post(this.model)
-      .subscribe((res) => console.log(res));
+      .subscribe((res) => this.modal.hide());
   }
 
   setAppointmentDuration() {
@@ -99,6 +101,6 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   cancel() {
-    this.location.back();
+    this.modal.hide();
   }
 }

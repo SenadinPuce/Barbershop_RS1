@@ -55,9 +55,33 @@
         Day
       </div>
     </div>
+    <button class="btn btn-primary ml-2" (click)="openCreateModal()">
+      Add New
+    </button>
   </div>
 </div>
 <br />
+<ng-template
+  #weekViewHourSegmentTemplate
+  let-segment="segment"
+  let-locale="locale"
+  let-segmentHeight="segmentHeight"
+  let-isTimeLabel="isTimeLabel"
+>
+  <div
+    #segmentElement
+    class="cal-hour-segment"
+    [style.height.px]="segmentHeight"
+    [class.cal-hour-start]="segment.isStart"
+    [class.cal-after-hour-start]="!segment.isStart"
+    [ngClass]="segment.cssClass"
+    (mousedown)="startDragToCreate(segment, $event, segmentElement)"
+  >
+    <div class="cal-time" *ngIf="isTimeLabel">
+      {{ segment.date | calendarDate: "weekViewHour":locale }}
+    </div>
+  </div>
+</ng-template>
 <div [ngSwitch]="view">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
@@ -77,6 +101,7 @@
     [refresh]="refresh"
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
+    [hourSegmentTemplate]="weekViewHourSegmentTemplate"
   >
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
@@ -86,8 +111,7 @@
     [refresh]="refresh"
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
+    [hourSegmentTemplate]="weekViewHourSegmentTemplate"
   >
   </mwl-calendar-day-view>
 </div>
-
-<!-- Everything you see below is just for the demo, you don't need to include it in your app -->
