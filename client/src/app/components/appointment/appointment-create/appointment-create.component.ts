@@ -15,26 +15,11 @@ import { ClientService } from 'src/app/_services/client.service';
   styleUrls: ['./appointment-create.component.css'],
 })
 export class AppointmentCreateComponent implements OnInit {
-  model: Partial<Appointment> = {
-    startsAt: new Date(new Date().setHours(0, 0, 0, 0)),
-    duration: 0,
-    id: 0,
-    endsAt: new Date(new Date().setHours(0, 0, 0, 0)),
-    appointmentTypeId: undefined,
-    barberId: undefined,
-    clientId: undefined,
-    appointmentType: undefined,
-    client: undefined,
-    barber: undefined,
-  };
+  model: Partial<Appointment> = {};
 
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[];
-
-  selectedApptType: any;
-  selectedBarber: any;
-  selectedClient: any;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -51,11 +36,6 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   insertAppointment() {
-    this.model.appointmentTypeId = this.selectedApptType;
-    this.model.barberId = this.selectedBarber;
-    if (this.selectedClient) {
-      this.model.clientId = this.selectedClient;
-    }
     this.appointmentService
       .post(this.model)
       .subscribe((res) => this.modal.hide());
@@ -63,21 +43,25 @@ export class AppointmentCreateComponent implements OnInit {
 
   setAppointmentDuration() {
     this.model.duration = this.appointmentTypes.find(
-      (at) => at.id === this.selectedApptType
+      (at) => at.id === this.model.appointmentTypeId
     ).duration;
 
     this.updateEndTime();
   }
 
   updateEndTime() {
+    if (!this.model.duration) {
+      return;
+    }
     var date = new Date(this.model.startsAt);
     date.setMinutes(this.model.startsAt.getMinutes() + this.model.duration);
     this.model.endsAt = date;
   }
 
   getSelectedTypeColor(): string {
-    return this.appointmentTypes?.find((at) => at.id === this.selectedApptType)
-      .color;
+    return this.appointmentTypes?.find(
+      (at) => at.id === this.model.appointmentTypeId
+    ).color;
   }
 
   loadBarbers() {

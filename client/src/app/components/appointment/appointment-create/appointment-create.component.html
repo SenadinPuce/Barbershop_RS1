@@ -14,7 +14,7 @@
           <label>Starts At: </label>
           <input
             type="text"
-            placeholder="Select Date & Time"
+            placeholder="Select start time..."
             class="form-control"
             [(ngModel)]="model.startsAt"
             name="startDate"
@@ -33,7 +33,7 @@
           <label>Ends At:</label>
           <input
             type="text"
-            placeholder="Select Date & Time"
+            placeholder="Select end time..."
             class="form-control"
             [(ngModel)]="model.endsAt"
             name="endsAt"
@@ -50,12 +50,12 @@
       </div>
       <div class="row">
         <div class="form-group col-6 p-0">
-          <label for="barber">Choose a barber</label>
+          <label for="barber">Barber</label>
           <ng-select
             [items]="barbers"
             bindLabel="fullName"
             bindValue="id"
-            [(ngModel)]="selectedBarber"
+            [(ngModel)]="model.barberId"
             [multiple]="false"
             [closeOnSelect]="true"
             [markFirst]="true"
@@ -64,6 +64,7 @@
             id="barber"
             required
             #barberSelect
+            placeholder="Choose a barber..."
           >
           </ng-select>
         </div>
@@ -73,7 +74,7 @@
             [items]="clients"
             bindLabel="fullName"
             bindValue="id"
-            [(ngModel)]="selectedClient"
+            [(ngModel)]="model.clientId"
             [multiple]="false"
             [closeOnSelect]="true"
             [markFirst]="true"
@@ -90,7 +91,7 @@
             [items]="appointmentTypes"
             bindLabel="name"
             bindValue="id"
-            [(ngModel)]="selectedApptType"
+            [(ngModel)]="model.appointmentTypeId"
             [multiple]="false"
             [closeOnSelect]="true"
             [markFirst]="true"
