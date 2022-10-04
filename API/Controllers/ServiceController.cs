@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -25,7 +26,7 @@ namespace API.Controllers
         public async Task<ActionResult<ServiceDto[]>> GetServiceAsync()
         {
             var services = await _context.Service.ToListAsync();
-            return  _mapper.Map<ServiceDto[]>(services);
+            return _mapper.Map<ServiceDto[]>(services);
         }
 
         [HttpPost]
@@ -38,6 +39,49 @@ namespace API.Controllers
             return Created(this.Url.ToString(), true);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceDto[]>> GetServiceByIdAsync(int id)
+        {
+            var service = await _context.Service.FindAsync(id);
+            if (service == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<ServiceDto>(service));
+        }
 
-  }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteAsync(int id)
+        {
+            var service = await _context.Service.FindAsync(id);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(service);
+            _context.SaveChanges();
+
+            return true;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceDto>> PutAsync(int id, ServiceDto model)
+        {
+            var service = await _context.Service.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (service == null)
+            {
+                return BadRequest();
+            }
+            var entity = _mapper.Map(model, service);
+
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+
+            return Ok(model);
+        }
+
+    }
 }

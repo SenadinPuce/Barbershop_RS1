@@ -1,4 +1,3 @@
-import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
@@ -16,26 +15,11 @@ import { ClientService } from 'src/app/_services/client.service';
   styleUrls: ['./appointment-edit.component.css'],
 })
 export class AppointmentEditComponent implements OnInit {
-  model: Partial<Appointment> = {
-    // startsAt: null,
-    // duration: 0,
-    // id: 0,
-    // endsAt: new Date(new Date().setHours(0, 0, 0, 0)),
-    // appointmentTypeId: undefined,
-    // barberId: undefined,
-    // clientId: undefined,
-    // appointmentType: undefined,
-    // client: undefined,
-    // barber: undefined,
-  };
+  model: Partial<Appointment> = {};
 
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[];
-
-  // selectedApptType: any;
-  // selectedBarber: any;
-  // selectedClient: any;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -53,11 +37,6 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   updateAppointment() {
-    // this.model.appointmentTypeId = this.selectedApptType;
-    // this.model.barberId = this.selectedBarber;
-    // if (this.selectedClient) {
-    //   this.model.clientId = this.selectedClient;
-    // }
     this.appointmentService
       .update(this.model)
       .subscribe((res) => this.modal.hide());

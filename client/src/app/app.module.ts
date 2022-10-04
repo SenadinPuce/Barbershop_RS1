@@ -31,6 +31,9 @@ import { RequiredMarkDirective } from './_directives/required-mark.directive';
 
 import { ScheduleModule } from './_modules/schedule.module';
 import { SharedModule } from './_modules/shared.module';
+import { ServiceComponent } from './components/service/service.component';
+import { ServiceCreateComponent } from './components/service/service-create/service-create.component';
+import { ServiceEditComponent } from './components/service/service-edit/service-edit.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,9 @@ import { SharedModule } from './_modules/shared.module';
     AppointmentEditComponent,
     AppointmentListComponent,
     RequiredMarkDirective,
+    ServiceComponent,
+    ServiceCreateComponent,
+    ServiceEditComponent,
   ],
   imports: [
     BrowserModule,
