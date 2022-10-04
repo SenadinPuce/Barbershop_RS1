@@ -29,6 +29,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentCreateComponent } from 'src/app/components/appointment/appointment-create/appointment-create.component';
+import { AppointmentEditComponent } from 'src/app/components/appointment/appointment-edit/appointment-edit.component';
 
 function colorShade(color, amount) {
   return (
@@ -95,28 +96,11 @@ export class ScheduleComponent implements OnInit {
   dragToCreateActive = false;
   weekStartsOn: 0 = 0;
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      },
-    },
-  ];
-
   refresh = new Subject<void>();
   events: CalendarEvent[] = [];
   activeDayIsOpen: boolean = true;
   createAppointmentModal: BsModalRef;
+  editAppointmentModal: BsModalRef;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -126,6 +110,22 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAppointments();
+  }
+
+  onEditAppointment(appointment) {
+    this.editAppointmentModal = this.modalService.show(
+      AppointmentEditComponent,
+      {
+        animated: false,
+        class: 'modal-dialog-centered modal-lg',
+        initialState: {
+          model: appointment,
+        },
+      }
+    );
+    this.editAppointmentModal.onHide.subscribe((e) => {
+      this.ngOnInit();
+    });
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -157,10 +157,22 @@ export class ScheduleComponent implements OnInit {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    const changedEvent = this.events.find(
+      (e) => e.appointmentId === event.appointmentId
+    );
+    this.handleEvent('Resized or Dragged', changedEvent);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {}
+  handleEvent(action: string, event: CalendarEvent): void {
+    const appointment: Partial<Appointment> = {
+      id: event.appointmentId,
+    };
+    if (action === 'Resized or Dragged') {
+      appointment.startsAt = event.start;
+      appointment.endsAt = event.end;
+    }
+    this.onEditAppointment(appointment);
+  }
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
@@ -182,27 +194,30 @@ export class ScheduleComponent implements OnInit {
 
   mapData(appointments: Appointment[]) {
     this.events = appointments.map((appt) => {
-      const clientFullName = appt.client?.firstName + appt.client?.lastName;
+      let clientFullName = '';
+      if (appt.client) {
+        clientFullName = this.getClientFullName(appt.client);
+      }
       let apptTitle = appt.appointmentType.name;
-      if (clientFullName) {
+      if (clientFullName.length > 0) {
         apptTitle += ' | ' + clientFullName;
       }
       const apptColor = {
         primary: appt.appointmentType.color,
-        secondary: colorShade(appt.appointmentType.color, -20),
+        secondary: colorShade(appt.appointmentType.color, 0),
       };
       return {
         start: new Date(appt.startsAt + 'Z'),
         end: new Date(appt.endsAt + 'Z'),
         title: apptTitle,
         color: apptColor,
-        actions: this.actions,
         allDay: false,
         resizable: {
           beforeStart: true,
           afterEnd: true,
         },
         draggable: true,
+        appointmentId: appt.id,
       };
     });
     this.refresh.next();
@@ -289,6 +304,12 @@ export class ScheduleComponent implements OnInit {
     this.createAppointmentModal.onHide.subscribe((e) => {
       this.ngOnInit();
     });
+  }
+
+  getClientFullName(client) {
+    if (client.firstName !== undefined && client.lastName !== undefined) {
+      return client.firstName + ' ' + client.lastName;
+    }
   }
 
   private reload() {

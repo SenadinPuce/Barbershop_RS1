@@ -17,4 +17,12 @@ export class AppointmentService {
   get() {
     return this.http.get<Appointment[]>(this.baseUrl);
   }
+
+  getById(id: number) {
+    return this.http.get<Appointment>(this.baseUrl + '/' + id);
+  }
+
+  update(resource) {
+    return this.http.put(this.baseUrl + '/' + resource.id, resource);
+  }
 }

@@ -16,3 +16,21 @@
       margin-left: 3px;
       font-size: 1.2em;
   }
+
+  .btn-vertical-line{
+      margin: 0px 8px;
+      height: 25px;
+      display: inline-block;
+      width: 1px;
+      background-color: white;
+      vertical-align: bottom;
+ }
+ .lh{
+      line-height: 30px;
+ }
+ .row{
+      margin: 0px;
+ }
+ .textarea{
+      font-size: 0.8rem;
+ }

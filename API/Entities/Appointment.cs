@@ -8,6 +8,7 @@ namespace API.Entities
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
         public int Duration { get; set; }
+        public string Note { get; set; }
 
         public int? ClientId { get; set; }
         public Client Client { get; set; }

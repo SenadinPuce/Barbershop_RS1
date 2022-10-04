@@ -13,4 +13,6 @@ export interface Appointment {
   appointmentType: AppointmentType;
   client: Client;
   barber: Barber;
+  appointmentStatusId: number;
+  note: string;
 }

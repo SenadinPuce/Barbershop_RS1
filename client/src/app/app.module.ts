@@ -25,6 +25,7 @@ import { AppointmentTypeCreateComponent } from './components/appointment-type/ap
 import { ConfirmModalComponent } from './common/modal/confirm-modal/confirm-modal.component';
 import { AppointmentTypeEditComponent } from './components/appointment-type/appointment-type-edit/appointment-type-edit.component';
 import { AppointmentCreateComponent } from './components/appointment/appointment-create/appointment-create.component';
+import { AppointmentEditComponent } from './components/appointment/appointment-edit/appointment-edit.component';
 import { AppointmentListComponent } from './components/appointment/appointment-list/appointment-list.component';
 import { RequiredMarkDirective } from './_directives/required-mark.directive';
 
@@ -52,6 +53,7 @@ import { SharedModule } from './_modules/shared.module';
     ConfirmModalComponent,
     AppointmentTypeEditComponent,
     AppointmentCreateComponent,
+    AppointmentEditComponent,
     AppointmentListComponent,
     RequiredMarkDirective,
   ],

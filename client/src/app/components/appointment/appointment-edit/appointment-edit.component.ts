@@ -1,3 +1,4 @@
+import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
@@ -10,16 +11,31 @@ import { BarberService } from 'src/app/_services/barber.service';
 import { ClientService } from 'src/app/_services/client.service';
 
 @Component({
-  selector: 'app-appointment-create',
-  templateUrl: './appointment-create.component.html',
-  styleUrls: ['./appointment-create.component.css'],
+  selector: 'app-appointment-edit',
+  templateUrl: './appointment-edit.component.html',
+  styleUrls: ['./appointment-edit.component.css'],
 })
-export class AppointmentCreateComponent implements OnInit {
-  model: Partial<Appointment> = {};
+export class AppointmentEditComponent implements OnInit {
+  model: Partial<Appointment> = {
+    // startsAt: null,
+    // duration: 0,
+    // id: 0,
+    // endsAt: new Date(new Date().setHours(0, 0, 0, 0)),
+    // appointmentTypeId: undefined,
+    // barberId: undefined,
+    // clientId: undefined,
+    // appointmentType: undefined,
+    // client: undefined,
+    // barber: undefined,
+  };
 
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[];
+
+  // selectedApptType: any;
+  // selectedBarber: any;
+  // selectedClient: any;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -33,11 +49,17 @@ export class AppointmentCreateComponent implements OnInit {
     this.loadAppointmentTypes();
     this.loadClients();
     this.loadBarbers();
+    this.fetchAppointment(this.model.id);
   }
 
-  insertAppointment() {
+  updateAppointment() {
+    // this.model.appointmentTypeId = this.selectedApptType;
+    // this.model.barberId = this.selectedBarber;
+    // if (this.selectedClient) {
+    //   this.model.clientId = this.selectedClient;
+    // }
     this.appointmentService
-      .post(this.model)
+      .update(this.model)
       .subscribe((res) => this.modal.hide());
   }
 
@@ -50,9 +72,6 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   updateEndTime() {
-    if (!this.model.duration) {
-      return;
-    }
     var date = new Date(this.model.startsAt);
     date.setMinutes(this.model.startsAt.getMinutes() + this.model.duration);
     this.model.endsAt = date;
@@ -82,7 +101,27 @@ export class AppointmentCreateComponent implements OnInit {
     });
   }
 
+  fetchAppointment(id) {
+    this.appointmentService.getById(id).subscribe((data) => {
+      this.mapAppointment(data);
+    });
+  }
+
   cancel() {
     this.modal.hide();
+  }
+
+  mapAppointment(appointment: Appointment) {
+    console.log(this.model);
+    this.model.appointmentTypeId = appointment.appointmentTypeId;
+    this.model.barberId = appointment.barberId;
+    this.model.clientId = appointment.clientId;
+    this.model.duration = appointment.duration;
+    this.model.appointmentStatusId = appointment.appointmentStatusId;
+    this.model.note = appointment.note;
+    if (this.model.startsAt === undefined && this.model.endsAt === undefined) {
+      this.model.startsAt = new Date(appointment.startsAt + 'Z');
+      this.model.endsAt = new Date(appointment.endsAt + 'Z');
+    }
   }
 }

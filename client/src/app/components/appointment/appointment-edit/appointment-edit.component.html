@@ -1,12 +1,12 @@
 <div>
   <div class="modal-header">
-    <h3>New Appointment</h3>
+    <h3>Edit Appointment</h3>
     <hr />
   </div>
   <div class="modal-body">
     <form
       #appointmentForm="ngForm"
-      (ngSubmit)="insertAppointment()"
+      (ngSubmit)="updateAppointment()"
       autocomplete="off"
       class="p-3"
     >
@@ -70,7 +70,7 @@
       </div>
       <div class="row">
         <div class="form-group col-6 p-0">
-          <label class="lh" for="barber">Barber</label>
+          <label class="lh">Barber</label>
           <ng-select
             [items]="barbers"
             bindLabel="fullName"
@@ -81,14 +81,13 @@
             [markFirst]="true"
             [hideSelected]="true"
             name="barber"
-            id="barber"
             required
             placeholder="Choose a barber..."
           >
           </ng-select>
         </div>
         <div class="form-group col-6 pr-0">
-          <label class="lh" for="clients">Client</label>
+          <label class="lh">Client</label>
           <ng-select
             [items]="clients"
             bindLabel="fullName"
@@ -111,6 +110,7 @@
             class="form-control"
             name="duration"
             [(ngModel)]="model.duration"
+            placeholder="Duration"
             step="5"
             (change)="updateEndTime()"
             required
