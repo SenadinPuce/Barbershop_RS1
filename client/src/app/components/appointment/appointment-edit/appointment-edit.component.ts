@@ -118,6 +118,7 @@ export class AppointmentEditComponent implements OnInit {
     this.model.clientId = appointment.clientId;
     this.model.duration = appointment.duration;
     this.model.appointmentStatusId = appointment.appointmentStatusId;
+    this.model.note = appointment.note;
     if (this.model.startsAt === undefined && this.model.endsAt === undefined) {
       this.model.startsAt = new Date(appointment.startsAt + 'Z');
       this.model.endsAt = new Date(appointment.endsAt + 'Z');
