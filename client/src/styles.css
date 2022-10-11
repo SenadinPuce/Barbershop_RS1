@@ -34,3 +34,6 @@
  .textarea{
       font-size: 0.8rem;
  }
+ .cal-week-view .cal-event{
+     color: #000000;
+ }

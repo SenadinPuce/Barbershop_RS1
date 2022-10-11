@@ -1,0 +1,75 @@
+<div>
+  <h3>New Service</h3>
+  <hr />
+
+  <form
+    #apptTypeForm="ngForm"
+    (ngSubmit)="insertService()"
+    autocomplete="off"
+    class="col-6 mt-5"
+  >
+    <div class="row">
+      <div class="form-group col p-0">
+        <label>Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          [(ngModel)]="model.name"
+          placeholder="Enter name"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-6 p-0">
+        <label>Duration</label>
+        <input
+          type="number"
+          class="form-control"
+          name="duration"
+          [(ngModel)]="model.duration"
+          placeholder="Enter duration"
+          step="5"
+          value="0"
+          required
+        />
+      </div>
+      <div class="form-group col-6 pr-0">
+        <label>Price</label>
+        <input
+          type="number"
+          class="form-control"
+          name="defaultPrice"
+          [(ngModel)]="model.defaultPrice"
+          placeholder="Enter default price"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col p-0">
+        <label class="lh">Description</label>
+        <textarea
+          class="form-control textarea"
+          name="description"
+          [(ngModel)]="model.description"
+          placeholder="..."
+          cols="2"
+        ></textarea>
+      </div>
+    </div>
+    <div class="form-group text-center">
+      <button
+        class="btn btn-success mr-2"
+        type="submit"
+        [disabled]="!apptTypeForm.valid"
+      >
+        Save
+      </button>
+      <button class="btn btn-danger mr-2" (click)="cancel()" type="button">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
