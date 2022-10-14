@@ -22,7 +22,8 @@ namespace API.Helpers
             CreateMap<Appointment, AppointmentDto>().ReverseMap();
             CreateMap<AppointmentStatus, AppointmentStatusDto>().ReverseMap();
             CreateMap<Barber, BarberDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
-            .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName));
+            .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName))
+            .ForMember(x => x.PhotoUrl, opt => opt.MapFrom(y => y.AppUser.PhotoUrl));
             CreateMap<Client, ClientDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName));
 

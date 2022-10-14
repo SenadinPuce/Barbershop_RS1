@@ -3,4 +3,9 @@ export interface Barber {
   firstName: string;
   lastName: string;
   fullName: string;
+  age: number;
+  phoneNumber: string;
+  email: string;
+  info: string;
+  photoUrl: string;
 }

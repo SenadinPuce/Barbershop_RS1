@@ -34,6 +34,8 @@ import { SharedModule } from './_modules/shared.module';
 import { ServiceComponent } from './components/service/service.component';
 import { ServiceCreateComponent } from './components/service/service-create/service-create.component';
 import { ServiceEditComponent } from './components/service/service-edit/service-edit.component';
+import { BarberListComponent } from './components/barber/barber-list.component';
+import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { ServiceEditComponent } from './components/service/service-edit/service-
     ServiceComponent,
     ServiceCreateComponent,
     ServiceEditComponent,
+    BarberListComponent,
+    BarberCardComponent,
   ],
   imports: [
     BrowserModule,
