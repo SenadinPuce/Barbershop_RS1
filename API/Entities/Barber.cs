@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Entities
 {
@@ -10,5 +7,7 @@ namespace API.Entities
         public int Id { get; set; }
         public int AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+        public string Info { get; set; }
+        public ICollection<BarberService> BarberServices { get; set; }
     }
 }

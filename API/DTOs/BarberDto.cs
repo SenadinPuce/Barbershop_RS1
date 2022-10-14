@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace API.DTOs
 {
     public class BarberDto
@@ -10,7 +5,11 @@ namespace API.DTOs
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public int Age { get; set; }
+        public string Info { get; set; }
+        public BarberServiceDto[] BarberServices { get; set; }
         public string PhotoUrl { get; set; }
-
     }
 }

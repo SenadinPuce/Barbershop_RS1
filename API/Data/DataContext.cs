@@ -15,6 +15,7 @@ namespace API.Data
     {
         public DbSet<AppointmentType> AppointmentType { get; set; }
         public DbSet<AppointmentTypeService> AppointmentTypeService { get; set; }
+        public DbSet<BarberService> BarberService { get; set; }
         public DbSet<Service> Service { get; set; }
         public DbSet<Appointment> Appointment { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
@@ -38,6 +39,18 @@ namespace API.Data
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
+            builder.Entity<BarberService>()
+                .HasOne(bs => bs.Barber)
+                .WithMany(b => b.BarberServices)
+                .HasForeignKey(bs => bs.BarberId)
+                .IsRequired();
+
+            builder.Entity<BarberService>()
+               .HasOne(bs => bs.Service)
+                .WithMany(b => b.BarberServices)
+                .HasForeignKey(bs => bs.ServiceId)
                 .IsRequired();
 
             builder.Entity<AppointmentTypeService>().HasKey(apptTypeService => new { apptTypeService.AppointmentTypeId, apptTypeService.ServiceId });

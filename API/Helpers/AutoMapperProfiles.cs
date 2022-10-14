@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
+using API.Extensions;
 
 namespace API.Helpers
 {
@@ -23,10 +21,13 @@ namespace API.Helpers
             CreateMap<AppointmentStatus, AppointmentStatusDto>().ReverseMap();
             CreateMap<Barber, BarberDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName))
-            .ForMember(x => x.PhotoUrl, opt => opt.MapFrom(y => y.AppUser.PhotoUrl));
+            .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(y => y.AppUser.PhoneNumber))
+            .ForMember(x => x.Email, opt => opt.MapFrom(y => y.AppUser.Email))
+            .ForMember(x => x.PhotoUrl, opt => opt.MapFrom(y => y.AppUser.PhotoUrl))
+            .ForMember(x => x.Age, opt => opt.MapFrom(y => y.AppUser.DateOfBirth.CalculateAge()));
             CreateMap<Client, ClientDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName));
-
+            CreateMap<BarberService, BarberServiceDto>().ReverseMap();
         }
     }
 }

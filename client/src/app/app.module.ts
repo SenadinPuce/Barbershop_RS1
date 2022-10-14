@@ -36,6 +36,7 @@ import { ServiceCreateComponent } from './components/service/service-create/serv
 import { ServiceEditComponent } from './components/service/service-edit/service-edit.component';
 import { BarberListComponent } from './components/barber/barber-list.component';
 import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
+import { BarberDetailComponent } from './components/barber/barber-detail/barber-detail.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { BarberCardComponent } from './components/barber/barber-card/barber-card
     ServiceEditComponent,
     BarberListComponent,
     BarberCardComponent,
+    BarberDetailComponent,
   ],
   imports: [
     BrowserModule,

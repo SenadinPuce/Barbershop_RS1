@@ -4,10 +4,14 @@
       src="{{ barber.photoUrl || './assets/images/user.png' }}"
       alt="{{ barber.fullName }}"
       class="card-img-top"
+      routerLink="/barbers/{{ barber.id }}"
     />
   </div>
   <div class="card-body p-1">
-    <h5 class="card-title text-center mb-1">
+    <h5
+      class="card-title text-center mb-1"
+      routerLink="/barbers/{{ barber.id }}"
+    >
       {{ barber.fullName }}
     </h5>
   </div>

@@ -1,0 +1,49 @@
+<div *ngIf="barber">
+  <div class="my-5">
+    <h3>{{ barber.fullName }}</h3>
+    <hr />
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <img
+          src="{{ barber.photoUrl || './assets/user.png' }}"
+          alt="{{ barber.fullName }}"
+          class="card-img-top img-thumbnail"
+        />
+        <div class="card-body">
+          <div>
+            <strong>Age:</strong>
+            <p>{{ barber.age }}</p>
+          </div>
+          <div>
+            <strong>Phone:</strong>
+            <p>{{ barber.phoneNumber }}</p>
+          </div>
+          <div>
+            <strong>Email:</strong>
+            <p>{{ barber.email }}</p>
+          </div>
+          <div>
+            <strong>Info:</strong>
+            <p>{{ barber.info }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-8">
+      <tabset class="barber-tabset" #barberTabs>
+        <tab heading="Services">
+          <div class="container my-4" *ngIf="barber.barberServices.length > 0">
+            <h5>Services offered:</h5>
+            <div *ngFor="let bs of barber.barberServices">
+              {{ bs.service.name }} -
+              {{ bs.price }}
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
