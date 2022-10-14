@@ -28,6 +28,17 @@ namespace API.Controllers
             return _mapper.Map<BarberDto[]>(barbers);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BarberDto>> GetBarberAsync(int id)
+        {
+            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.Id == id);
+            if (barber == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<BarberDto>(barber);
+        }
+
         [HttpPost]
         public async Task<ActionResult<bool>> PostBarberAsync(BarberDto model)
         {

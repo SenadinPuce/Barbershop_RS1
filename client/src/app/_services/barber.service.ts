@@ -21,4 +21,13 @@ export class BarberService {
       })
     );
   }
+
+  getById(id: number) {
+    return this.http.get<Barber>(this.baseUrl + '/' + id).pipe(
+      map((barber) => {
+        barber.fullName = barber.firstName + ' ' + barber.lastName;
+        return barber;
+      })
+    );
+  }
 }
