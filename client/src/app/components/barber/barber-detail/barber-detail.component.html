@@ -1,13 +1,14 @@
 <div *ngIf="barber">
-  <div class="my-5">
+  <div class="mt-5">
     <h3>{{ barber.fullName }}</h3>
     <hr />
   </div>
+  <div class="d-flex justify-content-end mt-4 mb-2"></div>
   <div class="row">
     <div class="col-4">
       <div class="card">
         <img
-          src="{{ barber.photoUrl || './assets/user.png' }}"
+          src="{{ barber.photoUrl || './assets/images/user.png' }}"
           alt="{{ barber.fullName }}"
           class="card-img-top img-thumbnail"
         />
@@ -28,6 +29,14 @@
             <strong>Info:</strong>
             <p>{{ barber.info }}</p>
           </div>
+          <div>
+            <button
+              class="btn btn-primary"
+              routerLink="{{ '/barber/edit/' + barber.id }}"
+            >
+              Edit
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -36,11 +45,22 @@
       <tabset class="barber-tabset" #barberTabs>
         <tab heading="Services">
           <div class="container my-4" *ngIf="barber.barberServices.length > 0">
-            <h5>Services offered:</h5>
-            <div *ngFor="let bs of barber.barberServices">
-              {{ bs.service.name }} -
-              {{ bs.price }}
-            </div>
+            <table class="table table-bordered">
+              <thead>
+                <th style="width: 60%">Name</th>
+                <th>Price</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let bs of barber.barberServices">
+                  <td>
+                    {{ bs.service.name }}
+                  </td>
+                  <td>
+                    {{ bs.price }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </tab>
       </tabset>

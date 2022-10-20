@@ -22,7 +22,6 @@ export class BarberDetailComponent implements OnInit {
 
   loadBarber() {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    console.log(this.route.snapshot.paramMap);
     this.barberService.getById(id).subscribe((data) => {
       this.barber = data;
     });
