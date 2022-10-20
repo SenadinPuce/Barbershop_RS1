@@ -30,4 +30,8 @@ export class BarberService {
       })
     );
   }
+
+  put(resource) {
+    return this.http.put<Barber>(this.baseUrl + '/' + resource.id, resource);
+  }
 }

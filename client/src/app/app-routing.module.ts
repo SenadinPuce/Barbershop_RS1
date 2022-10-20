@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
 import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
 import { BarberDetailComponent } from './components/barber/barber-detail/barber-detail.component';
+import { BarberEditComponent } from './components/barber/barber-edit/barber-edit.component';
 import { ServiceCreateComponent } from './components/service/service-create/service-create.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
@@ -24,6 +25,10 @@ const routes: Routes = [
     component: ServiceCreateComponent,
   },
   { path: 'appointments', component: AppointmentsComponent },
+  {
+    path: 'barber/edit/:id',
+    component: BarberEditComponent,
+  },
   {
     path: 'barbers/:id',
     component: BarberDetailComponent,

@@ -3,6 +3,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +15,11 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BarberController(DataContext context, IMapper mapper)
+        public BarberController(DataContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
             _mapper = mapper;
         }
@@ -49,6 +52,23 @@ namespace API.Controllers
             return Created(this.Url.ToString(), true);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BarberDto>> PutBarberAsync(int id, BarberDto model)
+        {
+            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).SingleOrDefaultAsync(x => x.Id == id);
 
+            if (barber == null)
+            {
+                return BadRequest();
+            }
+            var entity = _mapper.Map(model, barber);
+            var user = barber.AppUser;
+
+            _context.Update(entity);
+            await _userManager.UpdateAsync(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(model);
+        }
     }
 }

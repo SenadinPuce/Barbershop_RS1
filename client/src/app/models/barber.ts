@@ -1,4 +1,4 @@
-import { BarberService } from './barberService';
+import { BarberServiceModel } from './barberService';
 
 export interface Barber {
   id: number;
@@ -10,5 +10,6 @@ export interface Barber {
   email: string;
   info: string;
   photoUrl: string;
-  barberServices: BarberService[];
+  dateOfBirth: Date;
+  barberServices: BarberServiceModel[];
 }

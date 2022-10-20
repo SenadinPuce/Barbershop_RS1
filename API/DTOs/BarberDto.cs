@@ -1,3 +1,5 @@
+using System;
+
 namespace API.DTOs
 {
     public class BarberDto
@@ -9,7 +11,8 @@ namespace API.DTOs
         public string Email { get; set; }
         public int Age { get; set; }
         public string Info { get; set; }
-        public BarberServiceDto[] BarberServices { get; set; }
         public string PhotoUrl { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public BarberServiceDto[] BarberServices { get; set; }
     }
 }
