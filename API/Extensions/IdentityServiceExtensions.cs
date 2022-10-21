@@ -43,6 +43,8 @@ namespace API.Extensions
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequireBarberRole", policy => policy.RequireRole("Barber"));
+                opt.AddPolicy("RequireBarberOrAdminRole", policy => policy.RequireRole(new[] { "Admin", "Barber" }));
             });
 
             return services;
