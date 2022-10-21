@@ -31,6 +31,15 @@ export class BarberService {
     );
   }
 
+  getByUsername(username: string) {
+    return this.http.get<Barber>(this.baseUrl + '/username/' + username).pipe(
+      map((barber) => {
+        barber.fullName = barber.firstName + ' ' + barber.lastName;
+        return barber;
+      })
+    );
+  }
+
   put(resource) {
     return this.http.put<Barber>(this.baseUrl + '/' + resource.id, resource);
   }

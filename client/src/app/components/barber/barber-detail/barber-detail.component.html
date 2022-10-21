@@ -29,7 +29,7 @@
             <strong>Info:</strong>
             <p>{{ barber.info }}</p>
           </div>
-          <div>
+          <div *appHasRole="'Admin'">
             <button
               class="btn btn-primary"
               routerLink="{{ '/barber/edit/' + barber.id }}"

@@ -3,6 +3,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,21 @@ namespace API.Controllers
             return _mapper.Map<BarberDto>(barber);
         }
 
+        [Authorize("RequireBarberRole")]
+        [HttpGet("username/{username}")]
+        public async Task<ActionResult<BarberDto>> GetBarberByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound();
+
+            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.AppUserId == user.Id);
+            if (barber == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<BarberDto>(barber);
+        }
+
         [HttpPost]
         public async Task<ActionResult<bool>> PostBarberAsync(BarberDto model)
         {
@@ -52,6 +68,7 @@ namespace API.Controllers
             return Created(this.Url.ToString(), true);
         }
 
+        [Authorize("RequireBarberOrAdminRole")]
         [HttpPut("{id}")]
         public async Task<ActionResult<BarberDto>> PutBarberAsync(int id, BarberDto model)
         {

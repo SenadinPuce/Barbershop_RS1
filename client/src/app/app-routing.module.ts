@@ -12,6 +12,8 @@ import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.comp
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { StaffComponent } from './pages/staff/staff.component';
+import { AdminGuard } from './_guards/admin.guard';
+import { BarberGuard } from './_guards/barber.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,6 +30,7 @@ const routes: Routes = [
   {
     path: 'barber/edit/:id',
     component: BarberEditComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'barbers/:id',
@@ -36,6 +39,11 @@ const routes: Routes = [
   {
     path: 'barbers',
     component: StaffComponent,
+  },
+  {
+    path: 'edit-profile/:username',
+    component: BarberEditComponent,
+    canActivate: [BarberGuard],
   },
   { path: 'errors', component: TestErrorsComponent },
   { path: 'not-found', component: NotFoundComponent },

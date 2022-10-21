@@ -41,6 +41,10 @@ export class BarberEditComponent implements OnInit {
 
   loadBarber() {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    if (!id) {
+      const username = this.route.snapshot.paramMap.get('username');
+      return this.barberService.getByUsername(username);
+    }
     return this.barberService.getById(id);
   }
 
