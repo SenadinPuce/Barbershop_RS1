@@ -21,24 +21,26 @@ export class AccountService {
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
           this.router.navigateByUrl('/');
         }
       })
     );
   }
 
-  register(model:any){
+  register(model: any) {
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((response: User) => {
-      const user = response;
-      if(user){
-        localStorage.setItem('user',JSON.stringify(user));
-        this.currentUserSource.next(user);
+        const user = response;
+        if (user) {
+          this.setCurrentUser(user);
         }
-      }
-    ))
+      })
+    );
+  }
+
+  getDecodedToken(token) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 
   logout() {
@@ -46,7 +48,9 @@ export class AccountService {
     this.currentUserSource.next(null);
   }
 
-  setCurrentUser(user) {
+  setCurrentUser(user: User) {
+    user.role = this.getDecodedToken(user.token).role;
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 }

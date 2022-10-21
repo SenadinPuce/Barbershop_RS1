@@ -38,6 +38,8 @@ import { BarberListComponent } from './components/barber/barber-list.component';
 import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
 import { BarberDetailComponent } from './components/barber/barber-detail/barber-detail.component';
 import { BarberEditComponent } from './components/barber/barber-edit/barber-edit.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,7 @@ import { BarberEditComponent } from './components/barber/barber-edit/barber-edit
     BarberCardComponent,
     BarberDetailComponent,
     BarberEditComponent,
+    HasRoleDirective,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +86,7 @@ import { BarberEditComponent } from './components/barber/barber-edit/barber-edit
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

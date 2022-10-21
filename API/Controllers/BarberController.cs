@@ -3,6 +3,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,7 @@ namespace API.Controllers
             return Created(this.Url.ToString(), true);
         }
 
+        [Authorize("RequireAdminRole")]
         [HttpPut("{id}")]
         public async Task<ActionResult<BarberDto>> PutBarberAsync(int id, BarberDto model)
         {
