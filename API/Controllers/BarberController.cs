@@ -1,9 +1,12 @@
+using System;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +20,11 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IPhotoService _photoService;
 
-        public BarberController(DataContext context, IMapper mapper, UserManager<AppUser> userManager)
+        public BarberController(DataContext context, IMapper mapper, UserManager<AppUser> userManager, IPhotoService photoService)
         {
+            _photoService = photoService;
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
@@ -28,14 +33,14 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<BarberDto[]>> GetBarberAsync()
         {
-            var barbers = await _context.Barber.Include(x => x.AppUser).ToListAsync();
+            var barbers = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).ToListAsync();
             return _mapper.Map<BarberDto[]>(barbers);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetBarber")]
         public async Task<ActionResult<BarberDto>> GetBarberAsync(int id)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.Id == id);
+            var barber = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.Id == id);
             if (barber == null)
             {
                 return NotFound();
@@ -50,11 +55,9 @@ namespace API.Controllers
             var user = await _userManager.FindByNameAsync(username);
             if (user == null) return NotFound();
 
-            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.AppUserId == user.Id);
-            if (barber == null)
-            {
-                return NotFound();
-            }
+            var barber = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.AppUserId == user.Id);
+            if (barber == null) return NotFound();
+
             return _mapper.Map<BarberDto>(barber);
         }
 
@@ -129,6 +132,28 @@ namespace API.Controllers
                 return BadRequest();
             }
             return true;
+        }
+
+        [HttpPost("{barberId}/add-photo")]
+        public async Task<ActionResult<PhotoDto>> UploadPhotoAsync(int barberId, IFormFile file)
+        {
+            var barber = await _context.Barber.Include(x => x.AppUser).SingleOrDefaultAsync(x => x.Id == barberId);
+
+            var result = await _photoService.AddPhotoAsync(file);
+            if (result.Error != null) return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            barber.AppUser.Photo = photo;
+
+            _context.Update(barber);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtRoute("GetBarber", new { id = barber.Id }, _mapper.Map<PhotoDto>(photo));
         }
 
         private async Task<bool> UserExists(string username)

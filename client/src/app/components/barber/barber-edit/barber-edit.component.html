@@ -7,10 +7,22 @@
     <div class="col-3">
       <div class="card">
         <img
-          src="{{ barber.photoUrl || './assets/images/user.png' }}"
+          src="{{ barber.photo?.url || './assets/images/user.png' }}"
           alt="{{ barber.fullName }}"
           class="card-img-top img-thumbnail"
         />
+        <div class="card-footer text-center">
+          <label for="imageUpload" class="btn btn-secondary"
+            >Choose Image</label
+          >
+          <input
+            type="file"
+            ng2FileSelect
+            [uploader]="uploader"
+            class="mt-2"
+            id="imageUpload"
+          /><br />
+        </div>
       </div>
     </div>
 

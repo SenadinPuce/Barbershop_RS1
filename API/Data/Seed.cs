@@ -9,10 +9,16 @@ namespace API.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(UserManager<AppUser> userManager,
+        public static async Task SeedUsers(DataContext db, UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager)
         {
             if (await userManager.Users.AnyAsync()) return;
+
+            var userPhotosData = await System.IO.File.ReadAllTextAsync("Data/Seed/UserPhotos.json");
+            var photos = JsonSerializer.Deserialize<List<Photo>>(userPhotosData);
+
+            db.AddRange(photos);
+            await db.SaveChangesAsync();
 
             var userData = await System.IO.File.ReadAllTextAsync("Data/Seed/Users.json");
             var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
@@ -112,15 +118,15 @@ namespace API.Data
                 {
                     new Barber
                     {
-                        AppUserId = 1
+                        AppUserId = 8
                     },
                     new Barber
                     {
-                        AppUserId = 2
+                        AppUserId = 4
                     },
                     new Barber
                     {
-                        AppUserId = 3
+                        AppUserId = 6
                     }
                 };
                 await db.AddRangeAsync(barbers);
