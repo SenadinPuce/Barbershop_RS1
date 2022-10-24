@@ -23,19 +23,19 @@ namespace API.Helpers
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName))
             .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(y => y.AppUser.PhoneNumber))
             .ForMember(x => x.Email, opt => opt.MapFrom(y => y.AppUser.Email))
-            .ForMember(x => x.PhotoUrl, opt => opt.MapFrom(y => y.AppUser.PhotoUrl))
             .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.AppUser.DateOfBirth))
-            .ForMember(x => x.Age, opt => opt.MapFrom(y => y.AppUser.DateOfBirth.CalculateAge()));
+            .ForMember(x => x.Age, opt => opt.MapFrom(y => y.AppUser.DateOfBirth.CalculateAge()))
+            .ForMember(x => x.Photo, opt => opt.MapFrom(y => y.AppUser.Photo));
             CreateMap<BarberDto, Barber>()
             .ForPath(x => x.AppUser.FirstName, opt => opt.MapFrom(y => y.FirstName))
             .ForPath(x => x.AppUser.LastName, opt => opt.MapFrom(y => y.LastName))
             .ForPath(x => x.AppUser.PhoneNumber, opt => opt.MapFrom(y => y.PhoneNumber))
             .ForPath(x => x.AppUser.Email, opt => opt.MapFrom(y => y.Email))
-            .ForPath(x => x.AppUser.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
-            .ForPath(x => x.AppUser.PhotoUrl, opt => opt.MapFrom(y => y.PhotoUrl));
+            .ForPath(x => x.AppUser.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth));
             CreateMap<Client, ClientDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName));
             CreateMap<BarberService, BarberServiceDto>().ReverseMap();
+            CreateMap<Photo, PhotoDto>();
         }
     }
 }

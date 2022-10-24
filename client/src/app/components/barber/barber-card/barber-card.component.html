@@ -1,7 +1,7 @@
 <div class="card my-4">
   <div class="card-img-wrapper">
     <img
-      src="{{ barber.photoUrl || './assets/images/user.png' }}"
+      src="{{ barber.photo?.url || './assets/images/user.png' }}"
       alt="{{ barber.fullName }}"
       class="card-img-top"
       routerLink="/barbers/{{ barber.id }}"
