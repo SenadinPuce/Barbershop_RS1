@@ -11,6 +11,18 @@
           alt="{{ barber.fullName }}"
           class="card-img-top img-thumbnail"
         />
+        <div class="card-footer text-center">
+          <label for="imageUpload" class="btn btn-secondary"
+            >Choose Image</label
+          >
+          <input
+            type="file"
+            ng2FileSelect
+            [uploader]="uploader"
+            class="mt-2"
+            id="imageUpload"
+          /><br />
+        </div>
       </div>
     </div>
 

@@ -7,6 +7,8 @@ import { Service } from 'src/app/models/service';
 import { BarberService } from 'src/app/_services/barber.service';
 import { ServiceService } from 'src/app/_services/service.service';
 import { forkJoin } from 'rxjs';
+import { FileUploader } from 'ng2-file-upload';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-barber-edit',
   templateUrl: './barber-edit.component.html',
@@ -17,13 +19,28 @@ export class BarberEditComponent implements OnInit {
   barberServices: Partial<BarberServiceModel>[];
   services: Service[];
   availableServices: Service[];
+  uploader: FileUploader;
 
   constructor(
     private barberService: BarberService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private servicesService: ServiceService
-  ) {}
+  ) {
+    this.uploader = new FileUploader({
+      isHTML5: true,
+      allowedFileType: ['image'],
+      autoUpload: true,
+      maxFileSize: 10 * 1024 * 1024,
+    });
+
+    this.uploader.response.subscribe(
+      (res) => (this.barber.photo = JSON.parse(res))
+    );
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
+  }
 
   ngOnInit(): void {
     forkJoin({
@@ -34,7 +51,8 @@ export class BarberEditComponent implements OnInit {
       this.barber.dateOfBirth = new Date(barber.dateOfBirth + 'Z');
       this.services = services;
       this.barberServices = barber.barberServices;
-
+      this.uploader.options.url =
+        environment.apiUrl + 'barbers/' + this.barber.id + '/add-photo';
       this.setAvailableServices();
     });
   }

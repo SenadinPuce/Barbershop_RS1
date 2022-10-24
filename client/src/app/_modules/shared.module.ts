@@ -6,7 +6,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
-
+import { FileUploadModule } from 'ng2-file-upload';
 @NgModule({
   declarations: [],
   imports: [
@@ -19,6 +19,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     TabsModule.forRoot(),
     NgSelectModule,
     ColorPickerModule,
+    FileUploadModule,
   ],
   exports: [
     BsDropdownModule,
@@ -27,6 +28,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     TabsModule,
     NgSelectModule,
     ColorPickerModule,
+    FileUploadModule,
   ],
 })
 export class SharedModule {}
