@@ -10,14 +10,13 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
 import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.component';
-import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
-import { StaffComponent } from './pages/staff/staff.component';
+import { BarberComponent } from './pages/barber/barber.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { BarberGuard } from './_guards/barber.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: AppointmentsComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'appointment-types/create',
@@ -44,7 +43,7 @@ const routes: Routes = [
   },
   {
     path: 'barbers',
-    component: StaffComponent,
+    component: BarberComponent,
   },
   {
     path: 'edit-profile/:username',
@@ -54,7 +53,7 @@ const routes: Routes = [
   { path: 'errors', component: TestErrorsComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: HomeComponent, pathMatch: 'full' },
+  { path: '**', component: AppointmentsComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
