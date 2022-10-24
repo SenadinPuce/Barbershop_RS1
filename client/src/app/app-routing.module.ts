@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
 import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
+import { BarberCreateComponent } from './components/barber/barber-create/barber-create.component';
 import { BarberDetailComponent } from './components/barber/barber-detail/barber-detail.component';
 import { BarberEditComponent } from './components/barber/barber-edit/barber-edit.component';
 import { ServiceCreateComponent } from './components/service/service-create/service-create.component';
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'barber/edit/:id',
     component: BarberEditComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'barbers/create',
+    component: BarberCreateComponent,
     canActivate: [AdminGuard],
   },
   {

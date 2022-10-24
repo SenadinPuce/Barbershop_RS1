@@ -58,14 +58,37 @@ namespace API.Controllers
             return _mapper.Map<BarberDto>(barber);
         }
 
+        [Authorize("RequireAdminRole")]
         [HttpPost]
         public async Task<ActionResult<bool>> PostBarberAsync(BarberDto model)
         {
-            var barbers = _mapper.Map<Barber>(model);
-            await _context.AddAsync(barbers);
+            var username = model.FirstName.ToLower() + "." + model.LastName.ToLower();
+            if (await UserExists(username))
+                return BadRequest("Username already taken");
+
+            var newUser = new AppUser
+            {
+                UserName = username,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                DateOfBirth = model.DateOfBirth,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+            await _userManager.CreateAsync(newUser, "Barber0!");
+            await _userManager.AddToRoleAsync(newUser, "Barber");
+
+            var user = await _userManager.FindByNameAsync(newUser.UserName);
+            var barber = new Barber
+            {
+                AppUser = user,
+                Info = model.Info
+            };
+
+            _context.Add(barber);
             await _context.SaveChangesAsync();
 
-            return Created(this.Url.ToString(), true);
+            return Ok();
         }
 
         [Authorize("RequireBarberOrAdminRole")]
@@ -86,6 +109,31 @@ namespace API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(model);
+        }
+
+        [Authorize("RequireAdminRole")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteAsync(int id)
+        {
+            var barber = await _context.Barber.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (barber == null)
+            {
+                return NotFound();
+            }
+            var user = await _userManager.FindByIdAsync(barber.AppUserId.ToString());
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
+            return true;
+        }
+
+        private async Task<bool> UserExists(string username)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }
