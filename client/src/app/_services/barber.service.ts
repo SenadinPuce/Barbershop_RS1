@@ -40,7 +40,15 @@ export class BarberService {
     );
   }
 
+  post(resource) {
+    return this.http.post(this.baseUrl, resource);
+  }
+
   put(resource) {
     return this.http.put<Barber>(this.baseUrl + '/' + resource.id, resource);
+  }
+
+  delete(id: any) {
+    return this.http.delete(this.baseUrl + '/' + id);
   }
 }

@@ -3,7 +3,19 @@
     <h3>{{ barber.fullName }}</h3>
     <hr />
   </div>
-  <div class="d-flex justify-content-end mt-4 mb-2"></div>
+  <div class="d-flex justify-content-end mb-2">
+    <div *appHasRole="'Admin'">
+      <button
+        class="btn btn-primary"
+        routerLink="{{ '/barber/edit/' + barber.id }}"
+      >
+        Edit
+      </button>
+      <button class="btn btn-danger ml-1" (click)="onDelete(barber.id)">
+        Delete
+      </button>
+    </div>
+  </div>
   <div class="row">
     <div class="col-4">
       <div class="card">
@@ -28,14 +40,6 @@
           <div>
             <strong>Info:</strong>
             <p>{{ barber.info }}</p>
-          </div>
-          <div *appHasRole="'Admin'">
-            <button
-              class="btn btn-primary"
-              routerLink="{{ '/barber/edit/' + barber.id }}"
-            >
-              Edit
-            </button>
           </div>
         </div>
       </div>

@@ -7,10 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ServicesComponent } from './pages/services/services.component';
-import { StaffComponent } from './pages/staff/staff.component';
+import { BarberComponent } from './pages/barber/barber.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.component';
@@ -40,15 +38,14 @@ import { BarberDetailComponent } from './components/barber/barber-detail/barber-
 import { BarberEditComponent } from './components/barber/barber-edit/barber-edit.component';
 import { HasRoleDirective } from './_directives/has-role.directive';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { BarberCreateComponent } from './components/barber/barber-create/barber-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent,
     NavbarComponent,
-    ServicesComponent,
-    StaffComponent,
+    BarberComponent,
     RegisterComponent,
     LoginComponent,
     TestErrorsComponent,
@@ -73,6 +70,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     BarberDetailComponent,
     BarberEditComponent,
     HasRoleDirective,
+    BarberCreateComponent,
   ],
   imports: [
     BrowserModule,

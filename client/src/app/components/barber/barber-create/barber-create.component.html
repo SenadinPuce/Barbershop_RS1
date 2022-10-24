@@ -1,0 +1,135 @@
+<div>
+  <div class="my-5">
+    <h3>New Barber</h3>
+    <hr />
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <div class="card">
+        <img
+          src="./assets/images/user.png"
+          class="card-img-top img-thumbnail"
+        />
+      </div>
+    </div>
+
+    <div class="col-9 barber-tabset">
+      <div class="my-4">
+        <form #editProfileForm="ngForm" autocomplete="off">
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label for="firstName" class="lh">First Name:</label>
+              <input
+                class="form-control"
+                type="text"
+                [(ngModel)]="barber.firstName"
+                id="firstName"
+                name="firstName"
+                required
+                maxLength="50"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="lh">Last Name:</label>
+              <input
+                class="form-control"
+                type="text"
+                [(ngModel)]="barber.lastName"
+                id="lastName"
+                name="lastName"
+                required
+                maxlength="50"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="lh" for="dateOfBirth">Date Of Birth: </label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="barber.dateOfBirth"
+              name="dateOfBirth"
+              [bsConfig]="{
+                dateInputFormat: 'DD/MM/YYYY',
+                containerClass: 'theme-red'
+              }"
+              id="dateOfBirth"
+              bsDatepicker
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone" class="lh">Phone:</label>
+            <label
+              *ngIf="
+                phoneNumber.invalid &&
+                (phoneNumber.dirty || phoneNumber.touched) &&
+                phoneNumber.errors?.pattern
+              "
+              class="invalid"
+            >
+              Phone Number is not in the correct format.
+            </label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="(XXX)/XXX-XXX"
+              [(ngModel)]="barber.phoneNumber"
+              id="phoneNumber"
+              name="phoneNumber"
+              required
+              pattern="\(?\d{3}\)?[-\/]?(\d{3,4})-?(\d{3})"
+              #phoneNumber="ngModel"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email" class="lh">Email:</label>
+            <label
+              *ngIf="
+                email.invalid &&
+                (email.dirty || email.touched) &&
+                email.errors?.email
+              "
+              class="invalid"
+            >
+              Email is not in the correct format.
+            </label>
+            <input
+              class="form-control"
+              type="email"
+              [(ngModel)]="barber.email"
+              id="email"
+              name="email"
+              required
+              email
+              #email="ngModel"
+            />
+          </div>
+          <div class="form-group">
+            <label class="lh">Note</label>
+            <textarea
+              class="form-control textarea"
+              name="note"
+              [(ngModel)]="barber.info"
+              placeholder="..."
+              cols="2"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col d-flex justify-content-center">
+      <button
+        class="btn btn-success mr-2"
+        type="submit"
+        [disabled]="!editProfileForm.valid || !editProfileForm"
+        (click)="onCreate()"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondary mr-2" (click)="cancel()" type="button">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

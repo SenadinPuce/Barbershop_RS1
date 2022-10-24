@@ -1,12 +1,6 @@
 .row{
     margin: 0px -15px;
 }
-.invalid{
-    margin-top: 0.25rem;
-    margin-left: 1rem;
-    font-size: 0.875em;
-    color: #df382c;
-}
 .barber-tabset{
     min-height: 550px;
     border-bottom: 1px solid rgb(219, 219, 219);

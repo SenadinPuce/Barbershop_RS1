@@ -37,3 +37,9 @@
  .cal-week-view .cal-event{
      color: #000000;
  }
+ .invalid{
+     margin-top: 0.25rem;
+     margin-left: 1rem;
+     font-size: 0.875em;
+     color: #df382c;
+ }
