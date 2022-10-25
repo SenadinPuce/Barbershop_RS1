@@ -39,6 +39,7 @@ import { BarberEditComponent } from './components/barber/barber-edit/barber-edit
 import { HasRoleDirective } from './_directives/has-role.directive';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { BarberCreateComponent } from './components/barber/barber-create/barber-create.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { BarberCreateComponent } from './components/barber/barber-create/barber-
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

@@ -7,6 +7,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FileUploadModule } from 'ng2-file-upload';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [],
   imports: [
@@ -20,6 +21,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgSelectModule,
     ColorPickerModule,
     FileUploadModule,
+    NgxSpinnerModule,
   ],
   exports: [
     BsDropdownModule,
@@ -29,6 +31,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgSelectModule,
     ColorPickerModule,
     FileUploadModule,
+    NgxSpinnerModule,
   ],
 })
 export class SharedModule {}
