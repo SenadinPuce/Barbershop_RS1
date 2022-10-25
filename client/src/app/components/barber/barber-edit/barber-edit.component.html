@@ -12,7 +12,10 @@
           class="card-img-top img-thumbnail"
         />
         <div class="card-footer text-center">
-          <label for="imageUpload" class="btn btn-secondary"
+          <label
+            for="imageUpload"
+            class="btn btn-secondary m-0"
+            [ngClass]="this.loading ? 'disabled' : ''"
             >Choose Image</label
           >
           <input
@@ -21,6 +24,7 @@
             [uploader]="uploader"
             class="mt-2"
             id="imageUpload"
+            *ngIf="!this.loading"
           /><br />
         </div>
       </div>

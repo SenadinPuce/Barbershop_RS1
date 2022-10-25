@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/barbers")]
     public class BarberController : ControllerBase
@@ -135,6 +136,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{barberId}/add-photo")]
+        [Authorize("RequireBarberOrAdminRole")]
         public async Task<ActionResult<PhotoDto>> UploadPhotoAsync(int barberId, IFormFile file)
         {
             var barber = await _context.Barber.Include(x => x.AppUser).SingleOrDefaultAsync(x => x.Id == barberId);

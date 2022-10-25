@@ -9,6 +9,7 @@ import { ServiceService } from 'src/app/_services/service.service';
 import { forkJoin } from 'rxjs';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
+import { AccountService } from 'src/app/_services/account.service';
 @Component({
   selector: 'app-barber-edit',
   templateUrl: './barber-edit.component.html',
@@ -20,29 +21,19 @@ export class BarberEditComponent implements OnInit {
   services: Service[];
   availableServices: Service[];
   uploader: FileUploader;
+  loading: boolean;
 
   constructor(
     private barberService: BarberService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private servicesService: ServiceService
-  ) {
-    this.uploader = new FileUploader({
-      isHTML5: true,
-      allowedFileType: ['image'],
-      autoUpload: true,
-      maxFileSize: 10 * 1024 * 1024,
-    });
-
-    this.uploader.response.subscribe(
-      (res) => (this.barber.photo = JSON.parse(res))
-    );
-    this.uploader.onAfterAddingFile = (file) => {
-      file.withCredentials = false;
-    };
-  }
+    private servicesService: ServiceService,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
+    this.initializeUploader();
+
     forkJoin({
       barber: this.loadBarber(),
       services: this.loadServices(),
@@ -55,6 +46,32 @@ export class BarberEditComponent implements OnInit {
         environment.apiUrl + 'barbers/' + this.barber.id + '/add-photo';
       this.setAvailableServices();
     });
+  }
+
+  initializeUploader() {
+    var token: string;
+    this.accountService.currentUser$.subscribe((x) => (token = x.token));
+    this.uploader = new FileUploader({
+      isHTML5: true,
+      allowedFileType: ['image'],
+      autoUpload: true,
+      maxFileSize: 10 * 1024 * 1024,
+      authToken: `Bearer ${token}`,
+    });
+
+    this.uploader.response.subscribe((res) => {
+      this.loading = false;
+      try {
+        this.barber.photo = JSON.parse(res);
+      } catch {
+        this.toastr.error(res);
+      }
+    });
+
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+      this.loading = true;
+    };
   }
 
   loadBarber() {
