@@ -14,46 +14,60 @@ import { LoginComponent } from './pages/login/login.component';
 import { BarberComponent } from './pages/barber/barber.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { BarberGuard } from './_guards/barber.guard';
+import { AuthGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: AppointmentsComponent },
   { path: 'login', component: LoginComponent },
   {
-    path: 'appointment-types/create',
-    component: AppointmentTypeCreateComponent,
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: AppointmentsComponent },
+      { path: 'appointments', component: AppointmentsComponent },
+      {
+        path: 'appointment-types/create',
+        component: AppointmentTypeCreateComponent,
+      },
+      {
+        path: 'services/create',
+        component: ServiceCreateComponent,
+      },
+      {
+        path: 'barber/edit/:id',
+        component: BarberEditComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'barbers/create',
+        component: BarberCreateComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'barbers/:id',
+        component: BarberDetailComponent,
+      },
+      {
+        path: 'barbers',
+        component: BarberComponent,
+      },
+      {
+        path: 'edit-profile/:username',
+        component: BarberEditComponent,
+        canActivate: [BarberGuard],
+      },
+    ],
   },
-  {
-    path: 'services/create',
-    component: ServiceCreateComponent,
-  },
-  { path: 'appointments', component: AppointmentsComponent },
-  {
-    path: 'barber/edit/:id',
-    component: BarberEditComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'barbers/create',
-    component: BarberCreateComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'barbers/:id',
-    component: BarberDetailComponent,
-  },
-  {
-    path: 'barbers',
-    component: BarberComponent,
-  },
-  {
-    path: 'edit-profile/:username',
-    component: BarberEditComponent,
-    canActivate: [BarberGuard],
-  },
+
   { path: 'errors', component: TestErrorsComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: AppointmentsComponent, pathMatch: 'full' },
+  {
+    path: '**',
+    component: AppointmentsComponent,
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

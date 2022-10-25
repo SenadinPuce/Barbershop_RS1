@@ -11,7 +11,7 @@ import { User } from '../models/user';
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
 
-  private currentUserSource = new ReplaySubject<User>();
+  private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -49,8 +49,10 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
-    user.role = this.getDecodedToken(user.token).role;
-    localStorage.setItem('user', JSON.stringify(user));
+    if (user) {
+      user.role = this.getDecodedToken(user.token).role;
+      localStorage.setItem('user', JSON.stringify(user));
+    }
     this.currentUserSource.next(user);
   }
 }

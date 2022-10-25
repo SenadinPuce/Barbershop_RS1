@@ -118,11 +118,11 @@ namespace API.Data
                 {
                     new Barber
                     {
-                        AppUserId = 8
+                        AppUserId = 1
                     },
                     new Barber
                     {
-                        AppUserId = 4
+                        AppUserId = 2
                     },
                     new Barber
                     {
@@ -151,7 +151,7 @@ namespace API.Data
                     },
                     new Client
                     {
-                        AppUserId = 6
+                        AppUserId = 3
                     },
                     new Client
                     {
