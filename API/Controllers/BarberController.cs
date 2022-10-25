@@ -70,50 +70,34 @@ namespace API.Controllers
             if (await UserExists(username))
                 return BadRequest("Username already taken");
 
-            var newUser = new AppUser
-            {
-                UserName = username,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                DateOfBirth = model.DateOfBirth,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhotoId = model.Photo?.Id
-            };
-            await _userManager.CreateAsync(newUser, "Barber0!");
-            await _userManager.AddToRoleAsync(newUser, "Barber");
+            var barber = new Barber();
+            _mapper.Map(model, barber);
+            barber.AppUser.UserName = username;
+            barber.AppUser.PhotoId = model.Photo?.Id;
+            barber.AppUser.Photo = null;
 
-            var user = await _userManager.FindByNameAsync(newUser.UserName);
-            var barber = new Barber
-            {
-                AppUser = user,
-                Info = model.Info
-            };
+            await _userManager.CreateAsync(barber.AppUser, "Barber0!");
+            await _userManager.AddToRoleAsync(barber.AppUser, "Barber");
 
             _context.Add(barber);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(true);
         }
 
         [Authorize("RequireBarberOrAdminRole")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<BarberDto>> PutBarberAsync(int id, BarberDto model)
+        public async Task<ActionResult> PutBarberAsync(int id, BarberDto model)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).SingleOrDefaultAsync(x => x.Id == id);
+            var barber = await _context.Barber.SingleOrDefaultAsync(x => x.Id == id);
 
-            if (barber == null)
-            {
-                return BadRequest();
-            }
-            var entity = _mapper.Map(model, barber);
-            var user = barber.AppUser;
+            if (barber == null) return BadRequest();
+            _mapper.Map(model, barber);
 
-            _context.Update(entity);
-            await _userManager.UpdateAsync(user);
+            _context.Update(barber);
             await _context.SaveChangesAsync();
 
-            return Ok(model);
+            return NoContent();
         }
 
         [Authorize("RequireAdminRole")]
