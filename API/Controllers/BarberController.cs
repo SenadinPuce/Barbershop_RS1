@@ -77,7 +77,8 @@ namespace API.Controllers
                 PhoneNumber = model.PhoneNumber,
                 DateOfBirth = model.DateOfBirth,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                PhotoId = model.Photo?.Id
             };
             await _userManager.CreateAsync(newUser, "Barber0!");
             await _userManager.AddToRoleAsync(newUser, "Barber");
@@ -135,12 +136,10 @@ namespace API.Controllers
             return true;
         }
 
-        [HttpPost("{barberId}/add-photo")]
+        [HttpPost("add-photo")]
         [Authorize("RequireBarberOrAdminRole")]
         public async Task<ActionResult<PhotoDto>> UploadPhotoAsync(int barberId, IFormFile file)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).SingleOrDefaultAsync(x => x.Id == barberId);
-
             var result = await _photoService.AddPhotoAsync(file);
             if (result.Error != null) return BadRequest(result.Error.Message);
 
@@ -150,12 +149,12 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            barber.AppUser.Photo = photo;
-
-            _context.Update(barber);
+            _context.Add(photo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetBarber", new { id = barber.Id }, _mapper.Map<PhotoDto>(photo));
+            var uploadedPhoto = await _context.Photo.SingleOrDefaultAsync(x => x.PublicId == photo.PublicId);
+
+            return _mapper.Map<PhotoDto>(uploadedPhoto);
         }
 
         private async Task<bool> UserExists(string username)

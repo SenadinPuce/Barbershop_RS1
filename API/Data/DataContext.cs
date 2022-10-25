@@ -21,7 +21,7 @@ namespace API.Data
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
         public DbSet<Barber> Barber { get; set; }
         public DbSet<Client> Client { get; set; }
-
+        public DbSet<Photo> Photo { get; set; }
         public DataContext(DbContextOptions options) : base(options)
         {
         }

@@ -31,11 +31,12 @@ namespace API.Helpers
             .ForPath(x => x.AppUser.LastName, opt => opt.MapFrom(y => y.LastName))
             .ForPath(x => x.AppUser.PhoneNumber, opt => opt.MapFrom(y => y.PhoneNumber))
             .ForPath(x => x.AppUser.Email, opt => opt.MapFrom(y => y.Email))
-            .ForPath(x => x.AppUser.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth));
+            .ForPath(x => x.AppUser.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
+            .ForPath(x => x.AppUser.Photo, opt => opt.MapFrom(x => x.Photo));
             CreateMap<Client, ClientDto>().ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName));
             CreateMap<BarberService, BarberServiceDto>().ReverseMap();
-            CreateMap<Photo, PhotoDto>();
+            CreateMap<Photo, PhotoDto>().ReverseMap();
         }
     }
 }
