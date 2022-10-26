@@ -36,7 +36,7 @@ namespace API.Controllers
             await _context.AddAsync(service);
             _context.SaveChanges();
 
-            return Created(this.Url.ToString(), true);
+            return Ok(true);
         }
 
         [HttpGet("{id}")]

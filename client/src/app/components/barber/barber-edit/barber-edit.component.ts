@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Barber } from 'src/app/models/barber';
 import { BarberServiceModel } from 'src/app/models/barberService';
@@ -10,6 +10,8 @@ import { forkJoin } from 'rxjs';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { AccountService } from 'src/app/_services/account.service';
+import { Location } from '@angular/common';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-barber-edit',
   templateUrl: './barber-edit.component.html',
@@ -22,13 +24,17 @@ export class BarberEditComponent implements OnInit {
   availableServices: Service[];
   uploader: FileUploader;
   loading: boolean;
+  fileName: string;
+  @ViewChild('editProfileForm') form: NgForm;
 
   constructor(
     private barberService: BarberService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private servicesService: ServiceService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +48,6 @@ export class BarberEditComponent implements OnInit {
       this.barber.dateOfBirth = new Date(barber.dateOfBirth + 'Z');
       this.services = services;
       this.barberServices = barber.barberServices;
-      this.uploader.options.url =
-        environment.apiUrl + 'barbers/' + this.barber.id + '/add-photo';
       this.setAvailableServices();
     });
   }
@@ -57,6 +61,7 @@ export class BarberEditComponent implements OnInit {
       autoUpload: true,
       maxFileSize: 10 * 1024 * 1024,
       authToken: `Bearer ${token}`,
+      url: environment.apiUrl + 'barbers/add-photo',
     });
 
     this.uploader.response.subscribe((res) => {
@@ -71,6 +76,8 @@ export class BarberEditComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
       this.loading = true;
+      this.fileName = file._file.name;
+      this.form.control.markAsDirty();
     };
   }
 
@@ -91,7 +98,7 @@ export class BarberEditComponent implements OnInit {
     this.barber.barberServices = this.barberServices as BarberServiceModel[];
     this.barberService.put(this.barber).subscribe(
       (response) => {
-        this.ngOnInit();
+        this.router.navigateByUrl('/barbers');
         this.toastr.success('Successfully edited the profile.');
       },
       (err) => this.toastr.error('Failed to update the profile.')
@@ -99,7 +106,7 @@ export class BarberEditComponent implements OnInit {
   }
 
   cancel() {
-    this.ngOnInit();
+    this.location.back();
   }
 
   removeService(serviceId) {
@@ -132,5 +139,6 @@ export class BarberEditComponent implements OnInit {
     this.availableServices = this.services.filter(
       (x) => !this.barberServices.some((y) => y.serviceId === x.id)
     );
+    this.form.control.markAsDirty();
   }
 }

@@ -70,49 +70,34 @@ namespace API.Controllers
             if (await UserExists(username))
                 return BadRequest("Username already taken");
 
-            var newUser = new AppUser
-            {
-                UserName = username,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                DateOfBirth = model.DateOfBirth,
-                FirstName = model.FirstName,
-                LastName = model.LastName
-            };
-            await _userManager.CreateAsync(newUser, "Barber0!");
-            await _userManager.AddToRoleAsync(newUser, "Barber");
+            var barber = new Barber();
+            _mapper.Map(model, barber);
+            barber.AppUser.UserName = username;
+            barber.AppUser.PhotoId = model.Photo?.Id;
+            barber.AppUser.Photo = null;
 
-            var user = await _userManager.FindByNameAsync(newUser.UserName);
-            var barber = new Barber
-            {
-                AppUser = user,
-                Info = model.Info
-            };
+            await _userManager.CreateAsync(barber.AppUser, "Barber0!");
+            await _userManager.AddToRoleAsync(barber.AppUser, "Barber");
 
             _context.Add(barber);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(true);
         }
 
         [Authorize("RequireBarberOrAdminRole")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<BarberDto>> PutBarberAsync(int id, BarberDto model)
+        public async Task<ActionResult> PutBarberAsync(int id, BarberDto model)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).SingleOrDefaultAsync(x => x.Id == id);
+            var barber = await _context.Barber.SingleOrDefaultAsync(x => x.Id == id);
 
-            if (barber == null)
-            {
-                return BadRequest();
-            }
-            var entity = _mapper.Map(model, barber);
-            var user = barber.AppUser;
+            if (barber == null) return BadRequest();
+            _mapper.Map(model, barber);
 
-            _context.Update(entity);
-            await _userManager.UpdateAsync(user);
+            _context.Update(barber);
             await _context.SaveChangesAsync();
 
-            return Ok(model);
+            return NoContent();
         }
 
         [Authorize("RequireAdminRole")]
@@ -135,12 +120,10 @@ namespace API.Controllers
             return true;
         }
 
-        [HttpPost("{barberId}/add-photo")]
+        [HttpPost("add-photo")]
         [Authorize("RequireBarberOrAdminRole")]
         public async Task<ActionResult<PhotoDto>> UploadPhotoAsync(int barberId, IFormFile file)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).SingleOrDefaultAsync(x => x.Id == barberId);
-
             var result = await _photoService.AddPhotoAsync(file);
             if (result.Error != null) return BadRequest(result.Error.Message);
 
@@ -150,12 +133,12 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            barber.AppUser.Photo = photo;
-
-            _context.Update(barber);
+            _context.Add(photo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetBarber", new { id = barber.Id }, _mapper.Map<PhotoDto>(photo));
+            var uploadedPhoto = await _context.Photo.SingleOrDefaultAsync(x => x.PublicId == photo.PublicId);
+
+            return _mapper.Map<PhotoDto>(uploadedPhoto);
         }
 
         private async Task<bool> UserExists(string username)

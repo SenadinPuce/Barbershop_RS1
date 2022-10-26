@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Barber } from 'src/app/models/barber';
 import { BarberService } from 'src/app/_services/barber.service';
 
@@ -8,17 +9,11 @@ import { BarberService } from 'src/app/_services/barber.service';
   styleUrls: ['./barber-list.component.css'],
 })
 export class BarberListComponent implements OnInit {
-  barbers: Barber[];
+  barbers$: Observable<Barber[]>;
 
   constructor(private barberService: BarberService) {}
 
   ngOnInit(): void {
-    this.loadBarbers();
-  }
-
-  loadBarbers() {
-    this.barberService.getBarbers().subscribe((data: Barber[]) => {
-      this.barbers = data;
-    });
+    this.barbers$ = this.barberService.getBarbers();
   }
 }

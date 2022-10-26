@@ -4,7 +4,6 @@ namespace API.DTOs
     {
         public int Id { get; set; }
         public int BarberId { get; set; }
-        public BarberDto Barber { get; set; }
         public int ServiceId { get; set; }
         public ServiceDto Service { get; set; }
         public double Price { get; set; }

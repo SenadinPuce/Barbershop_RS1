@@ -7,14 +7,31 @@
     <div class="col-3">
       <div class="card">
         <img
-          src="./assets/images/user.png"
+          src="{{ barber.photo?.url || './assets/images/user.png' }}"
           class="card-img-top img-thumbnail"
         />
+        <div class="card-footer text-center">
+          <label
+            for="imageUpload"
+            class="btn btn-secondary mr-1 mb-0"
+            [ngClass]="this.loading ? 'disabled' : ''"
+            >Choose Image</label
+          >
+          <span>{{ fileName }}</span>
+          <input
+            type="file"
+            ng2FileSelect
+            [uploader]="uploader"
+            class="mt-2"
+            id="imageUpload"
+            *ngIf="!this.loading"
+          /><br />
+        </div>
       </div>
     </div>
 
     <div class="col-9 barber-tabset">
-      <div class="my-4">
+      <div class="mb-4">
         <form #editProfileForm="ngForm" autocomplete="off">
           <div class="form-row">
             <div class="col-md-6 form-group">
