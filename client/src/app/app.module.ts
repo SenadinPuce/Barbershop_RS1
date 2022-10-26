@@ -40,6 +40,7 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { BarberCreateComponent } from './components/barber/barber-create/barber-create.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { ClientComponent } from './pages/client/client.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     BarberEditComponent,
     HasRoleDirective,
     BarberCreateComponent,
+    ClientComponent,
   ],
   imports: [
     BrowserModule,

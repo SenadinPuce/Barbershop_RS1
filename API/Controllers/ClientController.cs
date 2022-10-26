@@ -3,11 +3,13 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/clients")]
     public class ClientController : ControllerBase
@@ -24,7 +26,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<ClientDto[]>> GetClientAsync()
         {
-            var clients = await _context.Client.Include(x => x.AppUser).ToListAsync();
+            var clients = await _context.Client.Include(x => x.AppUser).ThenInclude(x => x.Photo).ToListAsync();
             return _mapper.Map<ClientDto[]>(clients);
         }
 

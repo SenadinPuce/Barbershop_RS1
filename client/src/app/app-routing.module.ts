@@ -15,6 +15,7 @@ import { BarberComponent } from './pages/barber/barber.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { BarberGuard } from './_guards/barber.guard';
 import { AuthGuard } from './_guards/auth.guard';
+import { ClientComponent } from './pages/client/client.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -55,6 +56,10 @@ const routes: Routes = [
         path: 'edit-profile/:username',
         component: BarberEditComponent,
         canActivate: [BarberGuard],
+      },
+      {
+        path: 'clients',
+        component: ClientComponent,
       },
     ],
   },
