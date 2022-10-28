@@ -3,6 +3,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
+import { BaseParams } from 'src/app/models/baseParams';
 import { Client } from 'src/app/models/client';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
@@ -19,7 +20,8 @@ export class AppointmentCreateComponent implements OnInit {
 
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
-  clients: Client[];
+  clients: Client[] = [];
+  params = new BaseParams(20);
 
   constructor(
     private appointmentService: AppointmentService,
@@ -71,9 +73,14 @@ export class AppointmentCreateComponent implements OnInit {
   }
 
   loadClients() {
-    this.clientService.getClients().subscribe((data) => {
-      this.clients = data;
+    this.clientService.getClients(this.params).subscribe((data) => {
+      this.clients = this.clients.concat(data.result);
     });
+  }
+
+  loadMoreClients() {
+    this.params.page += 1;
+    this.loadClients();
   }
 
   loadAppointmentTypes() {

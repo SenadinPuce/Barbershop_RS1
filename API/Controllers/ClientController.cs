@@ -1,8 +1,11 @@
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +27,29 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ClientDto[]>> GetClientAsync()
+        public async Task<ActionResult<PagedList<ClientDto>>> GetClientAsync([FromQuery] ClientParams clientParams)
         {
-            var clients = await _context.Client.Include(x => x.AppUser).ThenInclude(x => x.Photo).ToListAsync();
-            return _mapper.Map<ClientDto[]>(clients);
+            var clients = _context.Client
+            .Where(x => x.AppUser.FirstName.ToLower().Contains(clientParams.Search.ToLower()) ||
+                     x.AppUser.LastName.ToLower().Contains(clientParams.Search.ToLower()) ||
+                     (x.AppUser.FirstName.ToLower() + " " + x.AppUser.LastName.ToLower()).Contains(clientParams.Search)).AsQueryable();
+
+            clients = clientParams.SortBy switch
+            {
+                "created|asc" => clients.OrderBy(x => x.AppUser.Created),
+                "created|desc" => clients.OrderByDescending(x => x.AppUser.Created),
+                "name|desc" => clients.OrderByDescending(x => x.AppUser.FirstName),
+                _ => clients.OrderBy(x => x.AppUser.FirstName)
+            };
+
+
+            var clientDtos = clients.ProjectTo<ClientDto>(_mapper.ConfigurationProvider).AsNoTracking();
+
+            var list = await PagedList<ClientDto>.CreateAsync(clientDtos, clientParams.PageNumber, clientParams.PageSize);
+
+            Response.AddPaginationHeader(list.TotalCount, list.CurrentPage, list.PageSize, list.TotalPages);
+
+            return list;
         }
 
         [HttpPost]

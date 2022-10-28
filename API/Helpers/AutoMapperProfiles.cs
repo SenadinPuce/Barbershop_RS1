@@ -37,7 +37,7 @@ namespace API.Helpers
             .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName))
             .ForMember(x => x.Email, opt => opt.MapFrom(y => y.AppUser.Email))
             .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(y => y.AppUser.PhoneNumber))
-            .ForMember(x => x.Photo, opt => opt.MapFrom(y => y.AppUser.Photo));
+            .ForMember(x => x.Photo, opt => opt.MapFrom(y => y.AppUser.Photo)).ReverseMap();
             CreateMap<BarberService, BarberServiceDto>().ReverseMap();
             CreateMap<Photo, PhotoDto>().ReverseMap();
         }

@@ -5,3 +5,15 @@
     width: 70px;
     padding: 2px;
 }
+.row-click{
+    cursor: pointer;
+}
+.width-50{
+    width: 50%;
+}
+.font-awesome {
+    font-family: 'Roboto', FontAwesome, sans-serif;
+  }
+#sortBy{
+    min-width: 220px;
+}
