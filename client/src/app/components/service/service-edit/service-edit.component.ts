@@ -29,15 +29,12 @@ export class ServiceEditComponent implements OnInit {
   }
 
   updateService(id, resource) {
-    this.serviceService.put(id, resource).subscribe(
-      (response) => {
-        if (response) {
-          this.edited = true;
-          this.modal.hide();
-        }
-      },
-      (err) => console.log(err)
-    );
+    this.serviceService.put(id, resource).subscribe((response) => {
+      if (response) {
+        this.edited = true;
+        this.modal.hide();
+      }
+    });
   }
 
   cancel() {

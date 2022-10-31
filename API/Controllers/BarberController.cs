@@ -34,7 +34,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<BarberDto[]>> GetBarberAsync()
         {
-            var barbers = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).ToListAsync();
+            var barbers = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).ToListAsync();
             return _mapper.Map<BarberDto[]>(barbers);
         }
 
@@ -89,7 +89,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> PutBarberAsync(int id, BarberDto model)
         {
-            var barber = await _context.Barber.SingleOrDefaultAsync(x => x.Id == id);
+            var barber = await _context.Barber.Include(x => x.AppUser).Include(x => x.BarberServices).SingleOrDefaultAsync(x => x.Id == id);
 
             if (barber == null) return BadRequest();
             _mapper.Map(model, barber);
@@ -105,18 +105,13 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> DeleteAsync(int id)
         {
             var barber = await _context.Barber.SingleOrDefaultAsync(x => x.Id == id);
+            if (barber == null) return NotFound();
 
-            if (barber == null)
-            {
-                return NotFound();
-            }
             var user = await _userManager.FindByIdAsync(barber.AppUserId.ToString());
 
             var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
-            {
-                return BadRequest();
-            }
+            if (!result.Succeeded) return BadRequest();
+
             return true;
         }
 
