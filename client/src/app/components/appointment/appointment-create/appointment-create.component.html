@@ -99,6 +99,8 @@
             [markFirst]="true"
             [hideSelected]="true"
             name="clients"
+            [virtualScroll]="true"
+            (scrollToEnd)="loadMoreClients()"
           >
           </ng-select>
         </div>

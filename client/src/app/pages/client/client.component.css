@@ -1,0 +1,26 @@
+.img{
+    max-width: 70px;
+}
+.td{
+    width: 70px;
+    padding: 2px;
+}
+.font-awesome {
+    font-family: 'Roboto', FontAwesome, sans-serif;
+  }
+#sortBy{
+    min-width: 220px;
+}
+table th{
+    padding: 6px;
+    vertical-align: middle;
+}
+.mobile-icon{
+    scale: 1.5;
+}
+.btn-action{
+    padding: 3px 9px;
+}
+input[type="checkbox"]:disabled {
+    scale: 1.2;
+ }

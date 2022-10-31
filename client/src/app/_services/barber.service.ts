@@ -49,7 +49,11 @@ export class BarberService {
   }
 
   post(resource) {
-    return this.http.post(this.baseUrl, resource);
+    return this.http.post(this.baseUrl, resource).pipe(
+      map(() => {
+        this.barbers = [];
+      })
+    );
   }
 
   put(resource: Barber) {
@@ -63,6 +67,10 @@ export class BarberService {
   }
 
   delete(id: any) {
-    return this.http.delete(this.baseUrl + '/' + id);
+    return this.http.delete(this.baseUrl + '/' + id).pipe(
+      map(() => {
+        this.barbers = [];
+      })
+    );
   }
 }

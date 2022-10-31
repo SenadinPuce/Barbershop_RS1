@@ -4,6 +4,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ToastrModule } from 'ngx-toastr';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -22,6 +23,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ColorPickerModule,
     FileUploadModule,
     NgxSpinnerModule,
+    PaginationModule.forRoot(),
   ],
   exports: [
     BsDropdownModule,
@@ -32,6 +34,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ColorPickerModule,
     FileUploadModule,
     NgxSpinnerModule,
+    PaginationModule,
   ],
 })
 export class SharedModule {}
