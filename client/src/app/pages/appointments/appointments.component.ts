@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-appointments',
@@ -6,7 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./appointments.component.css'],
 })
 export class AppointmentsComponent implements OnInit {
-  constructor() {}
+  @ViewChild('appointmentTabs', { static: true })
+  appointmentTabs: TabsetComponent;
 
-  ngOnInit(): void {}
+  // activeTab: TabDirective;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
+    });
+  }
+
+  selectTab(tabId) {
+    this.appointmentTabs.tabs[tabId].active = true;
+  }
 }

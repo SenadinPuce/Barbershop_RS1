@@ -2,3 +2,8 @@
     width: 20px;
     height: 30px;
 }
+form{
+    border: 0.5px solid rgb(199, 199, 199);
+    border-radius: 15px;
+    padding: 30px 20px;
+}

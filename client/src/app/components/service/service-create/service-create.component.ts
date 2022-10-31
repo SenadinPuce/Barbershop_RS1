@@ -28,14 +28,11 @@ export class ServiceCreateComponent implements OnInit {
 
   insertService() {
     const service = { ...this.model };
-    this.serviceService.post(service).subscribe(
-      (response) => {
-        if (response) {
-          this.router.navigateByUrl('/appointments');
-        }
-      },
-      (err) => console.log(err)
-    );
+    this.serviceService.post(service).subscribe((response) => {
+      if (response) {
+        this.router.navigateByUrl('/appointments?tab=2');
+      }
+    });
   }
 
   cancel() {

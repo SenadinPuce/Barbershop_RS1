@@ -41,12 +41,18 @@
       <th>Phone Number</th>
       <th colspan="2" class="text-center">
         Notifications <br />
-        <span class="mr-3"
-          ><i class="fa fa-mobile mobile-icon" aria-hidden="true"></i>
-        </span>
-        <span class="ml-4"
-          ><i class="fa fa-envelope" aria-hidden="true"></i>
-        </span>
+        <div class="d-flex">
+          <div class="w-50">
+            <span class="mr-2"
+              ><i class="fa fa-mobile mobile-icon" aria-hidden="true"></i>
+            </span>
+          </div>
+          <div class="w-50">
+            <span class="ml-2"
+              ><i class="fa fa-envelope" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
       </th>
       <th style="width: 13%">Actions</th>
     </thead>
@@ -80,7 +86,7 @@
         </td>
         <td class="text-center">
           <button
-            class="btn btn-info mr-1 btn-action"
+            class="btn btn-info btn-action mr-1"
             (click)="onEdit(client.id)"
           >
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

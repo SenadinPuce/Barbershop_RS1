@@ -18,9 +18,6 @@ table th{
 .mobile-icon{
     scale: 1.5;
 }
-.btn-action{
-    padding: 3px 9px;
-}
 input[type="checkbox"]:disabled {
     scale: 1.2;
  }

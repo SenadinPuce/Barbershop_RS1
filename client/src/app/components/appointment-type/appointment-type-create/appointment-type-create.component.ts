@@ -42,14 +42,11 @@ export class AppointmentTypeCreateComponent implements OnInit {
       );
     });
 
-    this.appointmentTypeService.post(appointmentType).subscribe(
-      (response) => {
-        if (response) {
-          this.router.navigateByUrl('/appointments');
-        }
-      },
-      (err) => console.log(err)
-    );
+    this.appointmentTypeService.post(appointmentType).subscribe((response) => {
+      if (response) {
+        this.router.navigateByUrl('/appointments?tab=1');
+      }
+    });
   }
 
   loadServices() {

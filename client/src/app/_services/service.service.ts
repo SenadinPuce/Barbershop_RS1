@@ -42,7 +42,12 @@ export class ServiceService {
   }
 
   delete(id: any) {
-    return this.http.delete(this.baseUrl + '/' + id);
+    return this.http.delete(this.baseUrl + '/' + id).pipe(
+      map(() => {
+        this.services = [];
+        return true;
+      })
+    );
   }
 
   put(id, resource: any) {
