@@ -5,16 +5,20 @@ import { Client } from 'src/app/models/client';
 import { Pagination } from 'src/app/models/pagination';
 import { BaseParams } from 'src/app/models/baseParams';
 import { ClientService } from 'src/app/_services/client.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
+import { ClientEditComponent } from '../../components/client/client-edit/client-edit.component';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.css'],
+  providers: [BsModalRef, BsModalService],
 })
 export class ClientComponent implements OnInit {
   clients: Client[];
   pagination: Pagination;
-  parameters: BaseParams = new BaseParams(10);
+  parameters: BaseParams = new BaseParams(5);
   timeout: any;
   sorters = [
     { value: 'name|asc', display: 'Name (A-Z)' },
@@ -23,19 +27,48 @@ export class ClientComponent implements OnInit {
     { value: 'created|desc', display: 'Date Created (recent)' },
   ];
 
-  constructor(private clientService: ClientService) {}
+  deleteModalRef: BsModalRef;
+  editModalRef: BsModalRef;
+
+  constructor(
+    private clientService: ClientService,
+    private modalService: BsModalService
+  ) {}
 
   ngOnInit(): void {
     this.parameters.sortBy = this.sorters[3].value;
     this.loadClients();
   }
 
-  onDelete(arg0: any) {
-    throw new Error('Method not implemented.');
+  onDelete(id) {
+    this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
+      animated: false,
+      class: 'modal-dialog-centered',
+      initialState: {
+        question: 'Are you sure you want to delete the client?',
+      },
+    });
+    this.deleteModalRef.onHide.subscribe(() => {
+      if (this.deleteModalRef.content?.message === 'confirmed') {
+        this.deleteClient(id);
+      }
+    });
   }
 
-  onEdit(arg0: any) {
-    throw new Error('Method not implemented.');
+  onEdit(id) {
+    this.editModalRef = this.modalService.show(ClientEditComponent, {
+      animated: false,
+      class: 'modal-dialog-centered modal-lg',
+      initialState: {
+        clientId: id,
+        edited: false,
+      },
+    });
+    this.editModalRef.onHide.subscribe((e) => {
+      if (this.editModalRef.content?.edited) {
+        this.ngOnInit();
+      }
+    });
   }
 
   loadClients() {
@@ -55,5 +88,11 @@ export class ClientComponent implements OnInit {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => this.loadClients(), 500);
+  }
+
+  deleteClient(id) {
+    this.clientService.delete(id).subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }

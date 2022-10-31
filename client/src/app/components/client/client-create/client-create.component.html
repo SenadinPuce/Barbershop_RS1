@@ -1,0 +1,126 @@
+<div>
+  <h3>New Client</h3>
+  <hr />
+  <form
+    #createClientForm="ngForm"
+    autocomplete="off"
+    (ngSubmit)="createClient()"
+    class="col-8 mt-5"
+  >
+    <div class="form-row">
+      <div class="col-md-6 form-group">
+        <label for="firstName" class="lh">First Name:</label>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="model.firstName"
+          id="firstName"
+          name="firstName"
+          required
+          maxLength="50"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="lastName" class="lh">Last Name:</label>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="model.lastName"
+          id="lastName"
+          name="lastName"
+          required
+          maxlength="50"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-8">
+        <label for="phoneNumber" class="lh">Phone:</label>
+        <label
+          *ngIf="
+            phoneNumber.invalid &&
+            (phoneNumber.dirty || phoneNumber.touched) &&
+            phoneNumber.errors?.pattern
+          "
+          class="invalid"
+        >
+          Phone Number is not in the correct format.
+        </label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="(XXX)/XXX-XXX"
+          [(ngModel)]="model.phoneNumber"
+          id="phoneNumber"
+          name="phoneNumber"
+          pattern="\(?\d{3}\)?[-\/]?(\d{3,4})-?(\d{3})"
+          #phoneNumber="ngModel"
+        />
+      </div>
+      <div class="col-4 mt-2">
+        <div class="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="smsNotification"
+            name="smsNotification"
+            [(ngModel)]="model.smsNotification"
+          />
+          <label class="custom-control-label" for="smsNotification"
+            >SMS Notification</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-8">
+        <label for="email" class="lh">Email:</label>
+        <label
+          *ngIf="
+            email.invalid &&
+            (email.dirty || email.touched) &&
+            email.errors?.email
+          "
+          class="invalid"
+        >
+          Email is not in the correct format.
+        </label>
+        <input
+          class="form-control"
+          type="email"
+          [(ngModel)]="model.email"
+          id="email"
+          name="email"
+          email
+          #email="ngModel"
+        />
+      </div>
+      <div class="col-4 mt-2">
+        <div class="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="emailNotification"
+            [(ngModel)]="model.emailNotification"
+            name="emailNotification"
+          />
+          <label class="custom-control-label" for="emailNotification"
+            >Email Notification</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-2">
+      <button
+        class="btn btn-success mr-2"
+        type="submit"
+        [disabled]="!createClientForm.valid"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondary mr-2" (click)="cancel()" type="button">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

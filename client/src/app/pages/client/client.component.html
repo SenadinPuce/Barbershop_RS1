@@ -1,7 +1,7 @@
 <div class="mt-0">
   <h3>Clients</h3>
   <hr />
-  <div class="d-flex justify-content-between mt-3 mb-2">
+  <div class="d-flex justify-content-between mt-4 mb-2">
     <input
       type="text"
       (keyup)="searchClients($event)"
@@ -32,16 +32,26 @@
       New Client
     </button>
   </div>
+
   <table class="table table-bordered">
     <thead>
       <th></th>
       <th>Name</th>
       <th>Email</th>
       <th>Phone Number</th>
+      <th colspan="2" class="text-center">
+        Notifications <br />
+        <span class="mr-3"
+          ><i class="fa fa-mobile mobile-icon" aria-hidden="true"></i>
+        </span>
+        <span class="ml-4"
+          ><i class="fa fa-envelope" aria-hidden="true"></i>
+        </span>
+      </th>
       <th style="width: 13%">Actions</th>
     </thead>
     <tbody>
-      <tr *ngFor="let client of clients" class="row-click">
+      <tr *ngFor="let client of clients">
         <td class="td">
           <img
             src="{{ client.photo?.url || './assets/images/user.png' }}"
@@ -58,11 +68,27 @@
         <td>
           {{ client.phoneNumber }}
         </td>
-        <td style="text-align: center">
-          <button class="btn btn-info mr-1" (click)="onEdit(client.id)">
+        <td class="text-center">
+          <input type="checkbox" [ngModel]="client.smsNotification" disabled />
+        </td>
+        <td class="text-center">
+          <input
+            type="checkbox"
+            [ngModel]="client.emailNotification"
+            disabled
+          />
+        </td>
+        <td class="text-center">
+          <button
+            class="btn btn-info mr-1 btn-action"
+            (click)="onEdit(client.id)"
+          >
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-danger" (click)="onDelete(client.id)">
+          <button
+            class="btn btn-danger btn-action"
+            (click)="onDelete(client.id)"
+          >
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </td>

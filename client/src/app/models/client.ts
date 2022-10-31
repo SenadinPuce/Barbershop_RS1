@@ -8,4 +8,6 @@ export interface Client {
   email: string;
   phoneNumber: string;
   photo: Photo;
+  smsNotification: boolean;
+  emailNotification: boolean;
 }

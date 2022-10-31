@@ -5,15 +5,22 @@
     width: 70px;
     padding: 2px;
 }
-.row-click{
-    cursor: pointer;
-}
-.width-50{
-    width: 50%;
-}
 .font-awesome {
     font-family: 'Roboto', FontAwesome, sans-serif;
   }
 #sortBy{
     min-width: 220px;
 }
+table th{
+    padding: 6px;
+    vertical-align: middle;
+}
+.mobile-icon{
+    scale: 1.5;
+}
+.btn-action{
+    padding: 3px 9px;
+}
+input[type="checkbox"]:disabled {
+    scale: 1.2;
+ }

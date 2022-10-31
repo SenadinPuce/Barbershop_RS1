@@ -12,13 +12,16 @@ import { BaseParams } from '../models/baseParams';
 })
 export class ClientService {
   baseUrl = environment.apiUrl + 'clients';
-  clients: Client[] = [];
-  paginatedResult: PaginatedResult<Client[]> = new PaginatedResult<Client[]>();
-  params = new BaseParams();
+  clientCache = new Map();
 
   constructor(private http: HttpClient) {}
 
   getClients(clientParams: BaseParams) {
+    const response = this.clientCache.get(
+      Object.values(clientParams).join('-')
+    );
+    if (response !== undefined) return of(response);
+
     let params = this.getPaginationParams(
       clientParams.page,
       clientParams.pageSize
@@ -34,26 +37,61 @@ export class ClientService {
       .get<Client[]>(this.baseUrl, { observe: 'response', params })
       .pipe(
         map((response) => {
-          this.paginatedResult.result = response.body;
-          this.paginatedResult.result.forEach((el) => {
+          let paginatedResult = new PaginatedResult<Client[]>();
+          paginatedResult.result = response.body;
+          paginatedResult.result.forEach((el) => {
             el.fullName = el.firstName + ' ' + el.lastName;
           });
           if (response.headers.get('Pagination') !== null) {
-            this.paginatedResult.pagination = JSON.parse(
+            paginatedResult.pagination = JSON.parse(
               response.headers.get('Pagination')
             );
           }
-          return this.paginatedResult;
+          this.clientCache.set(
+            Object.values(clientParams).join('-'),
+            paginatedResult
+          );
+          return paginatedResult;
         })
       );
   }
 
-  setParams(params: BaseParams) {
-    this.params = params;
+  getById(id: number) {
+    const member = [...this.clientCache.values()]
+      .reduce((arr, el) => arr.concat(el.result), [])
+      .find((x) => x.id === id);
+    if (member) return of(member);
+
+    return this.http.get<Client>(this.baseUrl + '/' + id).pipe(
+      map((client) => {
+        client.fullName = client.firstName + ' ' + client.lastName;
+        return client;
+      })
+    );
   }
 
-  getParams() {
-    return this.params;
+  post(resource: Partial<Client>) {
+    return this.http.post(this.baseUrl, resource).pipe(
+      map(() => {
+        this.clientCache.clear();
+      })
+    );
+  }
+
+  put(resource: Client) {
+    return this.http.put(this.baseUrl + '/' + resource.id, resource).pipe(
+      map(() => {
+        this.clientCache.clear();
+      })
+    );
+  }
+
+  delete(id: any) {
+    return this.http.delete(this.baseUrl + '/' + id).pipe(
+      map(() => {
+        this.clientCache.clear();
+      })
+    );
   }
 
   getPaginationParams(page: number, pageSize: number) {
