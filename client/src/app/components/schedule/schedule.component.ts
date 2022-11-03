@@ -30,7 +30,7 @@ import { formatDate } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentCreateComponent } from 'src/app/components/appointment/appointment-create/appointment-create.component';
 import { AppointmentEditComponent } from 'src/app/components/appointment/appointment-edit/appointment-edit.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AppointmentParams } from 'src/app/models/appointmentParams';
 
 function colorShade(color, amount) {
   return (
@@ -89,7 +89,7 @@ class CustomDateFormatter extends CalendarDateFormatter {
   templateUrl: './schedule.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent {
   view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
 
@@ -102,16 +102,13 @@ export class ScheduleComponent implements OnInit {
   activeDayIsOpen: boolean = true;
   createAppointmentModal: BsModalRef;
   editAppointmentModal: BsModalRef;
+  params = new AppointmentParams();
 
   constructor(
     private cdr: ChangeDetectorRef,
     private appointmentService: AppointmentService,
     private modalService: BsModalService
   ) {}
-
-  ngOnInit(): void {
-    this.getAppointments();
-  }
 
   onEditAppointment(appointment) {
     this.editAppointmentModal = this.modalService.show(
@@ -125,7 +122,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.editAppointmentModal.onHide.subscribe((e) => {
-      this.ngOnInit();
+      this.getAppointments();
     });
   }
 
@@ -188,7 +185,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   getAppointments() {
-    this.appointmentService.get().subscribe((data) => {
+    this.appointmentService.get(this.params).subscribe((data) => {
       this.mapData(data);
     });
   }
@@ -290,7 +287,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.createAppointmentModal.onHide.subscribe((e) => {
-      this.ngOnInit();
+      this.getAppointments();
     });
   }
 
@@ -303,7 +300,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.createAppointmentModal.onHide.subscribe((e) => {
-      this.ngOnInit();
+      this.getAppointments();
     });
   }
 
@@ -311,6 +308,19 @@ export class ScheduleComponent implements OnInit {
     if (client.firstName !== undefined && client.lastName !== undefined) {
       return client.firstName + ' ' + client.lastName;
     }
+  }
+
+  setDates(event: any) {
+    if (
+      this.params.dateFrom?.getTime() === event.period.start.getTime() ||
+      this.params.dateTo?.getTime() === event.period.end.getTime()
+    ) {
+      this.cdr.detectChanges();
+      return;
+    }
+    this.params.dateFrom = new Date(event.period.start);
+    this.params.dateTo = new Date(event.period.end);
+    this.getAppointments();
   }
 
   private reload() {

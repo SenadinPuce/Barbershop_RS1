@@ -5,6 +5,9 @@ using API.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using API.Interfaces;
+using API.Helpers;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -14,21 +17,24 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IAppointmentService _appointmentService;
 
-        public AppointmentController(DataContext context, IMapper mapper)
+        public AppointmentController(DataContext context, IMapper mapper, IAppointmentService appointmentService)
         {
             _context = context;
             _mapper = mapper;
+            _appointmentService = appointmentService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync()
+        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery]AppointmentParams request)
         {
-            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client).ThenInclude(x => x.AppUser).ToListAsync();
+            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser)
+                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).OrderBy(x => x.StartsAt).ToListAsync();
             return _mapper.Map<AppointmentDto[]>(appointments);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetAppointment")]
         public async Task<ActionResult<AppointmentDto>> GetAppointmentByIdAsync(int id)
         {
             var appointmentType = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
@@ -44,9 +50,16 @@ namespace API.Controllers
             appt.AppointmentStatusId = scheduledStatus.Id;
 
             await _context.AddAsync(appt);
-            await _context.SaveChangesAsync();
+            if(await _context.SaveChangesAsync() < 1)
+            {
+                return BadRequest("Error while inserting the appointment");
+            }
 
-            return Created(this.Url.ToString(), true);
+            var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync( x=> x.Id == appt.Id);
+
+            await _appointmentService.OnAppointmentSchedule(newAppt);
+
+            return CreatedAtRoute("GetAppointment", new {id = newAppt.Id}, _mapper.Map<AppointmentDto>(newAppt));
         }
 
         [HttpDelete("{id}")]

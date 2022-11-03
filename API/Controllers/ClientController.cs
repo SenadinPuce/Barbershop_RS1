@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedList<ClientDto>>> GetClientAsync([FromQuery] ClientParams clientParams)
+        public async Task<ActionResult<PagedList<ClientDto>>> GetClientAsync([FromQuery] BaseParams clientParams)
         {
             var clients = _context.Client
             .Where(x => x.AppUser.FirstName.ToLower().Contains(clientParams.Search.ToLower()) ||
