@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Helpers
 {
-    public class ClientParams
+    public class BaseParams
     {
         private const int MaxPageSize = 50;
         public int PageNumber { get; set; }

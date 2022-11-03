@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
+using API.Helpers;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -25,9 +27,10 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync()
+        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery]AppointmentParams request)
         {
-            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser).ToListAsync();
+            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser)
+                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).OrderBy(x => x.StartsAt).ToListAsync();
             return _mapper.Map<AppointmentDto[]>(appointments);
         }
 
