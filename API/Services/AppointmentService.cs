@@ -2,6 +2,8 @@
 using API.Entities;
 using API.Interfaces;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API.Services
@@ -19,9 +21,9 @@ namespace API.Services
         {
             if (appointment == null) throw new Exception("Appointment does not exist");
 
-            if (appointment.Client == null)  return;
+            if (appointment.Client == null) return;
 
-            if(appointment.Client.EmailNotification == true)
+            if (appointment.Client.EmailNotification == true)
             {
                 await SendAppointmentScheduledEmail(appointment);
             }
@@ -37,7 +39,27 @@ namespace API.Services
             var email = new EmailDto
             {
                 To = appointment.Client.AppUser.Email,
-                Subject = "BarberShop - New Appointment Scheduled",
+                Subject = "New Appointment Scheduled",
+                Body = body
+            };
+
+            await _emailService.SendEmail(email);
+        }
+
+        public async Task SendAppointmentOneHourDueEmail(Appointment appointment)
+        {
+            if (appointment.Client == null) return;
+
+            var client = appointment.Client;
+            var barber = appointment.Barber;
+            var startDateInLocal = appointment.StartsAt.ToLocalTime();
+
+            var body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your scheduled appointment is in one hour due.<br><br>Date and Time: <b>{startDateInLocal.ToString("dddd, dd MMMM HH:mm")}</b><br>Duration: {appointment.Duration} minutes<br>Barber: {barber.AppUser.FirstName} {barber.AppUser.LastName}<br><br>We are looking forward to seeing you. :) <br><br><br>Regards, BarberShop </p>";
+
+            var email = new EmailDto
+            {
+                To = appointment.Client.AppUser.Email,
+                Subject = "Appointment in One Hour",
                 Body = body
             };
 
