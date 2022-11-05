@@ -321,6 +321,7 @@ export class ScheduleComponent {
     this.params.dateFrom = new Date(event.period.start);
     this.params.dateTo = new Date(event.period.end);
     this.getAppointments();
+    this.cdr.detectChanges();
   }
 
   private reload() {

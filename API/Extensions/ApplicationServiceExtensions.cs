@@ -17,6 +17,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddHostedService<MyBackgroundService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITokenService, TokenService>();
