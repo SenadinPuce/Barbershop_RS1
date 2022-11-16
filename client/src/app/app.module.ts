@@ -43,6 +43,8 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { ClientComponent } from './pages/client/client.component';
 import { ClientCreateComponent } from './components/client/client-create/client-create.component';
 import { ClientEditComponent } from './components/client/client-edit/client-edit.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { WorkingHoursComponent } from './components/working-hours/working-hours.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,8 @@ import { ClientEditComponent } from './components/client/client-edit/client-edit
     ClientComponent,
     ClientCreateComponent,
     ClientEditComponent,
+    SettingsComponent,
+    WorkingHoursComponent,
   ],
   imports: [
     BrowserModule,
