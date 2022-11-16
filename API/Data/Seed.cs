@@ -77,6 +77,15 @@ namespace API.Data
 
                 await db.AddRangeAsync(apptStatuses);
             }
+
+            if (!await db.WorkingHours.AnyAsync())
+            {
+                var workingHoursData = await System.IO.File.ReadAllTextAsync("Data/Seed/WorkingHours.json");
+                var workingHours = JsonSerializer.Deserialize<List<WorkingHours>>(workingHoursData);
+                if (workingHours == null) return;
+
+                await db.AddRangeAsync(workingHours);
+            }
             await db.SaveChangesAsync();
 
             if (!await db.AppointmentTypeService.AnyAsync())
