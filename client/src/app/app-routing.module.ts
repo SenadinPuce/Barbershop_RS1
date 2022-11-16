@@ -17,6 +17,7 @@ import { BarberGuard } from './_guards/barber.guard';
 import { AuthGuard } from './_guards/auth.guard';
 import { ClientComponent } from './pages/client/client.component';
 import { ClientCreateComponent } from './components/client/client-create/client-create.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -65,6 +66,11 @@ const routes: Routes = [
       {
         path: 'clients',
         component: ClientComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [AdminGuard],
       },
     ],
   },

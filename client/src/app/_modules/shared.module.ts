@@ -9,6 +9,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 @NgModule({
   declarations: [],
   imports: [
@@ -24,6 +26,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FileUploadModule,
     NgxSpinnerModule,
     PaginationModule.forRoot(),
+    TimepickerModule.forRoot(),
+    CollapseModule.forRoot(),
   ],
   exports: [
     BsDropdownModule,
@@ -35,6 +39,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FileUploadModule,
     NgxSpinnerModule,
     PaginationModule,
+    TimepickerModule,
+    CollapseModule,
   ],
 })
 export class SharedModule {}

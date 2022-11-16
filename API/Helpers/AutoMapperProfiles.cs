@@ -40,6 +40,7 @@ namespace API.Helpers
             .ForMember(x => x.Photo, opt => opt.MapFrom(y => y.AppUser.Photo)).ReverseMap();
             CreateMap<BarberService, BarberServiceDto>().ReverseMap();
             CreateMap<Photo, PhotoDto>().ReverseMap();
+            CreateMap<WorkingHours, WorkingHoursDto>().ReverseMap();
         }
     }
 }
