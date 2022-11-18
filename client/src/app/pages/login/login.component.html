@@ -2,57 +2,65 @@
   class="container text-center"
   *ngIf="(accountService.currentUser$ | async) === null"
 >
-  <form *ngIf="!registerMode" #loginForm="ngForm" class="form-signin" (ngSubmit)="login()">
-    <div class="img">
-      <img
-        src="/assets/images/barbershop-logo.png"
-        alt=""
-        width="150"
-        height="50"
-      />
-    </div>
-
-    <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
-    <label for="username" class="sr-only">Username</label>
-    <input
-      name="username"
-      [(ngModel)]="model.username"
-      id="username"
-      class="form-control"
-      placeholder="Username"
-      required=""
-      autofocus=""
-    />
-    <label for="password" class="sr-only">Password</label>
-    <input
-      name="password"
-      [(ngModel)]="model.password"
-      type="password"
-      id="password"
-      class="form-control"
-      placeholder="Password"
-      required=""
-    />
-    <div>
-      <p style="color: gray">
-        Do not have an account? <a (click)="registerToggle()" style="cursor: pointer; color: blue;">Register</a>
-      </p>
-    </div>
-    <button
-      id="submit-btn"
-      class="btn btn-submit btn-lg btn-block"
-      type="submit"
+  <div class="d-flex justify-content-center">
+    <form
+      *ngIf="!registerMode"
+      #loginForm="ngForm"
+      class="form-signin"
+      (ngSubmit)="login()"
     >
-      Submit
-    </button>
-  </form>
-
-  <div *ngIf="registerMode" class="container">
-    <div class="row justify-content-center">
-        <div class="col-4">
-            <app-register (cancelRegister)="cancelRegisterMode($event)" ></app-register>
+      <h2 class="text-center text-primary">Sign in</h2>
+      <hr />
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="username" class="sr-only">Username</label>
+          <input
+            name="username"
+            [(ngModel)]="model.username"
+            id="username"
+            class="form-control"
+            placeholder="Username"
+            required
+          />
         </div>
-    </div>
-</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="password" class="sr-only">Password</label>
+          <input
+            name="password"
+            [(ngModel)]="model.password"
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+        </div>
+      </div>
+      <div>
+        <p class="register-btn">
+          Do not have an account?
+          <a class="link" (click)="registerToggle()">Register</a>
+        </p>
+      </div>
+      <button
+        [disabled]="!loginForm.valid || !loginForm.dirty"
+        class="btn btn-success btn-lg btn-block"
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
 
+  <div *ngIf="registerMode">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <app-register
+          (cancelRegister)="cancelRegisterMode($event)"
+        ></app-register>
+      </div>
+    </div>
+  </div>
 </div>

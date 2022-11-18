@@ -46,3 +46,7 @@
  .btn-action{
      padding: 3px 9px;
  }
+ .link{
+      cursor: pointer;
+     color: #007bff; 
+ }
