@@ -1,42 +1,32 @@
 [
   {
-    "Id": 1,
     "Url": "https://randomuser.me/api/portraits/women/42.jpg"
   },
   {
-    "Id": 2,
     "Url": "https://randomuser.me/api/portraits/women/10.jpg"
   },
   {
-    "Id": 3,
     "Url": "https://randomuser.me/api/portraits/women/14.jpg"
   },
   {
-    "Id": 4,
     "Url": "https://randomuser.me/api/portraits/women/67.jpg"
   },
   {
-    "Id": 5,
     "Url": "https://randomuser.me/api/portraits/women/81.jpg"
   },
   {
-    "Id": 6,
     "Url": "https://randomuser.me/api/portraits/men/42.jpg"
   },
   {
-    "Id": 7,
     "Url": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
-    "Id": 8,
     "Url": "https://randomuser.me/api/portraits/men/14.jpg"
   },
   {
-    "Id": 9,
     "Url": "https://randomuser.me/api/portraits/men/67.jpg"
   },
   {
-    "Id": 10,
     "Url": "https://randomuser.me/api/portraits/men/81.jpg"
   }
 ]
