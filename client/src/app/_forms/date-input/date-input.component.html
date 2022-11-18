@@ -12,4 +12,7 @@
   <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">
     {{ label }} is required
   </div>
+  <div *ngIf="ngControl.invalid" class="invalid-feedback">
+    User should be at least 16 years old
+  </div>
 </div>
