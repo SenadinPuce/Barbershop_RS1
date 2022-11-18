@@ -1,6 +1,5 @@
 [
   {
-    "Id": 1,
     "Day": "Monday",
     "FromHours": 11,
     "FromMinutes": 0,
@@ -9,7 +8,6 @@
     "IsOpen": true
   },
   {
-    "Id": 2,
     "Day": "Tuesday",
     "FromHours": 9,
     "FromMinutes": 0,
@@ -18,7 +16,6 @@
     "IsOpen": true
   },
   {
-    "Id": 3,
     "Day": "Wednesday",
     "FromHours": 9,
     "FromMinutes": 0,
@@ -27,7 +24,6 @@
     "IsOpen": true
   },
   {
-    "Id": 4,
     "Day": "Thursday",
     "FromHours": 6,
     "FromMinutes": 0,
@@ -36,7 +32,6 @@
     "IsOpen": true
   },
   {
-    "Id": 5,
     "Day": "Friday",
     "FromHours": 9,
     "FromMinutes": 0,
@@ -45,7 +40,6 @@
     "IsOpen": true
   },
   {
-    "Id": 6,
     "Day": "Saturday",
     "FromHours": 7,
     "FromMinutes": 0,
@@ -54,7 +48,6 @@
     "IsOpen": true
   },
   {
-    "Id": 7,
     "Day": "Sunday",
     "FromHours": 0,
     "FromMinutes": 0,
