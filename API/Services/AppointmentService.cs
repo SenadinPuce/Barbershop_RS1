@@ -21,9 +21,7 @@ namespace API.Services
         {
             if (appointment == null) throw new Exception("Appointment does not exist");
 
-            if (appointment.Client == null) return;
-
-            if (appointment.Client.EmailNotification == true)
+            if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
             {
                 await SendAppointmentScheduledEmail(appointment);
             }
@@ -48,7 +46,7 @@ namespace API.Services
 
         public async Task SendAppointmentOneHourDueEmail(Appointment appointment)
         {
-            if (appointment.Client == null) return;
+            if (appointment.Client == null || appointment.Client.AppUser.Email == null || appointment.Client.EmailNotification == false) return;
 
             var client = appointment.Client;
             var barber = appointment.Barber;
