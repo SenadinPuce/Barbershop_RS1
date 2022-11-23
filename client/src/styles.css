@@ -34,6 +34,10 @@
  .textarea{
       font-size: 0.8rem;
  }
+ .cal-disabled{
+     background-color: rgb(231, 231, 231);
+     pointer-events: none;
+ }
  .cal-week-view .cal-event{
      color: #000000;
  }
@@ -49,4 +53,8 @@
  .link{
       cursor: pointer;
      color: #007bff; 
+ }
+ .minus-icon{
+    cursor: pointer;
+    color: red;
  }

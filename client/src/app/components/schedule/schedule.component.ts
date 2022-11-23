@@ -20,6 +20,7 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  CalendarWeekViewBeforeRenderEvent,
   DateFormatterParams,
   DAYS_OF_WEEK,
 } from 'angular-calendar';
@@ -34,6 +35,9 @@ import { AppointmentEditComponent } from 'src/app/components/appointment/appoint
 import { AppointmentParams } from 'src/app/models/appointmentParams';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 import { WorkingHours } from 'src/app/models/workingHours';
+import { checkMargins } from 'ngx-bootstrap/positioning';
+import { CustomHoursService } from 'src/app/_services/custom-hours.service';
+import { CustomHours } from 'src/app/models/customHours';
 
 function colorShade(color, amount) {
   return (
@@ -112,15 +116,19 @@ export class ScheduleComponent implements OnInit {
   dayStartHour: number;
   dayEndHour: number;
 
+  customHours: CustomHours[];
+
   constructor(
     private cdr: ChangeDetectorRef,
     private appointmentService: AppointmentService,
     private workingHoursService: WorkingHoursService,
+    private customHoursService: CustomHoursService,
     private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
     this.loadWorkingHours();
+    this.loadCustomHours();
   }
 
   loadWorkingHours() {
@@ -144,6 +152,14 @@ export class ScheduleComponent implements OnInit {
       });
       this.dayStartHour = dayStartHour;
       this.dayEndHour = dayEndHour;
+
+      this.refresh.next();
+    });
+  }
+
+  loadCustomHours() {
+    this.customHoursService.get().subscribe((data) => {
+      this.customHours = data;
 
       this.refresh.next();
     });
@@ -346,22 +362,54 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  setDates(event: any) {
+  setParamDates(event: any) {
     if (
       this.params.dateFrom?.getTime() === event.period.start.getTime() ||
       this.params.dateTo?.getTime() === event.period.end.getTime()
     ) {
-      this.cdr.detectChanges();
       return;
     }
     this.params.dateFrom = new Date(event.period.start);
     this.params.dateTo = new Date(event.period.end);
     this.getAppointments();
-    this.cdr.detectChanges();
   }
 
   private reload() {
     this.events = [...this.events];
     this.cdr.detectChanges();
+  }
+
+  checkDisabledSlots(event: CalendarWeekViewBeforeRenderEvent) {
+    event.hourColumns.forEach((hourCol) => {
+      hourCol.hours.forEach((hour) => {
+        hour.segments.forEach((segment) => {
+          if (!this.segmentIsValid(segment.date)) {
+            segment.cssClass = 'cal-disabled';
+          }
+        });
+      });
+    });
+  }
+
+  beforeView(event: any) {
+    this.setParamDates(event);
+    this.checkDisabledSlots(event);
+
+    this.cdr.detectChanges();
+  }
+
+  get closedHours() {
+    return this.customHours?.filter((ch) => ch.isOpen === false);
+  }
+
+  segmentIsValid(date: Date) {
+    if (
+      this.closedHours?.some((ch) => {
+        return ch.dateFrom < date && ch.dateTo > date;
+      })
+    ) {
+      return false;
+    }
+    return true;
   }
 }
