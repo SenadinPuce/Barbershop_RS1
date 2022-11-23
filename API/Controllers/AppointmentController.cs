@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Helpers;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/appointments")]
     public class AppointmentController : ControllerBase
@@ -27,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery]AppointmentParams request)
+        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery] AppointmentParams request)
         {
             var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser)
                 .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).OrderBy(x => x.StartsAt).ToListAsync();
@@ -50,16 +52,16 @@ namespace API.Controllers
             appt.AppointmentStatusId = scheduledStatus.Id;
 
             await _context.AddAsync(appt);
-            if(await _context.SaveChangesAsync() < 1)
+            if (await _context.SaveChangesAsync() < 1)
             {
                 return BadRequest("Error while inserting the appointment");
             }
 
-            var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync( x=> x.Id == appt.Id);
+            var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == appt.Id);
 
             await _appointmentService.OnAppointmentSchedule(newAppt);
 
-            return CreatedAtRoute("GetAppointment", new {id = newAppt.Id}, _mapper.Map<AppointmentDto>(newAppt));
+            return CreatedAtRoute("GetAppointment", new { id = newAppt.Id }, _mapper.Map<AppointmentDto>(newAppt));
         }
 
         [HttpDelete("{id}")]
