@@ -12,10 +12,13 @@
 .custom-control-label{
     cursor: pointer;
 }
-
 .custom-margin{
     margin-top: 34.5px;
 }
 #collapseWorkingHours{
-    min-height: 900px;
+    min-height: 770px;
+}
+.timepicker{
+    display: flex;
+    justify-content: center;
 }
