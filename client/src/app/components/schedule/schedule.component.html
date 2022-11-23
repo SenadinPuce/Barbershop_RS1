@@ -93,7 +93,7 @@
     (dayClicked)="dayClicked($event.day)"
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
-    (beforeViewRender)="setDates($event)"
+    (beforeViewRender)="beforeView($event)"
     [excludeDays]="excludeDays"
     [weekStartsOn]="weekStartsOn"
   >
@@ -106,7 +106,7 @@
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
     [hourSegmentTemplate]="weekViewHourSegmentTemplate"
-    (beforeViewRender)="setDates($event)"
+    (beforeViewRender)="beforeView($event)"
     [excludeDays]="excludeDays"
     [weekStartsOn]="weekStartsOn"
     [dayStartHour]="dayStartHour"
@@ -121,7 +121,7 @@
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
     [hourSegmentTemplate]="weekViewHourSegmentTemplate"
-    (beforeViewRender)="setDates($event)"
+    (beforeViewRender)="beforeView($event)"
     [dayStartHour]="dayStartHour"
     [dayEndHour]="dayEndHour"
   >
