@@ -1,0 +1,17 @@
+.collapsible{
+    border-bottom: 1px solid rgb(197, 196, 196);
+    padding: 10px;
+    position: relative;
+}
+.collapsible-icon{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+}
+.custom-control-label{
+    cursor: pointer;
+}
+input.ng-invalid.ng-touched{
+    border: 1px solid red;
+}

@@ -45,6 +45,7 @@ import { ClientCreateComponent } from './components/client/client-create/client-
 import { ClientEditComponent } from './components/client/client-edit/client-edit.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { WorkingHoursComponent } from './components/working-hours/working-hours.component';
+import { CustomHoursComponent } from './components/custom-hours/custom-hours.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { WorkingHoursComponent } from './components/working-hours/working-hours.
     ClientEditComponent,
     SettingsComponent,
     WorkingHoursComponent,
+    CustomHoursComponent,
   ],
   imports: [
     BrowserModule,

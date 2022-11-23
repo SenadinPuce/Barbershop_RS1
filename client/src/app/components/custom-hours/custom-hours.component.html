@@ -1,0 +1,119 @@
+<ng-container>
+  <div
+    type="button"
+    class="mt-4 mb-2 collapsible"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseCustomHours"
+  >
+    <h5 class="d-inline-block">Custom Hours</h5>
+    <span class="collapsible-icon">
+      <i
+        class="fa fa-chevron-down"
+        [ngClass]="isCollapsed ? 'fa-rotate-180' : ''"
+        aria-hidden="true"
+      ></i>
+    </span>
+  </div>
+  <div id="collapseCustomHours" [collapse]="isCollapsed" class="mt-3">
+    <div class="m-3 d-flex justify-content-between">
+      <p class="d-inline-block">
+        Set additional open/closed hours for this location.
+      </p>
+      <button
+        class="btn btn-success mr-2"
+        (click)="onSave()"
+        [disabled]="!form.valid"
+      >
+        Save Changes
+      </button>
+    </div>
+
+    <div class="my-4 mx-4">
+      <form [formGroup]="form" autocomplete="off">
+        <div formGroupName="customHours">
+          <div class="row">
+            <div class="col-3 mr-2">
+              <label class="lh">Description</label>
+            </div>
+            <div class="col-2">
+              <label class="lh">Open/Closed</label>
+            </div>
+            <div class="col-3">
+              <label>From <span class="required-asterisk">*</span></label>
+            </div>
+            <div class="col-3">
+              <label>To <span class="required-asterisk">*</span></label>
+            </div>
+          </div>
+          <hr />
+          <div *ngFor="let item of customHoursGroups; let i = index">
+            <div [formGroupName]="i" class="row mb-3">
+              <div class="col-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="description"
+                />
+              </div>
+              <div class="col-md-2">
+                <div class="custom-control custom-switch">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input pointer"
+                    formControlName="isOpen"
+                    id="checkbox-{{ i }}"
+                  />
+                  <label class="custom-control-label" for="checkbox-{{ i }}">{{
+                    item.controls["isOpen"].value ? "Open" : "Closed"
+                  }}</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <input
+                  type="text"
+                  placeholder="Select start time..."
+                  class="form-control"
+                  [bsConfig]="{
+                    withTimepicker: true,
+                    dateInputFormat: 'dddd, DD/MM, HH:mm',
+                    containerClass: 'theme-red'
+                  }"
+                  bsDatepicker
+                  formControlName="dateFrom"
+                />
+              </div>
+              <div class="col-3">
+                <input
+                  type="text"
+                  placeholder="Select end time..."
+                  class="form-control"
+                  [bsConfig]="{
+                    withTimepicker: true,
+                    dateInputFormat: 'dddd, DD/MM, HH:mm',
+                    containerClass: 'theme-red'
+                  }"
+                  value=""
+                  bsDatepicker
+                  formControlName="dateTo"
+                />
+              </div>
+
+              <div class="col-md-1">
+                <span class="minus-icon" (click)="remove(i)">
+                  <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pl-3">
+          <span class="link" (click)="add()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            Add Custom
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>
