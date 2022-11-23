@@ -41,6 +41,7 @@ namespace API.Helpers
             CreateMap<BarberService, BarberServiceDto>().ReverseMap();
             CreateMap<Photo, PhotoDto>().ReverseMap();
             CreateMap<WorkingHours, WorkingHoursDto>().ReverseMap();
+            CreateMap<CustomHours, CustomHoursDto>().ReverseMap();
         }
     }
 }

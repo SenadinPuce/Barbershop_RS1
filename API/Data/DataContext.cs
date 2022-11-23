@@ -23,6 +23,7 @@ namespace API.Data
         public DbSet<Client> Client { get; set; }
         public DbSet<Photo> Photo { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
+        public DbSet<CustomHours> CustomHours { get; set; }
         public DataContext(DbContextOptions options) : base(options)
         {
         }
