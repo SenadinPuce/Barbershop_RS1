@@ -1,16 +1,9 @@
 import { BarberServiceModel } from './barberService';
 import { Photo } from './photo';
+import { User } from './user';
 
-export interface Barber {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
+export class Barber extends User {
   age: number;
-  phoneNumber: string;
-  email: string;
   info: string;
-  dateOfBirth: Date;
   barberServices: BarberServiceModel[];
-  photo?: Photo;
 }

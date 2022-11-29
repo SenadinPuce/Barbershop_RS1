@@ -31,8 +31,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery] AppointmentParams request)
         {
-            var appointments = await _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser)
-                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).OrderBy(x => x.StartsAt).ToListAsync();
+            var appointmentsQuery = _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser)
+                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).AsQueryable();
+            if (request.BarberIds?.Length > 0)
+            {
+                var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
+                appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
+            }
+            var appointments = await appointmentsQuery.OrderBy(appt => appt.StartsAt).ToListAsync();
+
             return _mapper.Map<AppointmentDto[]>(appointments);
         }
 

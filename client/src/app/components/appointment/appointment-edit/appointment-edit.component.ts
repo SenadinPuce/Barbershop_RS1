@@ -98,7 +98,6 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   mapAppointment(appointment: Appointment) {
-    console.log(this.model);
     this.model.appointmentTypeId = appointment.appointmentTypeId;
     this.model.barberId = appointment.barberId;
     this.model.clientId = appointment.clientId;

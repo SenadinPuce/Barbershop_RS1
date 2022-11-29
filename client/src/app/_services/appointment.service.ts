@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Appointment } from '../models/appointment';
 import { AppointmentParams } from '../models/appointmentParams';
+import { getFullName } from '../_utilities/getFullName';
 
 @Injectable({
   providedIn: 'root',
@@ -31,10 +32,22 @@ export class AppointmentService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append('dateFrom', params.dateFrom.toISOString());
     queryParams = queryParams.append('dateTo', params.dateTo.toISOString());
+
+    if (params.barberIds?.length > 0)
+      queryParams = queryParams.append(
+        'barberIds',
+        params.barberIds.toString()
+      );
+
     return this.http
       .get<Appointment[]>(this.baseUrl, { params: queryParams })
       .pipe(
         map((data) => {
+          data.forEach((appt) => {
+            if (appt.client) appt.client.fullName = getFullName(appt.client);
+
+            appt.barber.fullName = getFullName(appt.barber);
+          });
           this.apptCache.set(Object.values(params).join('-'), data);
           return data;
         })

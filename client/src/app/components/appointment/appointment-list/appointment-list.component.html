@@ -1,3 +1,40 @@
-<div class="mt-5">
-  <app-schedule></app-schedule>
+<div class="container my-5">
+  <table class="table table-bordered">
+    <thead>
+      <th>Day</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Barber</th>
+      <th>Client</th>
+      <th style="width: 13%" class="text-center">Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appt of appointments">
+        <td>
+          {{ appt.startsAt | formatDate: "EEEE" }}
+        </td>
+        <td>
+          {{ appt.startsAt | formatDate: "HH:mm" }}
+        </td>
+        <td>
+          {{ appt.endsAt | formatDate: "HH:mm" }}
+        </td>
+        <td>
+          {{ appt.barber.fullName }}
+        </td>
+        <td>{{ appt.client?.fullName }}</td>
+        <td class="text-center">
+          <button class="btn btn-action">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-action">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-action">
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

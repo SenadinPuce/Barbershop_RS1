@@ -9,7 +9,7 @@ export interface Appointment {
   duration: number;
   appointmentTypeId: number;
   barberId: number;
-  clientId: number;
+  clientId?: number;
   appointmentType: AppointmentType;
   client: Client;
   barber: Barber;

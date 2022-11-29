@@ -1,15 +1,36 @@
-<div>
-  <h3>Appointments</h3>
-  <hr />
-  <tabset #appointmentTabs>
-    <tab heading="Schedule">
-      <app-appointment-list></app-appointment-list>
-    </tab>
-    <tab heading="Appointment Types">
-      <app-appointment-type></app-appointment-type>
-    </tab>
-    <tab heading="Services">
-      <app-service></app-service>
-    </tab>
-  </tabset>
+<div class="full-width">
+  <div class="row">
+    <div class="col-2 appt-sidebar">
+      <h5>Filters</h5>
+      <hr />
+      <label class="lh" for="barber">Barber</label>
+      <ng-select
+        [items]="barbers$ | async"
+        bindLabel="fullName"
+        bindValue="id"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [markFirst]="true"
+        [hideSelected]="true"
+        name="barber"
+        id="barber"
+        (change)="onChangeBarber()"
+        [(ngModel)]="params.barberIds"
+        placeholder="Select a barber..."
+      >
+      </ng-select>
+    </div>
+    <div class="col-8">
+      <h3>Appointments</h3>
+      <hr />
+      <app-schedule
+        (getAppointments)="onGetAppointments($event)"
+        [appointments]="appointments$ | async"
+      ></app-schedule>
+    </div>
+  </div>
+
+  <app-appointment-list
+    [appointments]="appointments$ | async"
+  ></app-appointment-list>
 </div>
