@@ -1,10 +1,5 @@
-import { BaseParams } from './baseParams';
-
-export class AppointmentParams extends BaseParams {
+export class AppointmentParams {
   dateFrom: Date;
   dateTo: Date;
-
-  constructor() {
-    super();
-  }
+  barberIds: number[];
 }

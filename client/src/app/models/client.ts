@@ -1,13 +1,7 @@
 import { Photo } from './photo';
+import { User } from './user';
 
-export interface Client {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  photo: Photo;
+export class Client extends User {
   smsNotification: boolean;
   emailNotification: boolean;
 }

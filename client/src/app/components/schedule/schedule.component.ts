@@ -5,6 +5,9 @@ import {
   ChangeDetectorRef,
   Injectable,
   ViewEncapsulation,
+  Output,
+  EventEmitter,
+  Input,
 } from '@angular/core';
 import {
   isSameDay,
@@ -13,29 +16,25 @@ import {
   addDays,
   addMinutes,
 } from 'date-fns';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import {
   CalendarDateFormatter,
   CalendarEvent,
-  CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
   CalendarWeekViewBeforeRenderEvent,
   DateFormatterParams,
   DAYS_OF_WEEK,
 } from 'angular-calendar';
-import { AppointmentService } from 'src/app/_services/appointment.service';
 import { Appointment } from 'src/app/models/appointment';
 import { WeekViewHourSegment } from 'calendar-utils';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentCreateComponent } from 'src/app/components/appointment/appointment-create/appointment-create.component';
 import { AppointmentEditComponent } from 'src/app/components/appointment/appointment-edit/appointment-edit.component';
 import { AppointmentParams } from 'src/app/models/appointmentParams';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
-import { WorkingHours } from 'src/app/models/workingHours';
-import { checkMargins } from 'ngx-bootstrap/positioning';
 import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
 
@@ -118,9 +117,21 @@ export class ScheduleComponent implements OnInit {
 
   customHours: CustomHours[];
 
+  @Output() getAppointments = new EventEmitter();
+  @Input()
+  get appointments() {
+    return this._appointments;
+  }
+  set appointments(data: Appointment[]) {
+    if (!data) return;
+    this.mapData(data);
+    this._appointments = data;
+  }
+
+  private _appointments: Appointment[];
+
   constructor(
     private cdr: ChangeDetectorRef,
-    private appointmentService: AppointmentService,
     private workingHoursService: WorkingHoursService,
     private customHoursService: CustomHoursService,
     private modalService: BsModalService
@@ -177,7 +188,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.editAppointmentModal.onHide.subscribe((e) => {
-      this.getAppointments();
+      this.getAppointments.emit(this.params);
     });
   }
 
@@ -239,22 +250,12 @@ export class ScheduleComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
-  getAppointments() {
-    this.appointmentService.get(this.params).subscribe((data) => {
-      this.mapData(data);
-    });
-  }
-
   mapData(appointments: Appointment[]) {
     this.events = appointments.map((appt) => {
-      let clientFullName = '';
-      if (appt.client) {
-        clientFullName = this.getClientFullName(appt.client);
-      }
-      const apptTitle = clientFullName || 'Client XY';
+      const apptTitle = appt.client?.fullName || 'Client XY';
       const apptColor = {
         primary: appt.appointmentType.color,
-        secondary: colorShade(appt.appointmentType.color, 0),
+        secondary: colorShade(appt.appointmentType.color, 20),
       };
       return {
         start: new Date(appt.startsAt + 'Z'),
@@ -339,7 +340,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.createAppointmentModal.onHide.subscribe((e) => {
-      this.getAppointments();
+      this.getAppointments.emit(this.params);
     });
   }
 
@@ -352,14 +353,8 @@ export class ScheduleComponent implements OnInit {
       }
     );
     this.createAppointmentModal.onHide.subscribe((e) => {
-      this.getAppointments();
+      this.getAppointments.emit(this.params);
     });
-  }
-
-  getClientFullName(client) {
-    if (client.firstName !== undefined && client.lastName !== undefined) {
-      return client.firstName + ' ' + client.lastName;
-    }
   }
 
   setParamDates(event: any) {
@@ -371,7 +366,7 @@ export class ScheduleComponent implements OnInit {
     }
     this.params.dateFrom = new Date(event.period.start);
     this.params.dateTo = new Date(event.period.end);
-    this.getAppointments();
+    this.getAppointments.emit(this.params);
   }
 
   private reload() {
