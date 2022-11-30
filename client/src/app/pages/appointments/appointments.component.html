@@ -19,6 +19,21 @@
         placeholder="Select a barber..."
       >
       </ng-select>
+      <div class="appointment-types">
+        <h5>Appointment Types</h5>
+        <hr />
+        <div *ngFor="let type of appointmentTypes$ | async">
+          <div class="d-flex mt-2">
+            <span
+              [style.backgroundColor]="type.color"
+              class="color-circle mr-2"
+            ></span>
+            <span>
+              {{ type.name }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-8">
       <h3>Appointments</h3>

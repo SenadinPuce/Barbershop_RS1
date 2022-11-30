@@ -11,3 +11,13 @@
     padding-left: 40px;
     padding-right: 25px;
 }
+.color-circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    display: inline-block;
+    border: 1px solid lightgray;
+}
+.appointment-types{
+    margin-top: 60px;
+}
