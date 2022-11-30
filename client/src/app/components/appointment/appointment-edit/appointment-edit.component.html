@@ -11,7 +11,7 @@
       class="p-3"
     >
       <div class="row">
-        <div class="form-group col p-0">
+        <div class="form-group col-8 p-0">
           <label class="lh">Appointment Type</label>
           <ng-select
             [items]="appointmentTypes"
@@ -22,9 +22,27 @@
             [closeOnSelect]="true"
             [markFirst]="true"
             [hideSelected]="true"
+            [clearable]="false"
             name="appointmentTypes"
             required
             (change)="setAppointmentDuration()"
+          >
+          </ng-select>
+        </div>
+        <div class="form-group col-4 pr-0">
+          <label class="lh">Status</label>
+          <ng-select
+            [items]="appointmentStatuses"
+            bindLabel="name"
+            bindValue="id"
+            [(ngModel)]="model.appointmentStatusId"
+            [multiple]="false"
+            [closeOnSelect]="true"
+            [markFirst]="true"
+            [hideSelected]="true"
+            [clearable]="false"
+            name="appointmentStatus"
+            required
           >
           </ng-select>
         </div>
@@ -80,6 +98,7 @@
             [closeOnSelect]="true"
             [markFirst]="true"
             [hideSelected]="true"
+            [clearable]="false"
             name="barber"
             required
             placeholder="Choose a barber..."

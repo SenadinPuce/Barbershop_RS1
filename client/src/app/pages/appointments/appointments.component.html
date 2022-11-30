@@ -25,6 +25,7 @@
       <hr />
       <app-schedule
         (getAppointments)="onGetAppointments($event)"
+        (openEditModal)="onEdit($event)"
         [appointments]="appointments$ | async"
       ></app-schedule>
     </div>
@@ -32,5 +33,7 @@
 
   <app-appointment-list
     [appointments]="appointments$ | async"
+    (openEditModal)="onEdit($event)"
+    (getAppointments)="loadAppointments()"
   ></app-appointment-list>
 </div>

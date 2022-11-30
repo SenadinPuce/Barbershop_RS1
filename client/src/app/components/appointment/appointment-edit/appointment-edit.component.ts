@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
+import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { BaseParams } from 'src/app/models/baseParams';
 import { Client } from 'src/app/models/client';
+import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
 import { BarberService } from 'src/app/_services/barber.service';
@@ -17,7 +19,7 @@ import { ClientService } from 'src/app/_services/client.service';
 })
 export class AppointmentEditComponent implements OnInit {
   model: Partial<Appointment> = {};
-
+  appointmentStatuses: AppointmentStatus[];
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[] = [];
@@ -26,6 +28,7 @@ export class AppointmentEditComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private appointmentTypeService: AppointmentTypeService,
+    private appointmentStatusService: AppointmentStatusService,
     private barberService: BarberService,
     private clientService: ClientService,
     private modal: BsModalRef
@@ -33,6 +36,7 @@ export class AppointmentEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAppointmentTypes();
+    this.loadAppointmentStatuses();
     this.loadClients();
     this.loadBarbers();
     this.fetchAppointment(this.model.id);
@@ -87,6 +91,12 @@ export class AppointmentEditComponent implements OnInit {
     });
   }
 
+  loadAppointmentStatuses() {
+    this.appointmentStatusService.get().subscribe((data) => {
+      this.appointmentStatuses = data;
+    });
+  }
+
   fetchAppointment(id) {
     this.appointmentService.getById(id).subscribe((data) => {
       this.mapAppointment(data);
@@ -101,12 +111,12 @@ export class AppointmentEditComponent implements OnInit {
     this.model.appointmentTypeId = appointment.appointmentTypeId;
     this.model.barberId = appointment.barberId;
     this.model.clientId = appointment.clientId;
-    this.model.duration = appointment.duration;
     this.model.appointmentStatusId = appointment.appointmentStatusId;
     this.model.note = appointment.note;
-    if (this.model.startsAt === undefined && this.model.endsAt === undefined) {
-      this.model.startsAt = new Date(appointment.startsAt + 'Z');
-      this.model.endsAt = new Date(appointment.endsAt + 'Z');
+    if (!this.model.startsAt && !this.model.endsAt) {
+      this.model.startsAt = appointment.startsAt;
+      this.model.endsAt = appointment.endsAt;
+      this.model.duration = appointment.duration;
     }
   }
 }

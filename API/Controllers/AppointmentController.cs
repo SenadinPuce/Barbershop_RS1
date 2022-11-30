@@ -103,5 +103,37 @@ namespace API.Controllers
 
             return Ok(model);
         }
+
+        [HttpPut("{id}/complete")]
+        public async Task<ActionResult> CompleteAsync(int id)
+        {
+            var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
+            if (appointment == null)
+            {
+                return BadRequest();
+            }
+            var completedStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Completed");
+            appointment.AppointmentStatusId = completedStatus.Id;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut("{id}/cancel")]
+        public async Task<ActionResult> CancelAsync(int id)
+        {
+            var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
+            if (appointment == null)
+            {
+                return BadRequest();
+            }
+            var canceledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Canceled");
+            appointment.AppointmentStatusId = canceledStatus.Id;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

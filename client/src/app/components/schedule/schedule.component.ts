@@ -109,7 +109,6 @@ export class ScheduleComponent implements OnInit {
   activeDayIsOpen: boolean = true;
 
   createAppointmentModal: BsModalRef;
-  editAppointmentModal: BsModalRef;
   params = new AppointmentParams();
 
   dayStartHour: number;
@@ -118,6 +117,7 @@ export class ScheduleComponent implements OnInit {
   customHours: CustomHours[];
 
   @Output() getAppointments = new EventEmitter();
+  @Output() openEditModal = new EventEmitter();
   @Input()
   get appointments() {
     return this._appointments;
@@ -177,19 +177,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   onEditAppointment(appointment) {
-    this.editAppointmentModal = this.modalService.show(
-      AppointmentEditComponent,
-      {
-        animated: false,
-        class: 'modal-dialog-centered modal-lg',
-        initialState: {
-          model: appointment,
-        },
-      }
-    );
-    this.editAppointmentModal.onHide.subscribe((e) => {
-      this.getAppointments.emit(this.params);
-    });
+    this.openEditModal.emit(appointment);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -234,6 +222,8 @@ export class ScheduleComponent implements OnInit {
     if (action === 'Resized or Dragged') {
       appointment.startsAt = event.start;
       appointment.endsAt = event.end;
+      appointment.duration =
+        (appointment.endsAt.getTime() - appointment.startsAt.getTime()) / 60000;
     }
     this.onEditAppointment(appointment);
   }
@@ -258,8 +248,8 @@ export class ScheduleComponent implements OnInit {
         secondary: colorShade(appt.appointmentType.color, 20),
       };
       return {
-        start: new Date(appt.startsAt + 'Z'),
-        end: new Date(appt.endsAt + 'Z'),
+        start: appt.startsAt,
+        end: appt.endsAt,
         title: apptTitle,
         color: apptColor,
         allDay: false,

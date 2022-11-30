@@ -45,8 +45,10 @@ export class AppointmentService {
         map((data) => {
           data.forEach((appt) => {
             if (appt.client) appt.client.fullName = getFullName(appt.client);
-
             appt.barber.fullName = getFullName(appt.barber);
+
+            appt.startsAt = new Date(appt.startsAt + 'Z');
+            appt.endsAt = new Date(appt.endsAt + 'Z');
           });
           this.apptCache.set(Object.values(params).join('-'), data);
           return data;
@@ -65,6 +67,24 @@ export class AppointmentService {
 
   update(resource) {
     return this.http.put(this.baseUrl + '/' + resource.id, resource).pipe(
+      map(() => {
+        this.apptCache.clear();
+        return true;
+      })
+    );
+  }
+
+  complete(id) {
+    return this.http.put(this.baseUrl + '/' + id + '/complete', {}).pipe(
+      map(() => {
+        this.apptCache.clear();
+        return true;
+      })
+    );
+  }
+
+  cancel(id) {
+    return this.http.put(this.baseUrl + '/' + id + '/cancel', {}).pipe(
       map(() => {
         this.apptCache.clear();
         return true;

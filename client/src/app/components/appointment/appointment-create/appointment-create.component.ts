@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Appointment } from 'src/app/models/appointment';
+import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { BaseParams } from 'src/app/models/baseParams';
 import { Client } from 'src/app/models/client';
+import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
 import { BarberService } from 'src/app/_services/barber.service';
@@ -17,7 +19,7 @@ import { ClientService } from 'src/app/_services/client.service';
 })
 export class AppointmentCreateComponent implements OnInit {
   model: Partial<Appointment> = {};
-
+  appointmentStatuses: AppointmentStatus[];
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[] = [];
@@ -26,6 +28,7 @@ export class AppointmentCreateComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private appointmentTypeService: AppointmentTypeService,
+    private appointmentStatusService: AppointmentStatusService,
     private barberService: BarberService,
     private clientService: ClientService,
     private modal: BsModalRef
@@ -33,6 +36,7 @@ export class AppointmentCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAppointmentTypes();
+    this.loadAppointmentStatuses();
     this.loadClients();
     this.loadBarbers();
   }
@@ -86,6 +90,15 @@ export class AppointmentCreateComponent implements OnInit {
   loadAppointmentTypes() {
     this.appointmentTypeService.getAppointmentTypes().subscribe((data) => {
       this.appointmentTypes = data;
+    });
+  }
+
+  loadAppointmentStatuses() {
+    this.appointmentStatusService.get().subscribe((data) => {
+      this.appointmentStatuses = data;
+      this.model.appointmentStatusId = this.appointmentStatuses.find(
+        (x) => x.name === 'Scheduled'
+      ).id;
     });
   }
 
