@@ -54,7 +54,10 @@ export class BarberEditComponent implements OnInit {
 
   initializeUploader() {
     var token: string;
-    this.accountService.currentUser$.subscribe((x) => (token = x.token));
+    this.accountService.currentUser$.subscribe((x) => {
+      token = x?.token;
+      console.log('initialize uploader');
+    });
     this.uploader = new FileUploader({
       isHTML5: true,
       allowedFileType: ['image'],
@@ -139,6 +142,6 @@ export class BarberEditComponent implements OnInit {
     this.availableServices = this.services.filter(
       (x) => !this.barberServices.some((y) => y.serviceId === x.id)
     );
-    this.form.control.markAsDirty();
+    if (this.form) this.form.control.markAsDirty();
   }
 }

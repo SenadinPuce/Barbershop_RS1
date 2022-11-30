@@ -1,6 +1,7 @@
-<div *ngIf="client" class="container">
+<div *ngIf="client">
   <div class="modal-header">
     <h3>Edit Client</h3>
+    <hr />
   </div>
 
   <div class="modal-body">
@@ -8,6 +9,7 @@
       #editClientForm="ngForm"
       autocomplete="off"
       (ngSubmit)="updateClient()"
+      class="p-2"
     >
       <div class="form-row">
         <div class="col-md-6 form-group">
@@ -112,7 +114,8 @@
           </div>
         </div>
       </div>
-      <div class="form-group text-center mt-3">
+      <hr />
+      <div>
         <button
           class="btn btn-success mr-2"
           type="submit"

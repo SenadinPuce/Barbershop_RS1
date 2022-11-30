@@ -23,7 +23,7 @@
       <button
         class="btn btn-success mr-2"
         (click)="onSave()"
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || !form.dirty"
       >
         Save Changes
       </button>

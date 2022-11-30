@@ -10,28 +10,35 @@
     <thead>
       <th>Appointment Type</th>
       <th>Duration</th>
-      <th style="width: 13%">Actions</th>
+      <th class="actions-column">Actions</th>
     </thead>
     <tbody>
       <tr *ngFor="let type of appointmentTypes">
         <td>
-          <span
-            [style.backgroundColor]="type.color"
-            class="color-circle mr-2"
-          ></span>
-          {{ type.name }}
+          <div class="d-flex">
+            <span
+              [style.backgroundColor]="type.color"
+              class="color-circle mr-2"
+            ></span>
+            {{ type.name }}
+          </div>
         </td>
         <td>
           {{ type.duration }}
         </td>
         <td style="text-align: center">
           <button
-            class="btn btn-info btn-action mr-1"
+            class="btn btn-action mr-1"
             (click)="onEdit(type.id)"
+            title="Edit"
           >
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-danger btn-action" (click)="onDelete(type.id)">
+          <button
+            class="btn btn-action"
+            (click)="onDelete(type.id)"
+            title="Delete"
+          >
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </td>

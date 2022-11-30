@@ -58,3 +58,10 @@
     cursor: pointer;
     color: red;
  }
+ .actions-column{
+    width: 13%;
+    text-align: center;
+ }
+ .custom-control-label{
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
-<div class="container">
+<div>
   <div class="modal-header">
     <h5>Edit Appointment Type</h5>
+    <hr />
   </div>
 
   <div class="modal-body">
@@ -9,6 +10,7 @@
       (ngSubmit)="onUpdate()"
       autocomplete="off"
       *ngIf="resource !== undefined"
+      class="p-2"
     >
       <div class="row">
         <div class="form-group col-10 p-0">
@@ -63,8 +65,9 @@
           </ng-select>
         </div>
       </div>
+      <hr />
       <div class="row">
-        <div class="form-group p-0">
+        <div class="p-0">
           <button
             class="btn btn-success mr-2"
             type="submit"
@@ -72,7 +75,11 @@
           >
             Save
           </button>
-          <button class="btn btn-danger mr-2" (click)="cancel()" type="button">
+          <button
+            class="btn btn-secondary mr-2"
+            (click)="cancel()"
+            type="button"
+          >
             Cancel
           </button>
         </div>

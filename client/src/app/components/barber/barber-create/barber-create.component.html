@@ -10,13 +10,15 @@
           src="{{ barber.photo?.url || './assets/images/user.png' }}"
           class="card-img-top img-thumbnail"
         />
-        <div class="card-footer text-center">
+        <div class="card-footer text-center pb-0">
           <label
             for="imageUpload"
-            class="btn btn-secondary mr-1 mb-0"
-            [ngClass]="this.loading ? 'disabled' : ''"
+            class="btn btn-secondary mx-1 mb-0"
+            [ngClass]="loading ? 'disabled' : ''"
             >Choose Image</label
           >
+          <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+          <br />
           <span>{{ fileName }}</span>
           <input
             type="file"
@@ -24,7 +26,7 @@
             [uploader]="uploader"
             class="mt-2"
             id="imageUpload"
-            *ngIf="!this.loading"
+            *ngIf="!loading"
           /><br />
         </div>
       </div>
@@ -135,7 +137,7 @@
         </form>
       </div>
     </div>
-    <div class="col d-flex justify-content-center">
+    <div class="buttons-margin">
       <button
         class="btn btn-success mr-2"
         type="submit"
