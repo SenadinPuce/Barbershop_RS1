@@ -1,5 +1,5 @@
 <div class="container my-5">
-  <table class="table table-bordered">
+  <table class="table table-bordered" *ngIf="appointmentStatuses">
     <thead>
       <th>Day</th>
       <th>From</th>
@@ -23,14 +23,24 @@
           {{ appt.barber.fullName }}
         </td>
         <td>{{ appt.client?.fullName }}</td>
-        <td class="text-center">
-          <button class="btn btn-action">
+        <td>
+          <button class="btn btn-action" (click)="onEdit(appt)" title="Edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-action">
+          <button
+            class="btn btn-action"
+            *ngIf="appt.appointmentStatusId === scheduledStatus.id"
+            (click)="onCancel(appt.id)"
+            title="Cancel"
+          >
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-action">
+          <button
+            class="btn btn-action"
+            (click)="onComplete(appt.id)"
+            *ngIf="appt.appointmentStatusId === scheduledStatus.id"
+            title="Complete"
+          >
             <i class="fa fa-check" aria-hidden="true"></i>
           </button>
         </td>

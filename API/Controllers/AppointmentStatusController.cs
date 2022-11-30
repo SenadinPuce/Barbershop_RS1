@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/appointment-statuses")]
+    [Route("api/appointment-status")]
     public class AppointmentStatusController : ControllerBase
     {
         private readonly DataContext _context;
