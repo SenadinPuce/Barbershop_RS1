@@ -46,6 +46,7 @@ export class CustomHoursComponent implements OnInit {
 
   remove(index: number) {
     this.customHoursArray.removeAt(index);
+    this.form.markAsDirty();
   }
 
   add() {

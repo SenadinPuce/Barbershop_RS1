@@ -20,53 +20,58 @@
       <p class="d-inline-block">
         Set standard working hours for this location.
       </p>
-      <button class="btn btn-success mr-2" (click)="onSave()">
+      <button
+        class="btn btn-success mr-2"
+        (click)="onSave()"
+        [disabled]="!form.valid || !form.dirty"
+      >
         Save Changes
       </button>
     </div>
 
     <div class="m-4">
-      <form #workingHoursForm="ngForm" id="workingHours" autocomplete="off">
-        <div class="row mb-2" *ngFor="let item of workingHours">
-          <div class="col-2 custom-margin">
-            <span>{{ item.day }}</span>
-          </div>
-          <div class="col-2 custom-margin">
-            <div class="custom-control custom-switch">
-              <input
-                type="checkbox"
-                class="custom-control-input pointer"
-                [(ngModel)]="item.isOpen"
-                id="checkbox-{{ item.day }}"
-                name="isOpen-{{ item.id }}"
-              />
-              <label
-                class="custom-control-label"
-                for="checkbox-{{ item.day }}"
-                >{{ item.isOpen ? "Open" : "Closed" }}</label
-              >
+      <form [formGroup]="form" id="workingHours" autocomplete="off">
+        <div formArrayName="workingHours">
+          <div *ngFor="let group of workingHoursArrayGroups; let i = index">
+            <div [formGroupName]="i" class="row mb-2">
+              <div class="col-2 custom-margin">
+                <span>{{ group.controls["day"].value }}</span>
+              </div>
+              <div class="col-2 custom-margin">
+                <div class="custom-control custom-switch">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input pointer"
+                    id="checkbox-{{ i }}"
+                    formControlName="isOpen"
+                  />
+                  <label class="custom-control-label" for="checkbox-{{ i }}">{{
+                    group.controls["isOpen"].value ? "Open" : "Closed"
+                  }}</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <timepicker
+                  class="timepicker"
+                  *ngIf="group.controls['isOpen'].value === true"
+                  [showMeridian]="false"
+                  formControlName="from"
+                ></timepicker>
+              </div>
+              <div class="col-1 custom-margin text-center">
+                <span *ngIf="group.controls['isOpen'].value === true">
+                  TO
+                </span>
+              </div>
+              <div class="col-3">
+                <timepicker
+                  class="timepicker"
+                  *ngIf="group.controls['isOpen'].value === true"
+                  [showMeridian]="false"
+                  formControlName="to"
+                ></timepicker>
+              </div>
             </div>
-          </div>
-          <div class="col-3">
-            <timepicker
-              class="timepicker"
-              *ngIf="item.isOpen"
-              [(ngModel)]="item.from"
-              name="from-{{ item.id }}"
-              [showMeridian]="false"
-            ></timepicker>
-          </div>
-          <div class="col-1 custom-margin text-center">
-            <span *ngIf="item.isOpen"> TO </span>
-          </div>
-          <div class="col-3">
-            <timepicker
-              class="timepicker"
-              *ngIf="item.isOpen"
-              [(ngModel)]="item.to"
-              name="to-{{ item.id }}"
-              [showMeridian]="false"
-            ></timepicker>
           </div>
         </div>
       </form>
