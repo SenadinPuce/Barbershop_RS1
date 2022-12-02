@@ -105,7 +105,7 @@ export class ScheduleComponent implements OnInit {
   excludeDays: number[] = [];
 
   refresh = new Subject<void>();
-  events: CalendarEvent[] = [];
+  events: CalendarEvent<Appointment>[] = [];
   activeDayIsOpen: boolean = true;
 
   createAppointmentModal: BsModalRef;
@@ -276,6 +276,7 @@ export class ScheduleComponent implements OnInit {
       meta: {
         tmpEvent: true,
       },
+      appointmentId: null,
     };
     this.events = [...this.events, dragToSelectEvent];
     const segmentPosition = segmentElement.getBoundingClientRect();
