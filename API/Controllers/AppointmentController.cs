@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Helpers;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers

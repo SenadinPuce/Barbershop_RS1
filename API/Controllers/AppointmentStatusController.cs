@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;

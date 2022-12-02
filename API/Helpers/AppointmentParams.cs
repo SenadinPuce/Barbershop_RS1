@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace API.Helpers
+﻿namespace API.Helpers
 {
     public class AppointmentParams : BaseParams
     {

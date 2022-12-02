@@ -2,11 +2,8 @@
 using API.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
-using System;
-using System.Threading.Tasks;
 
 namespace API.Services
 {
