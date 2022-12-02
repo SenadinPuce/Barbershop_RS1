@@ -13,8 +13,8 @@
       class="p-2"
     >
       <div class="row">
-        <div class="form-group col-10 p-0">
-          <label class="lh">Name</label>
+        <div class="mb-3 col-10 p-0">
+          <label class="lh form-label">Name</label>
           <input
             type="text"
             class="form-control"
@@ -24,8 +24,8 @@
             required
           />
         </div>
-        <div class="form-group col-2">
-          <label class="lh">Color</label>
+        <div class="mb-3 col-2">
+          <label class="lh form-label">Color</label>
           <input
             [(colorPicker)]="resource.color"
             [style.background]="resource.color"
@@ -34,8 +34,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-4 p-0">
-          <label>Duration</label>
+        <div class="mb-3 col-4 p-0">
+          <label class="form-label">Duration</label>
           <input
             type="number"
             class="form-control"
@@ -48,8 +48,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col p-0">
-          <label for="service">Choose services</label>
+        <div class="mb-3 col p-0">
+          <label class="form-label" for="service">Choose services</label>
           <ng-select
             [items]="services"
             bindLabel="name"
@@ -69,14 +69,14 @@
       <div class="row">
         <div class="p-0">
           <button
-            class="btn btn-success mr-2"
+            class="btn btn-success me-2"
             type="submit"
             [disabled]="!apptTypeForm.valid"
           >
             Save
           </button>
           <button
-            class="btn btn-secondary mr-2"
+            class="btn btn-secondary me-2"
             (click)="cancel()"
             type="button"
           >

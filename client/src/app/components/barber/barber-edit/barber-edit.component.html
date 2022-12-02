@@ -33,14 +33,16 @@
       </div>
     </div>
 
-    <div class="col-9 barber-tabset">
+    <div class="col-9 barber-tabset ps-3">
       <tabset #barberTabs>
         <tab heading="About">
           <div class="my-4">
             <form #editProfileForm="ngForm" autocomplete="off">
-              <div class="form-row">
-                <div class="col-md-6 form-group">
-                  <label for="firstName" class="lh">First Name:</label>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="lh form-label"
+                    >First Name</label
+                  >
                   <input
                     class="form-control"
                     type="text"
@@ -52,7 +54,7 @@
                   />
                 </div>
                 <div class="col-md-6">
-                  <label for="lastName" class="lh">Last Name:</label>
+                  <label for="lastName" class="lh form-label">Last Name</label>
                   <input
                     class="form-control"
                     type="text"
@@ -64,8 +66,10 @@
                   />
                 </div>
               </div>
-              <div class="form-group">
-                <label class="lh" for="dateOfBirth">Date Of Birth: </label>
+              <div class="mb-3">
+                <label class="lh form-label" for="dateOfBirth"
+                  >Date Of Birth
+                </label>
                 <input
                   type="text"
                   class="form-control"
@@ -80,8 +84,8 @@
                   required
                 />
               </div>
-              <div class="form-group">
-                <label for="phone" class="lh">Phone:</label>
+              <div class="mb-3">
+                <label for="phone" class="lh form-label">Phone</label>
                 <label
                   *ngIf="
                     phoneNumber.invalid &&
@@ -104,8 +108,8 @@
                   #phoneNumber="ngModel"
                 />
               </div>
-              <div class="form-group">
-                <label for="email" class="lh">Email:</label>
+              <div class="mb-3">
+                <label for="email" class="lh form-label">Email</label>
                 <label
                   *ngIf="
                     email.invalid &&
@@ -127,8 +131,8 @@
                   #email="ngModel"
                 />
               </div>
-              <div class="form-group">
-                <label class="lh">Note</label>
+              <div class="mb-3">
+                <label class="lh form-label">Note</label>
                 <textarea
                   class="form-control textarea"
                   name="note"
@@ -151,8 +155,8 @@
               </div>
             </div>
             <hr />
-            <div *ngFor="let bs of barberServices" class="form-row">
-              <div class="col-md-6 form-group">
+            <div *ngFor="let bs of barberServices" class="row">
+              <div class="col-md-6 mb-3">
                 <ng-select
                   [items]="bs.isNew ? bs.availableServices : services"
                   bindLabel="name"
@@ -168,14 +172,14 @@
                 >
                 </ng-select>
               </div>
-              <div class="col-md-3 form-group">
+              <div class="col-md-3 mb-3">
                 <input
                   type="number"
                   class="form-control"
                   [(ngModel)]="bs.price"
                 />
               </div>
-              <div class="col-md-3 form-group">
+              <div class="col-md-3 mb-3">
                 <span
                   style="color: red; cursor: pointer"
                   (click)="removeService(bs.serviceId)"
@@ -198,17 +202,16 @@
         </tab>
       </tabset>
     </div>
-    <hr />
     <div class="buttons-margin">
       <button
-        class="btn btn-success mr-2"
+        class="btn btn-success me-2"
         type="submit"
         [disabled]="!editProfileForm.valid || !editProfileForm.dirty || loading"
         (click)="updateProfile()"
       >
         Save Changes
       </button>
-      <button class="btn btn-secondary mr-2" (click)="cancel()" type="button">
+      <button class="btn btn-secondary me-2" (click)="cancel()" type="button">
         Cancel
       </button>
     </div>

@@ -21,7 +21,7 @@
         Set additional open/closed hours for this location.
       </p>
       <button
-        class="btn btn-success mr-2"
+        class="btn btn-success me-2"
         (click)="onSave()"
         [disabled]="!form.valid || !form.dirty"
       >
@@ -33,7 +33,7 @@
       <form [formGroup]="form" autocomplete="off">
         <div formGroupName="customHours">
           <div class="row">
-            <div class="col-3 mr-2">
+            <div class="col-3 me-2">
               <label class="lh">Description</label>
             </div>
             <div class="col-2">
@@ -57,16 +57,21 @@
                 />
               </div>
               <div class="col-md-2">
-                <div class="custom-control custom-switch">
+                <div class="form-check form-switch">
                   <input
+                    class="form-check-input"
                     type="checkbox"
-                    class="custom-control-input pointer"
+                    role="switch"
+                    id="custom-cb-{{ i }}"
                     formControlName="isOpen"
-                    id="checkbox-{{ i }}"
                   />
-                  <label class="custom-control-label" for="checkbox-{{ i }}">{{
-                    item.controls["isOpen"].value ? "Open" : "Closed"
-                  }}</label>
+                  <label
+                    class="form-check-label custom-control-label"
+                    for="custom-cb-{{ i }}"
+                    >{{
+                      item.controls["isOpen"].value ? "Open" : "Closed"
+                    }}</label
+                  >
                 </div>
               </div>
               <div class="col-3">
@@ -107,7 +112,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-4 pl-3">
+        <div class="mt-4 ps-3">
           <span class="link" (click)="add()">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             Add Custom

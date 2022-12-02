@@ -21,7 +21,7 @@
         Set standard working hours for this location.
       </p>
       <button
-        class="btn btn-success mr-2"
+        class="btn btn-success me-2"
         (click)="onSave()"
         [disabled]="!form.valid || !form.dirty"
       >
@@ -38,16 +38,21 @@
                 <span>{{ group.controls["day"].value }}</span>
               </div>
               <div class="col-2 custom-margin">
-                <div class="custom-control custom-switch">
+                <div class="form-check form-switch">
                   <input
+                    class="form-check-input"
                     type="checkbox"
-                    class="custom-control-input pointer"
+                    role="switch"
                     id="checkbox-{{ i }}"
                     formControlName="isOpen"
                   />
-                  <label class="custom-control-label" for="checkbox-{{ i }}">{{
-                    group.controls["isOpen"].value ? "Open" : "Closed"
-                  }}</label>
+                  <label
+                    class="form-check-label custom-control-label"
+                    for="checkbox-{{ i }}"
+                    >{{
+                      group.controls["isOpen"].value ? "Open" : "Closed"
+                    }}</label
+                  >
                 </div>
               </div>
               <div class="col-3">

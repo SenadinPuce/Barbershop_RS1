@@ -10,7 +10,7 @@
       [(ngModel)]="parameters.search"
     />
     <div class="d-flex align-items-center">
-      <label class="mr-2 mt-2" for="sortBy">Sort By: </label>
+      <label class="me-2 mt-2" for="sortBy">Sort By </label>
       <ng-select
         [items]="sorters"
         bindLabel="display"
@@ -28,33 +28,35 @@
     </div>
 
     <button class="btn btn-primary" routerLink="/clients/create">
-      <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>
+      <i class="fa fa-plus-circle me-1" aria-hidden="true"></i>
       New Client
     </button>
   </div>
 
   <table class="table table-bordered">
     <thead>
-      <th></th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th colspan="2" class="text-center">
-        Notifications <br />
-        <div class="d-flex">
-          <div class="w-50">
-            <span class="mr-2"
-              ><i class="fa fa-mobile mobile-icon" aria-hidden="true"></i>
-            </span>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th colspan="2" class="text-center">
+          Notifications <br />
+          <div class="d-flex">
+            <div class="w-50">
+              <span class="me-2"
+                ><i class="fa fa-mobile mobile-icon" aria-hidden="true"></i>
+              </span>
+            </div>
+            <div class="w-50">
+              <span class="ms-2"
+                ><i class="fa fa-envelope" aria-hidden="true"></i>
+              </span>
+            </div>
           </div>
-          <div class="w-50">
-            <span class="ml-2"
-              ><i class="fa fa-envelope" aria-hidden="true"></i>
-            </span>
-          </div>
-        </div>
-      </th>
-      <th class="actions-column">Actions</th>
+        </th>
+        <th class="actions-column">Actions</th>
+      </tr>
     </thead>
     <tbody>
       <tr *ngFor="let client of clients">
@@ -85,7 +87,7 @@
           />
         </td>
         <td class="text-center">
-          <button class="btn mr-1" (click)="onEdit(client.id)" title="Edit">
+          <button class="btn me-1" (click)="onEdit(client.id)" title="Edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
           <button class="btn" (click)="onDelete(client.id)" title="Delete">

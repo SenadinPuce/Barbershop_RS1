@@ -1,23 +1,25 @@
 <div class="container my-5">
   <table class="table table-bordered" *ngIf="appointmentStatuses">
     <thead>
-      <th>Day</th>
-      <th>From</th>
-      <th>To</th>
-      <th>Barber</th>
-      <th>Client</th>
-      <th class="actions-column">Actions</th>
+      <tr>
+        <th>Day</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Barber</th>
+        <th>Client</th>
+        <th class="actions-column">Actions</th>
+      </tr>
     </thead>
     <tbody>
       <tr *ngFor="let appt of appointments">
         <td>
-          {{ appt.startsAt | formatDate: "EEEE" }}
+          {{ appt.startsAt | formatDate : "EEEE" }}
         </td>
         <td>
-          {{ appt.startsAt | formatDate: "HH:mm" }}
+          {{ appt.startsAt | formatDate : "HH:mm" }}
         </td>
         <td>
-          {{ appt.endsAt | formatDate: "HH:mm" }}
+          {{ appt.endsAt | formatDate : "HH:mm" }}
         </td>
         <td>
           {{ appt.barber.fullName }}

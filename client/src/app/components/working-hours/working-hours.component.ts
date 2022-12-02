@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { WorkingHours } from 'src/app/models/workingHours';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
@@ -11,8 +11,8 @@ import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 })
 export class WorkingHoursComponent implements OnInit {
   isCollapsed = false;
-  form: FormGroup = new FormGroup({
-    workingHours: new FormArray([]),
+  form: UntypedFormGroup = new UntypedFormGroup({
+    workingHours: new UntypedFormArray([]),
   });
 
   constructor(
@@ -39,12 +39,12 @@ export class WorkingHoursComponent implements OnInit {
 
   initForm(data: WorkingHours[]) {
     data.forEach((wh) => {
-      const group = new FormGroup({
-        id: new FormControl(wh.id),
-        day: new FormControl(wh.day),
-        isOpen: new FormControl(wh.isOpen),
-        from: new FormControl(wh.from),
-        to: new FormControl(wh.to),
+      const group = new UntypedFormGroup({
+        id: new UntypedFormControl(wh.id),
+        day: new UntypedFormControl(wh.day),
+        isOpen: new UntypedFormControl(wh.isOpen),
+        from: new UntypedFormControl(wh.from),
+        to: new UntypedFormControl(wh.to),
       });
 
       this.workingHoursArray.push(group);
@@ -52,10 +52,10 @@ export class WorkingHoursComponent implements OnInit {
   }
 
   get workingHoursArray() {
-    return this.form.get('workingHours') as FormArray;
+    return this.form.get('workingHours') as UntypedFormArray;
   }
 
   get workingHoursArrayGroups() {
-    return this.workingHoursArray.controls as FormGroup[];
+    return this.workingHoursArray.controls as UntypedFormGroup[];
   }
 }

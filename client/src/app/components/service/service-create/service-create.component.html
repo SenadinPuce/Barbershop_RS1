@@ -9,47 +9,44 @@
     class="col-6 mt-5"
   >
     <div class="row">
-      <div class="form-group col p-0">
-        <label>Name</label>
+      <div class="mb-3 col p-0">
+        <label class="form-label">Name</label>
         <input
           type="text"
           class="form-control"
           name="name"
           [(ngModel)]="model.name"
-          placeholder="Enter name"
           required
         />
       </div>
     </div>
     <div class="row">
-      <div class="form-group col-6 p-0">
-        <label>Duration</label>
+      <div class="mb-3 col-6 p-0">
+        <label class="form-label">Duration</label>
         <input
           type="number"
           class="form-control"
           name="duration"
           [(ngModel)]="model.duration"
-          placeholder="Enter duration"
           step="5"
           value="0"
           required
         />
       </div>
-      <div class="form-group col-6 pr-0">
-        <label>Price</label>
+      <div class="mb-3 col-6 pe-0">
+        <label class="form-label">Price</label>
         <input
           type="number"
           class="form-control"
           name="defaultPrice"
           [(ngModel)]="model.defaultPrice"
-          placeholder="Enter default price"
           required
         />
       </div>
     </div>
     <div class="row">
-      <div class="form-group col p-0">
-        <label class="lh">Description</label>
+      <div class="mb-3 col p-0">
+        <label class="lh form-label">Description</label>
         <textarea
           class="form-control textarea"
           name="description"
@@ -62,13 +59,13 @@
     <hr />
     <div class="mt-2">
       <button
-        class="btn btn-success mr-2"
+        class="btn btn-success me-2"
         type="submit"
         [disabled]="!apptTypeForm.valid"
       >
         Save
       </button>
-      <button class="btn btn-secondary mr-2" (click)="cancel()" type="button">
+      <button class="btn btn-secondary me-2" (click)="cancel()" type="button">
         Cancel
       </button>
     </div>

@@ -11,52 +11,52 @@ body{
 .table>tfoot>tr>th, 
 .table>thead>tr>td, 
 .table>thead>tr>th {
-      vertical-align: middle;
+    vertical-align: middle;
  }
 
  .required-asterisk{
-      color: red;
-      font-weight: bold;
-      margin-left: 3px;
-      font-size: 1.2em;
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
   }
 
   .btn-vertical-line{
-      margin: 0px 8px;
-      height: 25px;
-      display: inline-block;
-      width: 1px;
-      background-color: white;
-      vertical-align: bottom;
+    margin: 0px 8px;
+    height: 25px;
+    display: inline-block;
+    width: 1px;
+    background-color: white;
+    vertical-align: bottom;
  }
  .lh{
       line-height: 30px;
  }
  .row{
-      margin: 0px;
+    margin: 0px;
  }
  .textarea{
-      font-size: 0.8rem;
+    font-size: 0.8rem;
  }
  .cal-disabled{
-     background-color: rgb(231, 231, 231);
-     pointer-events: none;
+    background-color: rgb(231, 231, 231);
+    pointer-events: none;
  }
  .cal-week-view .cal-event{
-     color: #000000;
+    color: #000000;
  }
  .invalid{
-     margin-top: 0.25rem;
-     margin-left: 1rem;
-     font-size: 0.875em;
-     color: #df382c;
+    margin-top: 0.25rem;
+    margin-left: 1rem;
+    font-size: 0.875em;
+    color: #df382c;
  }
  .btn-action{
-     padding: 3px 9px;
+    padding: 3px 9px;
  }
  .link{
-      cursor: pointer;
-     color: #007bff; 
+    cursor: pointer;
+    color: #007bff; 
  }
  .minus-icon{
     cursor: pointer;
@@ -66,6 +66,11 @@ body{
     width: 13%;
     text-align: center;
  }
- .custom-control-label{
+.form-check-input{
     cursor: pointer;
+}
+.form-label{
+    margin-bottom: 4px;
+    color: #5a5a5a;
+    font-size: 0.9rem;
 }

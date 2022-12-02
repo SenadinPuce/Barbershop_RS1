@@ -4,9 +4,9 @@ import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -18,8 +18,8 @@ import {
 })
 export class CustomHoursComponent implements OnInit {
   isCollapsed = false;
-  form: FormGroup = new FormGroup({
-    customHours: new FormArray([]),
+  form: UntypedFormGroup = new UntypedFormGroup({
+    customHours: new UntypedFormArray([]),
   });
 
   constructor(
@@ -50,34 +50,34 @@ export class CustomHoursComponent implements OnInit {
   }
 
   add() {
-    const dateFrom = new FormControl(null, [
+    const dateFrom = new UntypedFormControl(null, [
       Validators.required,
       this.checkDateFrom(),
     ]);
-    const dateTo = new FormControl(null, [
+    const dateTo = new UntypedFormControl(null, [
       Validators.required,
       this.checkDateTo(),
     ]);
-    const description = new FormControl('');
-    const isOpen = new FormControl(false);
+    const description = new UntypedFormControl('');
+    const isOpen = new UntypedFormControl(false);
 
-    const formGroup = new FormGroup({ dateFrom, dateTo, description, isOpen });
+    const formGroup = new UntypedFormGroup({ dateFrom, dateTo, description, isOpen });
     this.customHoursArray.push(formGroup);
   }
 
   initForm(data: CustomHours[]) {
     data.forEach((el) => {
-      const dateFrom = new FormControl(new Date(el.dateFrom), [
+      const dateFrom = new UntypedFormControl(new Date(el.dateFrom), [
         Validators.required,
         this.checkDateFrom(),
       ]);
-      const dateTo = new FormControl(new Date(el.dateTo), [
+      const dateTo = new UntypedFormControl(new Date(el.dateTo), [
         Validators.required,
         this.checkDateTo(),
       ]);
-      const description = new FormControl(el.description);
-      const isOpen = new FormControl(el.isOpen);
-      const formGroup = new FormGroup({
+      const description = new UntypedFormControl(el.description);
+      const isOpen = new UntypedFormControl(el.isOpen);
+      const formGroup = new UntypedFormGroup({
         dateFrom,
         dateTo,
         description,
@@ -89,11 +89,11 @@ export class CustomHoursComponent implements OnInit {
   }
 
   get customHoursArray() {
-    return this.form.get('customHours') as FormArray;
+    return this.form.get('customHours') as UntypedFormArray;
   }
 
   get customHoursGroups() {
-    return this.customHoursArray.controls as FormGroup[];
+    return this.customHoursArray.controls as UntypedFormGroup[];
   }
 
   checkDateFrom(): ValidatorFn {

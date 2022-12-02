@@ -11,9 +11,9 @@
       (ngSubmit)="updateClient()"
       class="p-2"
     >
-      <div class="form-row">
-        <div class="col-md-6 form-group">
-          <label for="firstName" class="lh">First Name:</label>
+      <div class="row">
+        <div class="col-md-6 mb-3 p-0">
+          <label for="firstName" class="lh form-label">First Name</label>
           <input
             class="form-control"
             type="text"
@@ -24,8 +24,8 @@
             maxLength="50"
           />
         </div>
-        <div class="col-md-6">
-          <label for="lastName" class="lh">Last Name:</label>
+        <div class="col-md-6 ps-3 p-0">
+          <label for="lastName" class="lh form-label">Last Name</label>
           <input
             class="form-control"
             type="text"
@@ -37,9 +37,9 @@
           />
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group col-8">
-          <label for="phoneNumber" class="lh">Phone:</label>
+      <div class="row">
+        <div class="mb-3 col-8 p-0">
+          <label for="phoneNumber" class="lh form-label">Phone</label>
           <label
             *ngIf="
               phoneNumber.invalid &&
@@ -61,24 +61,24 @@
             #phoneNumber="ngModel"
           />
         </div>
-        <div class="col-4 mt-2">
-          <div class="custom-control custom-checkbox">
+        <div class="col-4 mt-2 d-flex align-items-center p-0 ps-3">
+          <div class="form-check">
             <input
+              class="form-check-input"
               type="checkbox"
-              class="custom-control-input"
               id="smsNotification"
-              name="smsNotification"
               [(ngModel)]="client.smsNotification"
+              name="smsNotification"
             />
-            <label class="custom-control-label" for="smsNotification"
-              >SMS Notification</label
-            >
+            <label class="form-check-label" for="smsNotification">
+              SMS Notification
+            </label>
           </div>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group col-8">
-          <label for="email" class="lh">Email:</label>
+      <div class="row">
+        <div class="mb-3 col-8 p-0">
+          <label for="email" class="lh form-label">Email</label>
           <label
             *ngIf="
               email.invalid &&
@@ -99,31 +99,31 @@
             #email="ngModel"
           />
         </div>
-        <div class="col-4 mt-2">
-          <div class="custom-control custom-checkbox">
+        <div class="col-4 mt-2 d-flex align-items-center p-0 ps-3">
+          <div class="form-check">
             <input
+              class="form-check-input"
               type="checkbox"
-              class="custom-control-input"
               id="emailNotification"
               [(ngModel)]="client.emailNotification"
               name="emailNotification"
             />
-            <label class="custom-control-label" for="emailNotification"
-              >Email Notification</label
-            >
+            <label class="form-check-label" for="emailNotification">
+              Email Notification
+            </label>
           </div>
         </div>
       </div>
       <hr />
       <div>
         <button
-          class="btn btn-success mr-2"
+          class="btn btn-success me-2"
           type="submit"
           [disabled]="!editClientForm.valid"
         >
           Save
         </button>
-        <button class="btn btn-secondary mr-2" (click)="cancel()" type="button">
+        <button class="btn btn-secondary me-2" (click)="cancel()" type="button">
           Cancel
         </button>
       </div>

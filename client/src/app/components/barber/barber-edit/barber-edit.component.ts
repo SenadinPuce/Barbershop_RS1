@@ -56,7 +56,6 @@ export class BarberEditComponent implements OnInit {
     var token: string;
     this.accountService.currentUser$.subscribe((x) => {
       token = x?.token;
-      console.log('initialize uploader');
     });
     this.uploader = new FileUploader({
       isHTML5: true,

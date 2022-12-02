@@ -11,13 +11,13 @@
       >
         Edit
       </button>
-      <button class="btn btn-danger ml-1" (click)="onDelete(barber.id)">
+      <button class="btn btn-danger ms-1" (click)="onDelete(barber.id)">
         Delete
       </button>
     </div>
   </div>
   <div class="row">
-    <div class="col-4">
+    <div class="col-3">
       <div class="card">
         <img
           src="{{ barber.photo?.url || 'assets/images/user.png' }}"
@@ -45,14 +45,16 @@
       </div>
     </div>
 
-    <div class="col-8">
+    <div class="col-9">
       <tabset class="barber-tabset" #barberTabs>
         <tab heading="Services">
           <div class="container my-4" *ngIf="barber.barberServices.length > 0">
             <table class="table table-bordered">
               <thead>
-                <th style="width: 60%">Name</th>
-                <th>Price</th>
+                <tr>
+                  <th style="width: 60%">Name</th>
+                  <th>Price</th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let bs of barber.barberServices">

@@ -10,5 +10,5 @@ input[type="file"]{
     display: none;
 }
 .buttons-margin{
-    margin-left: 25%;
+    padding-left: 25%;
 }

@@ -146,7 +146,7 @@ export class ScheduleComponent implements OnInit {
     this.workingHoursService.get().subscribe((data) => {
       const excludingDays = data.filter((wh) => wh.isOpen !== true);
       excludingDays.forEach((ed) => {
-        this.excludeDays.push(DAYS_OF_WEEK[ed.day.toUpperCase()]);
+        this.excludeDays.push(DAYS_OF_WEEK[`${ed.day.toUpperCase()}`]);
       });
 
       let dayStartHour = 23;

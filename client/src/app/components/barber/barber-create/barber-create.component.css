@@ -2,7 +2,7 @@ input[type="file"]{
     display: none;
 }
 .buttons-margin{
-    margin-left: 25%;
+    padding-left: 25%;
 }
 .barber-tabset{
     border-bottom: 1px solid rgb(219, 219, 219);
