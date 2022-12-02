@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
 
+body{
+    font-family: 'Noto Serif', serif;
+}
 .table>tbody>tr>td, 
 .table>tbody>tr>th, 
 .table>tfoot>tr>td, 
