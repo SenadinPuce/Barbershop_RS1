@@ -41,6 +41,10 @@ namespace API.Helpers
             CreateMap<Photo, PhotoDto>().ReverseMap();
             CreateMap<WorkingHours, WorkingHoursDto>().ReverseMap();
             CreateMap<CustomHours, CustomHoursDto>().ReverseMap();
+
+            CreateMap<Message, MessageDto>()
+                .ForMember(d => d.SenderPhotoUrl, o => o.MapFrom(s => s.Sender.Photo.Url))
+                .ForMember(d => d.RecipientPhotoUrl, o => o.MapFrom(r => r.Recipient.Photo.Url));
         }
     }
 }

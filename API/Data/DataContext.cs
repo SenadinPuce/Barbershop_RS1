@@ -9,6 +9,10 @@ namespace API.Data
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DataContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<AppointmentType> AppointmentType { get; set; }
         public DbSet<AppointmentTypeService> AppointmentTypeService { get; set; }
         public DbSet<BarberService> BarberService { get; set; }
@@ -20,13 +24,14 @@ namespace API.Data
         public DbSet<Photo> Photo { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
         public DbSet<CustomHours> CustomHours { get; set; }
-        public DataContext(DbContextOptions options) : base(options)
-        {
-        }
-
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            
             builder.Entity<AppUser>()
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.User)
@@ -51,7 +56,18 @@ namespace API.Data
                 .HasForeignKey(bs => bs.ServiceId)
                 .IsRequired();
 
-            builder.Entity<AppointmentTypeService>().HasKey(apptTypeService => new { apptTypeService.AppointmentTypeId, apptTypeService.ServiceId });
+            builder.Entity<AppointmentTypeService>()
+                .HasKey(apptTypeService => new { apptTypeService.AppointmentTypeId, apptTypeService.ServiceId });
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
 
