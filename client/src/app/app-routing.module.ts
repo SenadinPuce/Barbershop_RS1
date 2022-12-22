@@ -18,6 +18,9 @@ import { AuthGuard } from './_guards/auth.guard';
 import { ClientComponent } from './pages/client/client.component';
 import { ClientCreateComponent } from './components/client/client-create/client-create.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { MessagesComponent } from './pages/messages/messages.component';
+import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
+import { ClientDetailedResolver } from './_resolvers/client-detailed.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -72,6 +75,14 @@ const routes: Routes = [
         component: SettingsComponent,
         canActivate: [AdminGuard],
       },
+      {
+        path: 'messages',
+        component: MessagesComponent
+      },
+      {
+        path: 'client/:id',
+        component: ClientDetailComponent, resolve: {client: ClientDetailedResolver}
+      }
     ],
   },
 

@@ -19,6 +19,7 @@ namespace API
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
+                await Seed.ClearConnections(context);
                 await Seed.SeedUsers(context, userManager, roleManager);
                 await Seed.SeedEntities(context, userManager);
             }

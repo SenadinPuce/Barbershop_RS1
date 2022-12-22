@@ -21,6 +21,7 @@ namespace API.Extensions
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddSignalR();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

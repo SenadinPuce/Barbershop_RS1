@@ -47,6 +47,9 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { WorkingHoursComponent } from './components/working-hours/working-hours.component';
 import { CustomHoursComponent } from './components/custom-hours/custom-hours.component';
 import { FormatDatePipe } from './_pipes/formatDate';
+import { MessagesComponent } from './pages/messages/messages.component';
+import { MemberMessagesComponent } from './components/member-messages/member-messages.component';
+import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +89,9 @@ import { FormatDatePipe } from './_pipes/formatDate';
     WorkingHoursComponent,
     CustomHoursComponent,
     FormatDatePipe,
+    MessagesComponent,
+    MemberMessagesComponent,
+    ClientDetailComponent,
   ],
   imports: [
     BrowserModule,

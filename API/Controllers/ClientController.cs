@@ -56,7 +56,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ClientDto>> GetClientByIdAsync(int id)
         {
-            var client = await _context.Client.Include(x => x.AppUser).ThenInclude(x => x.Photo).SingleOrDefaultAsync(x => x.Id == id);
+            var client = await _context.Client.Include(x => x.AppUser).ThenInclude(x => x.Photo).SingleOrDefaultAsync(x => x.AppUserId == id);
 
             if (client == null) return NotFound();
 

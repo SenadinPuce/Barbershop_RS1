@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Client } from '../models/client';
 import { PaginatedResult } from '../models/pagination';
 import { BaseParams } from '../models/baseParams';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,7 @@ export class ClientService {
       .find((x) => x.id === id);
     if (member) return of(member);
 
-    return this.http.get<Client>(this.baseUrl + '/' + id).pipe(
+    return this.http.get<User>(this.baseUrl + '/' + id).pipe(
       map((client) => {
         client.fullName = client.firstName + ' ' + client.lastName;
         return client;
