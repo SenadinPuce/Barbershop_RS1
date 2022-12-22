@@ -47,6 +47,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+@microsoft/signalr
+MIT
+
 @ng-bootstrap/ng-bootstrap
 MIT
 The MIT License (MIT)
@@ -257,6 +260,9 @@ font-awesome
 ng2-file-upload
 MIT
 
+ngx-bootstrap/buttons
+MIT
+
 ngx-bootstrap/chronos
 MIT
 The MIT License (MIT)
@@ -331,6 +337,9 @@ ngx-color-picker
 MIT
 
 ngx-spinner
+MIT
+
+ngx-timeago
 MIT
 
 ngx-toastr
