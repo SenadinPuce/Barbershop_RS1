@@ -1,4 +1,6 @@
 using API.Extensions;
+using API.SignalR;
+
 namespace API
 {
     public class Startup
@@ -31,7 +33,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:4200"));
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -42,6 +44,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<MessageHub>("hubs/message");
                 endpoints.MapFallbackToController("Index", "Fallback");
             });
         }

@@ -70,7 +70,7 @@ namespace API.Controllers
             var barber = new Barber();
             _mapper.Map(model, barber);
             barber.AppUser.UserName = username;
-            barber.AppUser.PhotoId = model.Photo?.Id;
+            barber.AppUser.Photo.Id = model.Photo!.Id;
             barber.AppUser.Photo = null;
 
             await _userManager.CreateAsync(barber.AppUser, "Barber0!");

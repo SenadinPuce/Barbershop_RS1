@@ -2,29 +2,35 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AccountService } from 'src/app/_services/account.service';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormGroup,
+  FormBuilder,
+  FormGroup,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AfterViewChecked, ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewChecked {
   @Output() cancelRegister = new EventEmitter();
-  registerForm: UntypedFormGroup;
+  registerForm: FormGroup;
   maxDate: Date;
   validationErrors: string[] = [];
 
   constructor(
     private accountService: AccountService,
-    private fb: UntypedFormBuilder,
-    private router: Router
+    private fb: FormBuilder,
+    private router: Router,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
+
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
+  }
 
   ngOnInit(): void {
     this.intitializeForm();

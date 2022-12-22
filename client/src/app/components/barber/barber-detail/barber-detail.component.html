@@ -46,9 +46,9 @@
     </div>
 
     <div class="col-9">
-      <tabset class="barber-tabset" #barberTabs>
-        <tab heading="Services">
-          <div class="container my-4" *ngIf="barber.barberServices.length > 0">
+      <tabset class="barber-tabset" #barberTabs >
+        <tab heading="Services" (selectTab)="onTabActivated($event)">
+          <div class="container my-4" *ngIf="barber.barberServices?.length > 0">
             <table class="table table-bordered">
               <thead>
                 <tr>
@@ -59,7 +59,7 @@
               <tbody>
                 <tr *ngFor="let bs of barber.barberServices">
                   <td>
-                    {{ bs.service.name }}
+                    {{ bs.service?.name }}
                   </td>
                   <td>
                     {{ bs.price }}
@@ -69,6 +69,9 @@
             </table>
           </div>
         </tab>
+      <tab heading="Messages" (selectTab)="onTabActivated($event)">
+        <app-member-messages [username]="barber.username"></app-member-messages>
+      </tab>
       </tabset>
     </div>
   </div>

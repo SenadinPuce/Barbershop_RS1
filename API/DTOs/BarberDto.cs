@@ -12,5 +12,6 @@ namespace API.DTOs
         public PhotoDto Photo { get; set; }
         public DateTime DateOfBirth { get; set; }
         public BarberServiceDto[] BarberServices { get; set; }
+        public string Username { get; set; }
     }
 }

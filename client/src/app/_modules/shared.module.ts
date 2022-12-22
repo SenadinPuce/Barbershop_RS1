@@ -11,6 +11,9 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TimeagoModule } from 'ngx-timeago';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -28,6 +31,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     PaginationModule.forRoot(),
     TimepickerModule.forRoot(),
     CollapseModule.forRoot(),
+    TimeagoModule.forRoot(),
+    ButtonsModule.forRoot()
   ],
   exports: [
     BsDropdownModule,
@@ -41,6 +46,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     PaginationModule,
     TimepickerModule,
     CollapseModule,
+    TimeagoModule,
+    ButtonsModule
   ],
 })
 export class SharedModule {}

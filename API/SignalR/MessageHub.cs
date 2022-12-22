@@ -1,7 +1,7 @@
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 
@@ -10,9 +10,9 @@ namespace API.SignalR
 {
     public class MessageHub : Hub
     {
-        private readonly UnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public MessageHub(UnitOfWork uow, IMapper mapper)
+        public MessageHub(IUnitOfWork uow, IMapper mapper)
         {
             _mapper = mapper;
             _uow = uow;
@@ -39,7 +39,7 @@ namespace API.SignalR
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var group = await RemoveFromMessageGroup();
-            await Clients.Group(group.Name).SendAsync("UpdatedGroup");
+            await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -91,7 +91,7 @@ namespace API.SignalR
 
         private async Task<Group> AddToGroup(string groupName)
         {
-            var group = await _uow.MessageRepository.GetGroupForConnection(groupName);
+            var group = await _uow.MessageRepository.GetMessageGroup(groupName);
             var connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
 
             if (group == null)

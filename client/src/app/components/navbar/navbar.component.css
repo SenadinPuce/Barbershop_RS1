@@ -2,7 +2,7 @@
   cursor: pointer;
 }
 
-img {
+.logo {
   max-height: 40px;
   max-width: 130px;
   display: inline;
@@ -10,4 +10,10 @@ img {
 
 a:hover{
   text-decoration: none;
+}
+
+.profilePhoto {
+  max-height: 40px;
+  border: 1px solid white;
+  display: inline;
 }
