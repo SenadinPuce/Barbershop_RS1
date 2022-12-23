@@ -1,54 +1,40 @@
 <div class="container my-5">
-  <table class="table table-bordered" *ngIf="appointmentStatuses">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Barber</th>
-        <th>Client</th>
-        <th class="actions-column">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let appt of appointments">
-        <td>
-          {{ appt.startsAt | formatDate : "EEEE" }}
-        </td>
-        <td>
-          {{ appt.startsAt | formatDate : "HH:mm" }}
-        </td>
-        <td>
-          {{ appt.endsAt | formatDate : "HH:mm" }}
-        </td>
-        <td>
-          {{ appt.barber.fullName }}
-        </td>
-        <td>{{ appt.client?.fullName }}</td>
-        <td class="text-center">
-          <button class="btn btn-action" (click)="onEdit(appt)" title="Edit">
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          </button>
-          <button
-            class="btn btn-action"
-            *ngIf="appt.appointmentStatusId !== canceledStatus.id"
-            (click)="onCancel(appt.id)"
-            title="Cancel"
-          >
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <ng-container *appHasRole="'Barber,Admin'">
-            <button
-              class="btn btn-action"
-              (click)="onComplete(appt.id)"
-              *ngIf="appt.appointmentStatusId === scheduledStatus.id"
-              title="Complete"
-            >
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </button>
-          </ng-container>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <tabset>
+    <tab heading="Scheduled ({{ scheduledCount }})">
+      <app-appointment-table
+        [appointments]="appointments"
+        status="Scheduled"
+        (editAppt)="onEdit($event)"
+        (completeAppt)="onComplete($event)"
+        (cancelAppt)="onCancel($event)"
+      ></app-appointment-table>
+    </tab>
+    <tab heading="Pending ({{ pendingCount }})">
+      <app-appointment-table
+        [appointments]="appointments"
+        status="Pending"
+        (editAppt)="onEdit($event)"
+        (completeAppt)="onComplete($event)"
+        (cancelAppt)="onCancel($event)"
+      ></app-appointment-table>
+    </tab>
+    <tab heading="Canceled ({{ canceledCount }})">
+      <app-appointment-table
+        [appointments]="appointments"
+        status="Canceled"
+        (editAppt)="onEdit($event)"
+        (completeAppt)="onComplete($event)"
+        (cancelAppt)="onCancel($event)"
+      ></app-appointment-table>
+    </tab>
+    <tab heading="Completed ({{ completedCount }})">
+      <app-appointment-table
+        [appointments]="appointments"
+        status="Completed"
+        (editAppt)="onEdit($event)"
+        (completeAppt)="onComplete($event)"
+        (cancelAppt)="onCancel($event)"
+      ></app-appointment-table>
+    </tab>
+  </tabset>
 </div>

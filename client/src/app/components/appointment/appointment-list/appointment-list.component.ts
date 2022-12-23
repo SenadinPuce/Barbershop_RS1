@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
@@ -12,10 +20,15 @@ import { AppointmentService } from 'src/app/_services/appointment.service';
   styleUrls: ['./appointment-list.component.css'],
   providers: [BsModalRef, BsModalService],
 })
-export class AppointmentListComponent implements OnInit {
+export class AppointmentListComponent implements OnInit, OnChanges {
   @Input() appointments: Appointment[];
   @Output() getAppointments = new EventEmitter();
   @Output() openEditModal = new EventEmitter();
+
+  scheduledCount: number;
+  pendingCount: number;
+  canceledCount: number;
+  completedCount: number;
 
   appointmentStatuses: AppointmentStatus[];
   deleteModalRef: BsModalRef;
@@ -29,6 +42,15 @@ export class AppointmentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAppointmentStatuses();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.appointments?.currentValue &&
+      changes.appointments?.currentValue !== changes.appointment?.previousValue
+    ) {
+      this.calculateAppointmentCounts(changes.appointments?.currentValue);
+    }
   }
 
   loadAppointmentStatuses() {
@@ -68,6 +90,21 @@ export class AppointmentListComponent implements OnInit {
       this.toastr.info('Appointment has been canceled');
       this.getAppointments.emit();
     });
+  }
+
+  calculateAppointmentCounts(appointments: Appointment[]) {
+    this.scheduledCount = appointments.filter(
+      (appt) => appt.appointmentStatus.name === 'Scheduled'
+    ).length;
+    this.pendingCount = appointments.filter(
+      (appt) => appt.appointmentStatus.name === 'Pending'
+    ).length;
+    this.canceledCount = appointments.filter(
+      (appt) => appt.appointmentStatus.name === 'Canceled'
+    ).length;
+    this.completedCount = appointments.filter(
+      (appt) => appt.appointmentStatus.name === 'Completed'
+    ).length;
   }
 
   get scheduledStatus() {

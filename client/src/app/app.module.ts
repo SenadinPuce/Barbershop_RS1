@@ -50,6 +50,7 @@ import { FormatDatePipe } from './_pipes/formatDate';
 import { MessagesComponent } from './pages/messages/messages.component';
 import { MemberMessagesComponent } from './components/member-messages/member-messages.component';
 import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
+import { AppointmentTableComponent } from './components/appointment/appointment-list/appointment-table/appointment-table.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { ClientDetailComponent } from './pages/client-detail/client-detail.compo
     MessagesComponent,
     MemberMessagesComponent,
     ClientDetailComponent,
+    AppointmentTableComponent,
   ],
   imports: [
     BrowserModule,

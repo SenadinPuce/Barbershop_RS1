@@ -48,7 +48,7 @@ export class AppointmentsComponent implements OnInit {
   }
 
   loadAppointments() {
-    if (this.currentUser.clientId) {
+    if (this.currentUser.role === 'Client') {
       this.params.clientId = this.currentUser.clientId;
       this.takenSlots$ = this.appointmentService
         .getTakenSlots(this.params)

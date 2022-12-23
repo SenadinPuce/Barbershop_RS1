@@ -1,0 +1,57 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Barber</th>
+      <th>Client</th>
+      <th class="actions-column">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let appt of appointments">
+      <ng-container *ngIf="appt.appointmentStatus.name === status">
+        <td>
+          {{ appt.startsAt | formatDate : "EEEE" }}
+        </td>
+        <td>
+          {{ appt.startsAt | formatDate : "HH:mm" }}
+        </td>
+        <td>
+          {{ appt.endsAt | formatDate : "HH:mm" }}
+        </td>
+        <td>
+          {{ appt.barber.fullName }}
+        </td>
+        <td>{{ appt.client?.fullName }}</td>
+        <td class="text-center">
+          <button class="btn btn-action" (click)="onEdit(appt)" title="Edit">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn-action"
+            *ngIf="
+              appt.appointmentStatus.name !== 'Canceled' &&
+              appt.appointmentStatus.name !== 'Completed'
+            "
+            (click)="onCancel(appt.id)"
+            title="Cancel"
+          >
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <ng-container *appHasRole="'Barber,Admin'">
+            <button
+              class="btn btn-action"
+              (click)="onComplete(appt.id)"
+              *ngIf="appt.appointmentStatus.name === 'Scheduled'"
+              title="Complete"
+            >
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </button>
+          </ng-container>
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
