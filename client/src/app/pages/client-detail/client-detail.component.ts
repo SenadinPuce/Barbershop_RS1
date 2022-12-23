@@ -13,7 +13,7 @@ import { MessageService } from 'src/app/_services/message.service';
 })
 export class ClientDetailComponent implements OnInit, OnDestroy {
   @ViewChild('clientTabs', {static: true}) clientTabs: TabsetComponent;
-  activeTab: TabDirective;
+  activeTab: TabDirective | undefined;
   user: User;
   client: User;
 
@@ -35,9 +35,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.subscribe({
       next: data => {
-        console.log(this.client);
         this.client = data['client'];
-        console.log(this.client);
       }
     })
 
@@ -49,19 +47,12 @@ export class ClientDetailComponent implements OnInit, OnDestroy {
   }
 
   selectTab(heading: string) {
-    if(this.clientTabs) {
+    if(this.clientTabs && this.user) {
       this.clientTabs.tabs.find(x => x.heading === heading).active = true;
       this.messageService.createHubConnection(this.user, this.client.username);
     }
   }
 
-  onTabActivated(data: TabDirective) {
-    this.activeTab = data;
-    if(this.activeTab.heading === 'Messages' && this?.user) {
-      this.messageService.createHubConnection(this.user, this.client.username);
-    } else {
-      this.messageService.stopHubConnection();
-    }
-  }
+
 
 }
