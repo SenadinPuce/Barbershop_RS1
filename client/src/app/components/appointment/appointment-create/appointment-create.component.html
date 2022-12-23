@@ -119,6 +119,7 @@
             name="clients"
             [virtualScroll]="true"
             (scrollToEnd)="loadMoreClients()"
+            [disabled]="currentUser.role === 'Client'"
           >
           </ng-select>
         </div>
@@ -134,6 +135,7 @@
             step="5"
             (change)="updateEndTime()"
             required
+            [disabled]="currentUser.role === 'Client'"
           />
         </div>
         <div class="mb-3 col-8 pe-0">

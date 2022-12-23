@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { start } from 'repl';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { BaseParams } from 'src/app/models/baseParams';
 import { Client } from 'src/app/models/client';
+import { User } from 'src/app/models/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
@@ -24,6 +28,7 @@ export class AppointmentCreateComponent implements OnInit {
   barbers: Barber[];
   clients: Client[] = [];
   params = new BaseParams(20);
+  currentUser: User;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -31,20 +36,28 @@ export class AppointmentCreateComponent implements OnInit {
     private appointmentStatusService: AppointmentStatusService,
     private barberService: BarberService,
     private clientService: ClientService,
-    private modal: BsModalRef
+    private modal: BsModalRef,
+    private accountService: AccountService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.accountService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+    });
+
     this.loadAppointmentTypes();
     this.loadAppointmentStatuses();
     this.loadClients();
     this.loadBarbers();
+    this.initFields();
   }
 
   insertAppointment() {
-    this.appointmentService
-      .post(this.model)
-      .subscribe((res) => this.modal.hide());
+    this.appointmentService.post(this.model).subscribe((res) => {
+      this.modal.hide();
+      this.toastr.success('Appointment created successfully');
+    });
   }
 
   setAppointmentDuration() {
@@ -96,10 +109,18 @@ export class AppointmentCreateComponent implements OnInit {
   loadAppointmentStatuses() {
     this.appointmentStatusService.get().subscribe((data) => {
       this.appointmentStatuses = data;
-      this.model.appointmentStatusId = this.appointmentStatuses.find(
-        (x) => x.name === 'Scheduled'
-      ).id;
     });
+  }
+
+  initFields() {
+    let startingStatus = 'Scheduled';
+    if (this.currentUser.role === 'Client') {
+      startingStatus = 'Pending';
+      this.model.clientId = this.currentUser.clientId;
+    }
+    this.model.appointmentStatusId = this.appointmentStatuses.find(
+      (x) => x.name === startingStatus
+    ).id;
   }
 
   cancel() {

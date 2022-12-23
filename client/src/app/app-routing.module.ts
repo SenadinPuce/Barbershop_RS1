@@ -35,10 +35,12 @@ const routes: Routes = [
       {
         path: 'appointment-types/create',
         component: AppointmentTypeCreateComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'services/create',
         component: ServiceCreateComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'barber/edit/:id',
@@ -66,10 +68,12 @@ const routes: Routes = [
       {
         path: 'clients/create',
         component: ClientCreateComponent,
+        canActivate: [BarberGuard],
       },
       {
         path: 'clients',
         component: ClientComponent,
+        canActivate: [BarberGuard],
       },
       {
         path: 'settings',

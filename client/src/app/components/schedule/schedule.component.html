@@ -85,7 +85,7 @@
     </div>
   </div>
 </ng-template>
-<div [ngSwitch]="view">
+<div [ngSwitch]="view" class="scroll-container" #scrollContainer>
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"
@@ -113,6 +113,8 @@
     [weekStartsOn]="weekStartsOn"
     [dayStartHour]="dayStartHour"
     [dayEndHour]="dayEndHour"
+    [hourSegments]="12"
+    [hourSegmentHeight]="20"
   >
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
@@ -126,6 +128,8 @@
     (beforeViewRender)="beforeView($event)"
     [dayStartHour]="dayStartHour"
     [dayEndHour]="dayEndHour"
+    [hourSegments]="12"
+    [hourSegmentHeight]="20"
   >
   </mwl-calendar-day-view>
 </div>

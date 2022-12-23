@@ -8,6 +8,11 @@ import {
   Output,
   EventEmitter,
   Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
 } from '@angular/core';
 import {
   isSameDay,
@@ -15,8 +20,11 @@ import {
   endOfWeek,
   addDays,
   addMinutes,
+  differenceInMinutes,
+  startOfDay,
+  startOfHour,
 } from 'date-fns';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import {
   CalendarDateFormatter,
   CalendarEvent,
@@ -32,11 +40,11 @@ import { finalize, map, takeUntil } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentCreateComponent } from 'src/app/components/appointment/appointment-create/appointment-create.component';
-import { AppointmentEditComponent } from 'src/app/components/appointment/appointment-edit/appointment-edit.component';
 import { AppointmentParams } from 'src/app/models/appointmentParams';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
+import { CalendarSlot } from 'src/app/models/calendarSlot';
 
 function colorShade(color, amount) {
   return (
@@ -95,7 +103,8 @@ class CustomDateFormatter extends CalendarDateFormatter {
   templateUrl: './schedule.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('scrollContainer') scrollContainer: ElementRef<HTMLElement>;
   view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
 
@@ -114,7 +123,7 @@ export class ScheduleComponent implements OnInit {
   dayStartHour: number;
   dayEndHour: number;
 
-  customHours: CustomHours[];
+  customHours: CustomHours[] = [];
 
   @Output() getAppointments = new EventEmitter();
   @Output() openEditModal = new EventEmitter();
@@ -127,6 +136,7 @@ export class ScheduleComponent implements OnInit {
     this.mapData(data);
     this._appointments = data;
   }
+  @Input() takenSlots: CalendarSlot[] = [];
 
   private _appointments: Appointment[];
 
@@ -140,6 +150,18 @@ export class ScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.loadWorkingHours();
     this.loadCustomHours();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.takenSlots?.currentValue !== changes.takenSlots?.previousValue
+    ) {
+      this.refresh.next();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollToCurrentView();
   }
 
   loadWorkingHours() {
@@ -165,6 +187,7 @@ export class ScheduleComponent implements OnInit {
       this.dayEndHour = dayEndHour;
 
       this.refresh.next();
+      this.scrollToCurrentView();
     });
   }
 
@@ -297,10 +320,9 @@ export class ScheduleComponent implements OnInit {
       )
       .subscribe((mouseMoveEvent: MouseEvent) => {
         const minutesDiff = ceilToNearest(
-          mouseMoveEvent.clientY - segmentPosition.top,
-          30
+          (mouseMoveEvent.clientY - segmentPosition.top) / 4,
+          5
         );
-
         const daysDiff =
           floorToNearest(
             mouseMoveEvent.clientX - segmentPosition.left,
@@ -350,7 +372,7 @@ export class ScheduleComponent implements OnInit {
 
   setParamDates(event: any) {
     if (
-      this.params.dateFrom?.getTime() === event.period.start.getTime() ||
+      this.params.dateFrom?.getTime() === event.period.start.getTime() &&
       this.params.dateTo?.getTime() === event.period.end.getTime()
     ) {
       return;
@@ -366,6 +388,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   checkDisabledSlots(event: CalendarWeekViewBeforeRenderEvent) {
+    if (this.view === CalendarView.Month) return;
     event.hourColumns.forEach((hourCol) => {
       hourCol.hours.forEach((hour) => {
         hour.segments.forEach((segment) => {
@@ -389,13 +412,34 @@ export class ScheduleComponent implements OnInit {
   }
 
   segmentIsValid(date: Date) {
+    if (date < new Date()) return false;
     if (
-      this.closedHours?.some((ch) => {
-        return ch.dateFrom < date && ch.dateTo > date;
+      this.closedHours.some((ch) => {
+        return ch.dateFrom <= date && ch.dateTo > date;
+      }) ||
+      this.takenSlots?.some((ts) => {
+        return ts.dateFrom <= date && ts.dateTo > date;
       })
     ) {
       return false;
     }
     return true;
+  }
+
+  private scrollToCurrentView() {
+    if (!this.dayStartHour) return;
+    if (this.view === CalendarView.Week || CalendarView.Day) {
+      let date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      let day = date.getDate();
+
+      const minutesSinceStartOfDay = differenceInMinutes(
+        startOfHour(new Date()),
+        new Date(year, month, day, this.dayStartHour, 0, 0)
+      );
+
+      this.scrollContainer.nativeElement.scrollTop = minutesSinceStartOfDay * 4;
+    }
   }
 }

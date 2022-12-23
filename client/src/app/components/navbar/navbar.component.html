@@ -19,7 +19,7 @@
             >Barbers</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *appHasRole="'Barber,Admin'">
           <a class="nav-link" routerLink="/clients" routerLinkActive="active"
             >Clients</a
           >

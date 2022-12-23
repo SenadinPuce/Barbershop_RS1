@@ -53,6 +53,7 @@ namespace API.Controllers
 
             return new UserDto
             {
+                ClientId = client.Id,
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user)
             };
@@ -69,9 +70,15 @@ namespace API.Controllers
                 .CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded) return Unauthorized();
-
+            //privremeno rjesenje
+            int? clientId = null;
+            if (await _userManager.IsInRoleAsync(user, "Client"))
+            {
+                clientId = _db.Client.Where(x => x.AppUserId == user.Id).Select(x => x.Id).Single();
+            }
             return new UserDto
             {
+                ClientId = clientId,
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
                 Photo = _mapper.Map<PhotoDto>(user.Photo)

@@ -21,3 +21,7 @@
 .appointment-types{
     margin-top: 60px;
 }
+.service-text{
+    font-size: 0.9rem;
+    color: rgb(90, 90, 90);
+}

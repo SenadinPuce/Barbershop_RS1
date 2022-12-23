@@ -36,9 +36,38 @@ namespace API.Controllers
                 var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
                 appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
             }
+            if (request.ClientId != null)
+            {
+                appointmentsQuery = appointmentsQuery.Where(x => x.Client.Id == request.ClientId);
+            }
             var appointments = await appointmentsQuery.OrderBy(appt => appt.StartsAt).ToListAsync();
 
             return _mapper.Map<AppointmentDto[]>(appointments);
+        }
+
+        [HttpGet("taken-slots")]
+        public async Task<ActionResult<CalendarSlotDto[]>> GetTakenSlotsAsync([FromQuery] AppointmentParams request)
+        {
+            var appointmentsQuery = _context.Appointment.Include(x => x.Client)
+                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).AsQueryable();
+            if (request.BarberIds?.Length > 0)
+            {
+                var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
+                appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
+            }
+            if (request.ClientId != null)
+            {
+                appointmentsQuery = appointmentsQuery.Where(x => x.ClientId != request.ClientId);
+            }
+            var slots = await appointmentsQuery.OrderBy(appt => appt.StartsAt).Select(x =>
+                 new CalendarSlotDto
+                 {
+                     DateFrom = x.StartsAt,
+                     DateTo = x.EndsAt
+                 }
+            ).ToArrayAsync();
+
+            return slots;
         }
 
         [HttpGet("{id}", Name = "GetAppointment")]
@@ -52,9 +81,6 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
         {
             var appt = _mapper.Map<Appointment>(model);
-
-            var scheduledStatus = await _context.AppointmentStatus.SingleOrDefaultAsync(x => x.Name == "Scheduled");
-            appt.AppointmentStatusId = scheduledStatus.Id;
 
             await _context.AddAsync(appt);
             if (await _context.SaveChangesAsync() < 1)

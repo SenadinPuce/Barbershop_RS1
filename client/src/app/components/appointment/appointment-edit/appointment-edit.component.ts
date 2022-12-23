@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { BaseParams } from 'src/app/models/baseParams';
 import { Client } from 'src/app/models/client';
+import { User } from 'src/app/models/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
@@ -24,6 +27,7 @@ export class AppointmentEditComponent implements OnInit {
   barbers: Barber[];
   clients: Client[] = [];
   params = new BaseParams(20);
+  currentUser: User;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -31,10 +35,15 @@ export class AppointmentEditComponent implements OnInit {
     private appointmentStatusService: AppointmentStatusService,
     private barberService: BarberService,
     private clientService: ClientService,
-    private modal: BsModalRef
+    private modal: BsModalRef,
+    private accountService: AccountService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.accountService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+    });
     this.loadAppointmentTypes();
     this.loadAppointmentStatuses();
     this.loadClients();
@@ -43,9 +52,10 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   updateAppointment() {
-    this.appointmentService
-      .update(this.model)
-      .subscribe((res) => this.modal.hide());
+    this.appointmentService.update(this.model).subscribe((res) => {
+      this.modal.hide();
+      this.toastr.info('Appointment edited successfully');
+    });
   }
 
   setAppointmentDuration() {

@@ -32,6 +32,11 @@
               {{ type.name }}
             </span>
           </div>
+          <ng-container *appHasRole="'Client'">
+            <div *ngFor="let service of type.services" class="ms-5">
+              <span class="service-text">- {{ service.name }} </span>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -42,6 +47,7 @@
         (getAppointments)="onGetAppointments($event)"
         (openEditModal)="onEdit($event)"
         [appointments]="appointments$ | async"
+        [takenSlots]="takenSlots$ | async"
       ></app-schedule>
     </div>
   </div>

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Appointment } from '../models/appointment';
 import { AppointmentParams } from '../models/appointmentParams';
+import { CalendarSlot } from '../models/calendarSlot';
 import { getFullName } from '../_utilities/getFullName';
 
 @Injectable({
@@ -13,7 +14,7 @@ import { getFullName } from '../_utilities/getFullName';
 export class AppointmentService {
   baseUrl = environment.apiUrl + 'appointments';
   apptCache = new Map();
-
+  slotsCache = new Map();
   constructor(private http: HttpClient) {}
 
   post(resource) {
@@ -33,6 +34,10 @@ export class AppointmentService {
     queryParams = queryParams.append('dateFrom', params.dateFrom.toISOString());
     queryParams = queryParams.append('dateTo', params.dateTo.toISOString());
 
+    if (params.clientId) {
+      queryParams = queryParams.append('clientId', params.clientId.toString());
+    }
+
     if (params.barberIds?.length > 0)
       queryParams = queryParams.append(
         'barberIds',
@@ -51,6 +56,40 @@ export class AppointmentService {
             appt.endsAt = new Date(appt.endsAt + 'Z');
           });
           this.apptCache.set(Object.values(params).join('-'), data);
+          return data;
+        })
+      );
+  }
+
+  getTakenSlots(params: AppointmentParams) {
+    const response = this.slotsCache.get(Object.values(params).join('-'));
+    if (response !== undefined) return of(response);
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('dateFrom', params.dateFrom.toISOString());
+    queryParams = queryParams.append('dateTo', params.dateTo.toISOString());
+
+    if (params.clientId) {
+      queryParams = queryParams.append('clientId', params.clientId.toString());
+    }
+
+    if (params.barberIds?.length > 0)
+      queryParams = queryParams.append(
+        'barberIds',
+        params.barberIds.toString()
+      );
+
+    return this.http
+      .get<CalendarSlot[]>(this.baseUrl + '/taken-slots', {
+        params: queryParams,
+      })
+      .pipe(
+        map((data) => {
+          data.forEach((slot) => {
+            slot.dateFrom = new Date(slot.dateFrom + 'Z');
+            slot.dateTo = new Date(slot.dateTo + 'Z');
+          });
+          this.slotsCache.set(Object.values(params).join('-'), data);
           return data;
         })
       );

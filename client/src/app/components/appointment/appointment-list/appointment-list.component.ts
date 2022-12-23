@@ -73,4 +73,8 @@ export class AppointmentListComponent implements OnInit {
   get scheduledStatus() {
     return this.appointmentStatuses.find((x) => x.name === 'Scheduled');
   }
+
+  get canceledStatus() {
+    return this.appointmentStatuses.find((x) => x.name === 'Canceled');
+  }
 }
