@@ -1,3 +1,4 @@
+import { AppointmentStatus } from './appointmentStatus';
 import { AppointmentType } from './appointmentType';
 import { Barber } from './barber';
 import { Client } from './client';
@@ -14,5 +15,6 @@ export interface Appointment {
   client: Client;
   barber: Barber;
   appointmentStatusId: number;
+  appointmentStatus: AppointmentStatus;
   note: string;
 }

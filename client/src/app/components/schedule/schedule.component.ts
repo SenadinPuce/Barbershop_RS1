@@ -45,6 +45,8 @@ import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
 import { CalendarSlot } from 'src/app/models/calendarSlot';
+import { AccountService } from 'src/app/_services/account.service';
+import { User } from 'src/app/models/user';
 
 function colorShade(color, amount) {
   return (
@@ -124,6 +126,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   dayEndHour: number;
 
   customHours: CustomHours[] = [];
+  currentUser: User;
 
   @Output() getAppointments = new EventEmitter();
   @Output() openEditModal = new EventEmitter();
@@ -144,12 +147,17 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private workingHoursService: WorkingHoursService,
     private customHoursService: CustomHoursService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
     this.loadWorkingHours();
     this.loadCustomHours();
+
+    this.accountService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -264,26 +272,28 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mapData(appointments: Appointment[]) {
-    this.events = appointments.map((appt) => {
-      const apptTitle = appt.client?.fullName || 'Client XY';
-      const apptColor = {
-        primary: appt.appointmentType.color,
-        secondary: colorShade(appt.appointmentType.color, 20),
-      };
-      return {
-        start: appt.startsAt,
-        end: appt.endsAt,
-        title: apptTitle,
-        color: apptColor,
-        allDay: false,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-        draggable: true,
-        appointmentId: appt.id,
-      };
-    });
+    this.events = appointments
+      .filter((appt) => appt.appointmentStatus.name !== 'Canceled')
+      .map((appt) => {
+        const apptTitle = appt.client?.fullName || 'Client XY';
+        const apptColor = {
+          primary: appt.appointmentType.color,
+          secondary: colorShade(appt.appointmentType.color, 20),
+        };
+        return {
+          start: appt.startsAt,
+          end: appt.endsAt,
+          title: apptTitle,
+          color: apptColor,
+          allDay: false,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+          appointmentId: appt.id,
+        };
+      });
     this.refresh.next();
   }
 
@@ -412,7 +422,9 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   segmentIsValid(date: Date) {
-    if (date < new Date()) return false;
+    if (this.currentUser.role === 'Client') {
+      if (date < new Date()) return false;
+    }
     if (
       this.closedHours.some((ch) => {
         return ch.dateFrom <= date && ch.dateTo > date;
@@ -427,7 +439,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private scrollToCurrentView() {
-    if (!this.dayStartHour) return;
+    if (!this.dayStartHour || !this.scrollContainer) return;
     if (this.view === CalendarView.Week || CalendarView.Day) {
       let date = new Date();
       let year = date.getFullYear();

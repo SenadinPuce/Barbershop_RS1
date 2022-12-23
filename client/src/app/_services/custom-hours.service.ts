@@ -22,8 +22,8 @@ export class CustomHoursService {
         const mappedData = custom.map((customEntry) => {
           return {
             ...customEntry,
-            dateFrom: new Date(customEntry.dateFrom + 'Z'),
-            dateTo: new Date(customEntry.dateTo + 'Z'),
+            dateFrom: new Date(customEntry.dateFrom),
+            dateTo: new Date(customEntry.dateTo),
           };
         });
         this.hours = mappedData;

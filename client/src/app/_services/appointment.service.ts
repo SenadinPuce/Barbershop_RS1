@@ -52,8 +52,8 @@ export class AppointmentService {
             if (appt.client) appt.client.fullName = getFullName(appt.client);
             appt.barber.fullName = getFullName(appt.barber);
 
-            appt.startsAt = new Date(appt.startsAt + 'Z');
-            appt.endsAt = new Date(appt.endsAt + 'Z');
+            appt.startsAt = new Date(appt.startsAt);
+            appt.endsAt = new Date(appt.endsAt);
           });
           this.apptCache.set(Object.values(params).join('-'), data);
           return data;

@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery] AppointmentParams request)
         {
-            var appointmentsQuery = _context.Appointment.Include(x => x.AppointmentType).Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser)
+            var appointmentsQuery = _context.Appointment.Include(x => x.AppointmentType).Include(x => x.AppointmentStatus).Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser)
                 .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).AsQueryable();
             if (request.BarberIds?.Length > 0)
             {

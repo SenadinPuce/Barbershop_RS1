@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { start } from 'repl';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
