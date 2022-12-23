@@ -120,3 +120,42 @@ body{
    border-top: 1px solid #eee;
    padding: 15px 0;
  }
+.cal-week-view .cal-time{
+   padding-top: 0px;
+}
+.cal-week-view .cal-hour-segment.cal-after-hour-start .cal-time{
+   display: block;
+   color: lightgray;
+   font-weight: 500;
+}
+.cal-time-label-column .cal-hour mwl-calendar-week-view-hour-segment:nth-of-type(3n+1) .cal-time{
+   color: black;
+   font-weight: bold;
+}
+.cal-day-columns .cal-hour mwl-calendar-week-view-hour-segment:nth-of-type(3n+1) .cal-time{
+   color: black;
+   font-weight: bold;
+}
+.cal-time{
+   font-size: 14px
+}
+.cal-time-label-column .cal-hour-segment{
+   background-color: inherit !important;
+}
+.scroll-container {
+   height: calc(100vh - 320px);
+   overflow-y: auto;
+ }
+ .cal-day-headers{
+   position: sticky;
+   top: 0px;
+   z-index: 1000;
+   background-color: white;
+   border-top : solid 1px #e1e1e1 !important
+}
+ .cal-header{
+   background-color: white;
+ }
+ .cal-week-view{
+   border-top: 0;
+ }

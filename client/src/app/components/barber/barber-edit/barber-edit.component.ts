@@ -45,7 +45,7 @@ export class BarberEditComponent implements OnInit {
       services: this.loadServices(),
     }).subscribe(({ barber, services }) => {
       this.barber = barber;
-      this.barber.dateOfBirth = new Date(barber.dateOfBirth + 'Z');
+      this.barber.dateOfBirth = new Date(barber.dateOfBirth);
       this.services = services;
       this.barberServices = barber.barberServices;
       this.setAvailableServices();

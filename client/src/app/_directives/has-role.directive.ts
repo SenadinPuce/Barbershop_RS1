@@ -5,8 +5,6 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { last, map, take } from 'rxjs/operators';
-import { User } from '../models/user';
 import { AccountService } from '../_services/account.service';
 
 @Directive({
@@ -27,8 +25,8 @@ export class HasRoleDirective implements OnInit {
         this.viewContainerRef.clear();
         return;
       }
-
-      if (user.role === this.appHasRole) {
+      const roles = this.appHasRole.split(',');
+      if (roles.some((role) => user.role === role)) {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
       } else {
         this.viewContainerRef.clear();

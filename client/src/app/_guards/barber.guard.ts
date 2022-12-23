@@ -17,10 +17,11 @@ export class BarberGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.accountService.currentUser$.pipe(
       map((user) => {
-        if (user.role === 'Barber') {
+        if (user.role === 'Barber' || user.role === 'Admin') {
           return true;
         }
         this.toastr.error('You cannot enter this area');
+        return false;
       })
     );
   }

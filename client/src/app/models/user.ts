@@ -12,4 +12,5 @@ export class User {
   email: string;
   phoneNumber: string;
   photo?: Photo;
+  clientId?: number;
 }
