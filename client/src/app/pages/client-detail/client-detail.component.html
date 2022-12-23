@@ -30,7 +30,7 @@
   
       <div class="col-9">
         <tabset class="client-tabset" #clientTabs>
-        <tab heading="Messages" (selectTab)="onTabActivated($event)">
+        <tab heading="Messages">
           <app-member-messages [username]="client.username"></app-member-messages>
         </tab>
         </tabset>

@@ -93,7 +93,7 @@
           <button class="btn" (click)="onDelete(client.id)" title="Delete">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
-          <button class="btn me-1"  [routerLink]="['/client/' + client.id]" title="Message">
+          <button class="btn me-1"  [routerLink]="['/client/' + client.id]" [queryParams]="{tab: 'Messages'}" title="Message">
             <i class="fa fa-envelope" aria-hidden="true"></i>
           </button>
         </td>

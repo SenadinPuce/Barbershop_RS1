@@ -19,9 +19,9 @@ import { MessageService } from 'src/app/_services/message.service';
 })
 export class BarberDetailComponent implements OnInit, OnDestroy {
   @ViewChild('barberTabs', {static: true}) barberTabs: TabsetComponent;
+  activeTab: TabDirective;
   barber: Barber;
   deleteModalRef: BsModalRef;
-  activeTab: TabDirective;
   user: User;
 
   constructor(
@@ -45,7 +45,12 @@ export class BarberDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  this.loadBarber();
+
+  this.route.data.subscribe({
+    next: data => {
+      this.barber = data['barber'];
+    }
+  })
 
    this.route.queryParams.subscribe({
     next: params => {
@@ -58,13 +63,6 @@ export class BarberDetailComponent implements OnInit, OnDestroy {
     if(this.barberTabs) {
       this.barberTabs.tabs.find(x => x.heading === heading).active = true;
     }
-  }
-
-  loadBarber() {
-    const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.barberService.getById(id).subscribe((data) => {
-      this.barber = data;
-    });
   }
 
   onDelete(barberId) {
