@@ -94,6 +94,16 @@ namespace API.Data
             return await query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
+        public async Task<int> GetNumberOfUnread(string username)
+        {
+            int numberOfUnreadMessages;
+
+            numberOfUnreadMessages = await _context.Messages
+                .Where(m => m.DateRead == null && m.RecipientUsername == username).CountAsync();
+
+            return numberOfUnreadMessages;
+        }
+
         public void RemoveConnection(Connection connection)
         {
             _context.Connections.Remove(connection);

@@ -5,6 +5,7 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
 
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
@@ -54,6 +55,7 @@ export class AccountService {
       user.role = this.getDecodedToken(user.token).role;
       localStorage.setItem('user', JSON.stringify(user));
     }
-    this.currentUserSource.next(user);
-  }
+      this.currentUserSource.next(user);
+      this.notificationService.createHubConnection(user);
+    }
 }

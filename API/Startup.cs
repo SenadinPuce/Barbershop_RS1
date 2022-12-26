@@ -45,6 +45,7 @@ namespace API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<MessageHub>("hubs/message");
+                endpoints.MapHub<NotificationHub>("hubs/notification");
                 endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
