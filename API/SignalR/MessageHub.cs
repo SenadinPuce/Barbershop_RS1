@@ -1,10 +1,11 @@
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace API.SignalR
 {
@@ -12,8 +13,11 @@ namespace API.SignalR
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public MessageHub(IUnitOfWork uow, IMapper mapper)
+        private readonly DataContext _context;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        public MessageHub(IUnitOfWork uow, IMapper mapper, IHubContext<NotificationHub> notificationHub)
         {
+            _notificationHub = notificationHub;
             _mapper = mapper;
             _uow = uow;
         }
@@ -34,6 +38,13 @@ namespace API.SignalR
 
             await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
 
+            var connections = await PresenceTracker.GetConnectionsForUser(Context.User.GetUsername());
+
+            if (connections != null)
+            {
+                await _notificationHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
+                await _uow.MessageRepository.GetNumberOfUnread(Context.User.GetUsername()));
+            }
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -73,10 +84,19 @@ namespace API.SignalR
                 message.DateRead = DateTime.UtcNow;
             }
 
+
             _uow.MessageRepository.AddMessage(message);
 
             if (await _uow.Complete())
             {
+                var connections = await PresenceTracker.GetConnectionsForUser(recipient.UserName);
+
+                if (connections != null)
+                {
+                    await _notificationHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
+                    await _uow.MessageRepository.GetNumberOfUnread(recipient.UserName));
+                }
+
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
             }
 

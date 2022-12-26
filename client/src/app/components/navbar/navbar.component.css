@@ -17,3 +17,13 @@ a:hover{
   border: 1px solid white;
   display: inline;
 }
+
+.circle-number {
+  position : absolute; 
+  top:0; 
+  right: -12px; 
+  color: rgb(109, 253, 128);
+  font-weight: bolder;
+  width: 20px;
+  height: 20px;
+}

@@ -15,5 +15,6 @@ namespace API.Interfaces
         void RemoveConnection(Connection connection);
         Task<Group> GetMessageGroup(string groupName);
         Task<Group> GetGroupForConnection(string connectionId);
+        Task<int> GetNumberOfUnread(string username);
     }
 }
