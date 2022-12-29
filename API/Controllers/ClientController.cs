@@ -93,7 +93,15 @@ namespace API.Controllers
         {
             var client = await _context.Client.SingleOrDefaultAsync(x => x.Id == id);
             if (client == null) return NotFound();
-
+            var appointments = await _context.Appointment.Where(x => x.ClientId == id).ToListAsync();
+            if (appointments.Any())
+            {
+                foreach (var item in appointments)
+                {
+                    item.ClientId = null;
+                }
+                await _context.SaveChangesAsync();
+            }
             var user = await _userManager.FindByIdAsync(client.AppUserId.ToString());
 
             var result = await _userManager.DeleteAsync(user);
