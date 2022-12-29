@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { Service } from 'src/app/models/service';
 import { ServiceService } from 'src/app/_services/service.service';
 
@@ -16,7 +17,8 @@ export class ServiceEditComponent implements OnInit {
 
   constructor(
     private serviceService: ServiceService,
-    private modal: BsModalRef
+    private modal: BsModalRef,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,7 @@ export class ServiceEditComponent implements OnInit {
       if (response) {
         this.edited = true;
         this.modal.hide();
+        this.toastr.info('Service updated successfully');
       }
     });
   }
