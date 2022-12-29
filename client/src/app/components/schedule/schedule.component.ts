@@ -275,10 +275,8 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     this.events = appointments
       .filter((appt) => appt.appointmentStatus.name !== 'Canceled')
       .map((appt) => {
-        const apptTitle =
-          (appt.client?.fullName || 'Client XY') +
-          ' | ' +
-          appt.appointmentStatus.name;
+        const apptTitle = appt.client?.fullName || 'Client XY';
+
         const apptColor = {
           primary: appt.appointmentType.color,
           secondary: colorShade(appt.appointmentType.color, 20),
@@ -425,9 +423,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   segmentIsValid(date: Date) {
-    if (this.currentUser.role === 'Client') {
-      if (date < new Date()) return false;
-    }
+    if (date < new Date()) return false;
     if (
       this.closedHours.some((ch) => {
         return ch.dateFrom <= date && ch.dateTo > date;

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Appointment } from 'src/app/models/appointment';
 
 @Component({
@@ -6,16 +14,31 @@ import { Appointment } from 'src/app/models/appointment';
   templateUrl: './appointment-table.component.html',
   styleUrls: ['./appointment-table.component.css'],
 })
-export class AppointmentTableComponent implements OnInit {
+export class AppointmentTableComponent implements OnInit, OnChanges {
   @Input() appointments: Appointment[] = [];
   @Input() status: string;
   @Output() editAppt = new EventEmitter<Appointment>();
   @Output() cancelAppt = new EventEmitter<number>();
   @Output() completeAppt = new EventEmitter<number>();
+  isEmpty = true;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.appointments?.currentValue &&
+      changes.appointments?.currentValue !== changes.appointment?.previousValue
+    ) {
+      this.isEmpty =
+        changes.appointments.currentValue.filter(
+          (appt) => appt.appointmentStatus.name === this.status
+        ).length === 0;
+    }
+  }
+
+  ngOnInit(): void {
+    console.log('Created ' + this.status + ' component');
+  }
 
   onEdit(appt: Appointment) {
     this.editAppt.emit(appt);

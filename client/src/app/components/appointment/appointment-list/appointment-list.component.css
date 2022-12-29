@@ -1,0 +1,7 @@
+.counter{
+    width: 20px;
+    border-radius: 15px;
+    display: inline-block;
+    color: white;
+    background-color: #e95420;
+}
