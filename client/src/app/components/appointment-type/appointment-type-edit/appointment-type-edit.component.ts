@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { Service } from 'src/app/models/service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { ServiceService } from 'src/app/_services/service.service';
@@ -20,7 +21,8 @@ export class AppointmentTypeEditComponent implements OnInit {
   constructor(
     private servicesService: ServiceService,
     private appointmentTypeService: AppointmentTypeService,
-    private modal: BsModalRef
+    private modal: BsModalRef,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +48,7 @@ export class AppointmentTypeEditComponent implements OnInit {
         if (response) {
           this.edited = true;
           this.modal.hide();
+          this.toastr.info('Appointment type updated successfully');
         }
       },
       (err) => console.log(err)

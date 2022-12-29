@@ -44,10 +44,20 @@ import { AppointmentParams } from 'src/app/models/appointmentParams';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
+import { WorkingHours } from 'src/app/models/workingHours';
 import { CalendarSlot } from 'src/app/models/calendarSlot';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/models/user';
 
+const dayOfWeek = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 function colorShade(color, amount) {
   return (
     '#' +
@@ -126,6 +136,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   dayEndHour: number;
 
   customHours: CustomHours[] = [];
+  workingHours: WorkingHours[] = [];
   currentUser: User;
 
   @Output() getAppointments = new EventEmitter();
@@ -174,6 +185,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
   loadWorkingHours() {
     this.workingHoursService.get().subscribe((data) => {
+      this.workingHours = data;
       const excludingDays = data.filter((wh) => wh.isOpen !== true);
       excludingDays.forEach((ed) => {
         this.excludeDays.push(DAYS_OF_WEEK[`${ed.day.toUpperCase()}`]);
@@ -184,11 +196,11 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
       const includingDays = data.filter((wh) => wh.isOpen === true);
       includingDays.forEach((wh) => {
-        if (wh.from.getHours() < dayStartHour) {
-          dayStartHour = wh.from.getHours();
+        if (wh.dateFrom.getHours() < dayStartHour) {
+          dayStartHour = wh.dateFrom.getHours();
         }
-        if (wh.to.getHours() > dayEndHour) {
-          dayEndHour = wh.to.getHours();
+        if (wh.dateTo.getHours() > dayEndHour) {
+          dayEndHour = wh.dateTo.getHours();
         }
       });
       this.dayStartHour = dayStartHour;
@@ -272,31 +284,27 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mapData(appointments: Appointment[]) {
-    this.events = appointments
-      .filter((appt) => appt.appointmentStatus.name !== 'Canceled')
-      .map((appt) => {
-        const apptTitle =
-          (appt.client?.fullName || 'Client XY') +
-          ' | ' +
-          appt.appointmentStatus.name;
-        const apptColor = {
-          primary: appt.appointmentType.color,
-          secondary: colorShade(appt.appointmentType.color, 20),
-        };
-        return {
-          start: appt.startsAt,
-          end: appt.endsAt,
-          title: apptTitle,
-          color: apptColor,
-          allDay: false,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-          appointmentId: appt.id,
-        };
-      });
+    this.events = appointments.map((appt) => {
+      const apptTitle = appt.client?.fullName || 'Client XY';
+
+      const apptColor = {
+        primary: appt.appointmentType.color,
+        secondary: colorShade(appt.appointmentType.color, 20),
+      };
+      return {
+        start: appt.startsAt,
+        end: appt.endsAt,
+        title: apptTitle,
+        color: apptColor,
+        allDay: false,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true,
+        },
+        draggable: true,
+        appointmentId: appt.id,
+      };
+    });
     this.refresh.next();
   }
 
@@ -358,7 +366,6 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     this.createAppointmentModal = this.modalService.show(
       AppointmentCreateComponent,
       {
-        animated: false,
         class: 'modal-dialog-centered modal-lg',
         initialState: {
           model: appointment,
@@ -374,7 +381,6 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     this.createAppointmentModal = this.modalService.show(
       AppointmentCreateComponent,
       {
-        animated: false,
         class: 'modal-dialog-centered modal-lg',
       }
     );
@@ -425,8 +431,9 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   segmentIsValid(date: Date) {
-    if (this.currentUser.role === 'Client') {
-      if (date < new Date()) return false;
+    if (date < new Date()) return false;
+    if (!this.checkWorkingHoursAvailability(date)) {
+      return false;
     }
     if (
       this.closedHours.some((ch) => {
@@ -456,5 +463,26 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
       this.scrollContainer.nativeElement.scrollTop = minutesSinceStartOfDay * 4;
     }
+  }
+
+  checkWorkingHoursAvailability(segmentDate) {
+    const workingDay = this.workingHours.find(
+      (wh) => wh.day === dayOfWeek[segmentDate.getDay()]
+    );
+    if (workingDay.dateFrom.getHours() > segmentDate.getHours()) {
+      return false;
+    } else if (workingDay.dateFrom.getHours() === segmentDate.getHours()) {
+      if (workingDay.dateFrom.getMinutes() > segmentDate.getMinutes()) {
+        return false;
+      }
+    }
+    if (workingDay.dateTo.getHours() < segmentDate.getHours()) {
+      return false;
+    } else if (workingDay.dateTo.getHours() === segmentDate.getHours()) {
+      if (workingDay.dateTo.getMinutes() <= segmentDate.getMinutes()) {
+        return false;
+      }
+    }
+    return true;
   }
 }

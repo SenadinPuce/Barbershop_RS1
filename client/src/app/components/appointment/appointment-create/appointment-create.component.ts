@@ -116,6 +116,8 @@ export class AppointmentCreateComponent implements OnInit {
     if (this.currentUser.role === 'Client') {
       startingStatus = 'Pending';
       this.model.clientId = this.currentUser.clientId;
+    } else if (this.currentUser.role === 'Barber') {
+      this.model.barberId = this.currentUser.barberId;
     }
     this.model.appointmentStatusId = this.appointmentStatuses.find(
       (x) => x.name === startingStatus

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Service } from 'src/app/models/service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
@@ -26,7 +27,8 @@ export class AppointmentTypeCreateComponent implements OnInit {
     private servicesService: ServiceService,
     private appointmentTypeService: AppointmentTypeService,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class AppointmentTypeCreateComponent implements OnInit {
     this.appointmentTypeService.post(appointmentType).subscribe((response) => {
       if (response) {
         this.router.navigateByUrl('/appointments?tab=1');
+        this.toastr.success('Appointment type created successfully');
       }
     });
   }

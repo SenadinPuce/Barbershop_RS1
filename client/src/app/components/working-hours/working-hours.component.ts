@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { WorkingHours } from 'src/app/models/workingHours';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
@@ -43,8 +47,8 @@ export class WorkingHoursComponent implements OnInit {
         id: new UntypedFormControl(wh.id),
         day: new UntypedFormControl(wh.day),
         isOpen: new UntypedFormControl(wh.isOpen),
-        from: new UntypedFormControl(wh.from),
-        to: new UntypedFormControl(wh.to),
+        dateFrom: new UntypedFormControl(wh.dateFrom),
+        dateTo: new UntypedFormControl(wh.dateTo),
       });
 
       this.workingHoursArray.push(group);

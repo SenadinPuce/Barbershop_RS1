@@ -159,3 +159,6 @@ body{
  .cal-week-view{
    border-top: 0;
  }
+ body.modal-open{
+   overflow-y: auto !important;
+ }

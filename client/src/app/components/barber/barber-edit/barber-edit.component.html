@@ -11,24 +11,27 @@
           alt="{{ barber.fullName }}"
           class="card-img-top img-thumbnail"
         />
-        <div class="card-footer text-center pb-0">
-          <label
-            for="imageUpload"
-            class="btn btn-secondary mx-1 mb-0"
-            [ngClass]="loading ? 'disabled' : ''"
-            >Choose Image</label
-          >
-          <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
-          <br />
-          <span>{{ fileName }}</span>
-          <input
-            type="file"
-            ng2FileSelect
-            [uploader]="uploader"
-            class="mt-2"
-            id="imageUpload"
-            *ngIf="!loading"
-          /><br />
+        <div class="card-footer text-center p-0">
+          <div class="d-flex align-items-center justify-content-center p-2">
+            <label
+              for="imageUpload"
+              class="btn btn-secondary mx-1 mb-0"
+              [ngClass]="loading ? 'disabled' : ''"
+              >Choose Image</label
+            >
+            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+            <input
+              type="file"
+              ng2FileSelect
+              [uploader]="uploader"
+              class="mt-2"
+              id="imageUpload"
+              *ngIf="!loading"
+            />
+          </div>
+          <div>
+            <span class="form-label">{{ fileName }}</span>
+          </div>
         </div>
       </div>
     </div>

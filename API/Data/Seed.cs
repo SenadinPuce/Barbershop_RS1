@@ -130,15 +130,11 @@ namespace API.Data
                 {
                     new Barber
                     {
-                        AppUserId = 1
+                        AppUserId = 11
                     },
                     new Barber
                     {
-                        AppUserId = 2
-                    },
-                    new Barber
-                    {
-                        AppUserId = 6
+                        AppUserId = 12
                     }
                 };
                 await db.AddRangeAsync(barbers);
@@ -155,6 +151,18 @@ namespace API.Data
                 {
                     new Client
                     {
+                        AppUserId = 1
+                    },
+                    new Client
+                    {
+                        AppUserId = 2
+                    },
+                    new Client
+                    {
+                        AppUserId = 3
+                    },
+                    new Client
+                    {
                         AppUserId = 4
                     },
                     new Client
@@ -163,7 +171,7 @@ namespace API.Data
                     },
                     new Client
                     {
-                        AppUserId = 3
+                        AppUserId = 6
                     },
                     new Client
                     {
@@ -180,7 +188,7 @@ namespace API.Data
                     new Client
                     {
                         AppUserId = 10
-                    }
+                    },
                 };
                 await db.AddRangeAsync(clients);
 

@@ -72,7 +72,6 @@ export class AppointmentListComponent implements OnInit, OnChanges {
 
   onCancel(id: number) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to cancel the appointment?',

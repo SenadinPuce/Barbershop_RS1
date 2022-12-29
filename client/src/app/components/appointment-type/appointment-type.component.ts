@@ -4,6 +4,7 @@ import { AppointmentTypeService } from 'src/app/_services/appointment-type.servi
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
 import { AppointmentTypeEditComponent } from './appointment-type-edit/appointment-type-edit.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointment-type',
@@ -18,7 +19,8 @@ export class AppointmentTypeComponent implements OnInit {
 
   constructor(
     private service: AppointmentTypeService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -29,7 +31,6 @@ export class AppointmentTypeComponent implements OnInit {
 
   onDelete(id) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to delete appointment type?',
@@ -44,7 +45,6 @@ export class AppointmentTypeComponent implements OnInit {
 
   onEdit(id) {
     this.editModalRef = this.modalService.show(AppointmentTypeEditComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         appointmentTypeId: id,
@@ -61,6 +61,7 @@ export class AppointmentTypeComponent implements OnInit {
   deleteAppointmentType(id) {
     this.service.delete(id).subscribe((response) => {
       if (response) {
+        this.toastr.warning('Appointment type successfully deleted');
         this.ngOnInit();
       }
     });

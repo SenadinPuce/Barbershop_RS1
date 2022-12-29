@@ -42,7 +42,6 @@ export class ClientComponent implements OnInit {
 
   onDelete(id) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to delete the client?',
@@ -57,7 +56,6 @@ export class ClientComponent implements OnInit {
 
   onEdit(id) {
     this.editModalRef = this.modalService.show(ClientEditComponent, {
-      animated: false,
       class: 'modal-dialog-centered modal-lg',
       initialState: {
         clientId: id,

@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered" *ngIf="!isEmpty; else emptyMessage">
   <thead>
     <tr>
       <th>Day</th>
@@ -55,3 +55,4 @@
     </tr>
   </tbody>
 </table>
+<ng-template #emptyMessage>No Apointments in {{ status }} status. </ng-template>
