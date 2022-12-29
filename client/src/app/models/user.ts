@@ -13,4 +13,5 @@ export class User {
   phoneNumber: string;
   photo?: Photo;
   clientId?: number;
+  barberId?: number;
 }

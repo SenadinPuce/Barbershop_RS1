@@ -72,13 +72,19 @@ namespace API.Controllers
             if (!result.Succeeded) return Unauthorized();
             //privremeno rjesenje
             int? clientId = null;
+            int? barberId = null;
             if (await _userManager.IsInRoleAsync(user, "Client"))
             {
                 clientId = _db.Client.Where(x => x.AppUserId == user.Id).Select(x => x.Id).Single();
             }
+            else if (await _userManager.IsInRoleAsync(user, "Barber"))
+            {
+                barberId = _db.Barber.Where(x => x.AppUserId == user.Id).Select(x => x.Id).Single();
+            }
             return new UserDto
             {
                 ClientId = clientId,
+                BarberId = barberId,
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
                 Photo = _mapper.Map<PhotoDto>(user.Photo)

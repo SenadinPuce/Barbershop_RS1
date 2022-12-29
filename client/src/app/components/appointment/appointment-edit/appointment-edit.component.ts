@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Appointment } from 'src/app/models/appointment';
@@ -22,6 +22,7 @@ import { ClientService } from 'src/app/_services/client.service';
 })
 export class AppointmentEditComponent implements OnInit {
   model: Partial<Appointment> = {};
+  refresh = new EventEmitter<void>();
   appointmentStatuses: AppointmentStatus[];
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
@@ -55,6 +56,7 @@ export class AppointmentEditComponent implements OnInit {
     this.appointmentService.update(this.model).subscribe((res) => {
       this.modal.hide();
       this.toastr.info('Appointment edited successfully');
+      this.refresh.emit();
     });
   }
 

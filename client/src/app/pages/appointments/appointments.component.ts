@@ -45,6 +45,7 @@ export class AppointmentsComponent implements OnInit {
     this.accountService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
+    this.initFields();
   }
 
   loadAppointments() {
@@ -81,15 +82,21 @@ export class AppointmentsComponent implements OnInit {
     this.editAppointmentModal = this.modalService.show(
       AppointmentEditComponent,
       {
-        animated: false,
         class: 'modal-dialog-centered modal-lg',
         initialState: {
           model: appointment,
         },
       }
     );
-    this.editAppointmentModal.onHide.subscribe((e) => {
+    this.editAppointmentModal.content.refresh.subscribe((x) => {
       this.loadAppointments();
     });
+  }
+
+  initFields() {
+    if (this.currentUser.role === 'Barber') {
+      this.params.barberIds = [];
+      this.params.barberIds.push(this.currentUser.barberId);
+    }
   }
 }

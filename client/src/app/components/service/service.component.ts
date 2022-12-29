@@ -29,7 +29,6 @@ export class ServiceComponent implements OnInit {
 
   onDelete(id) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to delete the service?',
@@ -44,7 +43,6 @@ export class ServiceComponent implements OnInit {
 
   onEdit(id) {
     this.editModalRef = this.modalService.show(ServiceEditComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         serviceId: id,

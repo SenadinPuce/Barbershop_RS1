@@ -272,29 +272,27 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mapData(appointments: Appointment[]) {
-    this.events = appointments
-      .filter((appt) => appt.appointmentStatus.name !== 'Canceled')
-      .map((appt) => {
-        const apptTitle = appt.client?.fullName || 'Client XY';
+    this.events = appointments.map((appt) => {
+      const apptTitle = appt.client?.fullName || 'Client XY';
 
-        const apptColor = {
-          primary: appt.appointmentType.color,
-          secondary: colorShade(appt.appointmentType.color, 20),
-        };
-        return {
-          start: appt.startsAt,
-          end: appt.endsAt,
-          title: apptTitle,
-          color: apptColor,
-          allDay: false,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-          appointmentId: appt.id,
-        };
-      });
+      const apptColor = {
+        primary: appt.appointmentType.color,
+        secondary: colorShade(appt.appointmentType.color, 20),
+      };
+      return {
+        start: appt.startsAt,
+        end: appt.endsAt,
+        title: apptTitle,
+        color: apptColor,
+        allDay: false,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true,
+        },
+        draggable: true,
+        appointmentId: appt.id,
+      };
+    });
     this.refresh.next();
   }
 
@@ -356,7 +354,6 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     this.createAppointmentModal = this.modalService.show(
       AppointmentCreateComponent,
       {
-        animated: false,
         class: 'modal-dialog-centered modal-lg',
         initialState: {
           model: appointment,
@@ -372,7 +369,6 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
     this.createAppointmentModal = this.modalService.show(
       AppointmentCreateComponent,
       {
-        animated: false,
         class: 'modal-dialog-centered modal-lg',
       }
     );

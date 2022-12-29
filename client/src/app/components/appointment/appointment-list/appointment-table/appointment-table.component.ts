@@ -36,9 +36,7 @@ export class AppointmentTableComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {
-    console.log('Created ' + this.status + ' component');
-  }
+  ngOnInit(): void {}
 
   onEdit(appt: Appointment) {
     this.editAppt.emit(appt);

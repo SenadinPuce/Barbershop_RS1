@@ -18,7 +18,7 @@ import { MessageService } from 'src/app/_services/message.service';
   providers: [BsModalRef, BsModalService],
 })
 export class BarberDetailComponent implements OnInit, OnDestroy {
-  @ViewChild('barberTabs', {static: true}) barberTabs: TabsetComponent;
+  @ViewChild('barberTabs', { static: true }) barberTabs: TabsetComponent;
   activeTab: TabDirective;
   barber: Barber;
   deleteModalRef: BsModalRef;
@@ -34,9 +34,9 @@ export class BarberDetailComponent implements OnInit, OnDestroy {
     private accountService: AccountService
   ) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if(user) this.user = user;
-      }
+      next: (user) => {
+        if (user) this.user = user;
+      },
     });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -45,29 +45,27 @@ export class BarberDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe({
+      next: (data) => {
+        this.barber = data['barber'];
+      },
+    });
 
-  this.route.data.subscribe({
-    next: data => {
-      this.barber = data['barber'];
-    }
-  })
-
-   this.route.queryParams.subscribe({
-    next: params => {
-      params['tab'] && this.selectTab(params['tab']);
-    }
-   })
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        params['tab'] && this.selectTab(params['tab']);
+      },
+    });
   }
 
   selectTab(heading: string) {
-    if(this.barberTabs) {
-      this.barberTabs.tabs.find(x => x.heading === heading).active = true;
+    if (this.barberTabs) {
+      this.barberTabs.tabs.find((x) => x.heading === heading).active = true;
     }
   }
 
   onDelete(barberId) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to delete the barber?',
@@ -89,7 +87,11 @@ export class BarberDetailComponent implements OnInit, OnDestroy {
 
   onTabActivated(data: TabDirective) {
     this.activeTab = data;
-    if(this.activeTab.heading === 'Messages' && this?.user && this?.barber.username) {
+    if (
+      this.activeTab.heading === 'Messages' &&
+      this?.user &&
+      this?.barber.username
+    ) {
       this.messageService.createHubConnection(this.user, this.barber.username);
     } else {
       this.messageService.stopHubConnection();

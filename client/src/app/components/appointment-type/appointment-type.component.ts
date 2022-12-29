@@ -29,7 +29,6 @@ export class AppointmentTypeComponent implements OnInit {
 
   onDelete(id) {
     this.deleteModalRef = this.modalService.show(ConfirmModalComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         question: 'Are you sure you want to delete appointment type?',
@@ -44,7 +43,6 @@ export class AppointmentTypeComponent implements OnInit {
 
   onEdit(id) {
     this.editModalRef = this.modalService.show(AppointmentTypeEditComponent, {
-      animated: false,
       class: 'modal-dialog-centered',
       initialState: {
         appointmentTypeId: id,
