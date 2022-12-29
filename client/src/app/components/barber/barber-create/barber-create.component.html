@@ -10,33 +10,36 @@
           src="{{ barber.photo?.url || './assets/images/user.png' }}"
           class="card-img-top img-thumbnail"
         />
-        <div class="card-footer text-center pb-0">
-          <label
-            for="imageUpload"
-            class="btn btn-secondary mx-1 mb-0"
-            [ngClass]="loading ? 'disabled' : ''"
-            >Choose Image</label
-          >
-          <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
-          <br />
-          <span>{{ fileName }}</span>
-          <input
-            type="file"
-            ng2FileSelect
-            [uploader]="uploader"
-            class="mt-2"
-            id="imageUpload"
-            *ngIf="!loading"
-          /><br />
+        <div class="card-footer text-center p-0">
+          <div class="d-flex align-items-center justify-content-center p-2">
+            <label
+              for="imageUpload"
+              class="btn btn-secondary mx-1 mb-0"
+              [ngClass]="loading ? 'disabled' : ''"
+              >Choose Image</label
+            >
+            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+            <input
+              type="file"
+              ng2FileSelect
+              [uploader]="uploader"
+              class="mt-2"
+              id="imageUpload"
+              *ngIf="!loading"
+            />
+          </div>
+          <div>
+            <span class="form-label">{{ fileName }}</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-9 barber-tabset">
+    <div class="col-9 barber-tabset ps-3">
       <div class="mb-4">
         <form #editProfileForm="ngForm" autocomplete="off">
           <div class="row">
-            <div class="col-md-6 mb-3 p-0">
+            <div class="col-md-6 mb-3">
               <label for="firstName" class="lh form-label">First Name</label>
               <input
                 class="form-control"
@@ -48,7 +51,7 @@
                 maxLength="50"
               />
             </div>
-            <div class="col-md-6 mb-3 p-0 ps-3">
+            <div class="col-md-6 mb-3">
               <label for="lastName" class="lh form-label">Last Name:</label>
               <input
                 class="form-control"
