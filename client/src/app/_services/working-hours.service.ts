@@ -22,8 +22,8 @@ export class WorkingHoursService {
         this.hours = hours.map((wh) => {
           let hour: WorkingHours = {
             id: wh.id,
-            from: new Date(null, null, null, wh.fromHours, wh.fromMinutes),
-            to: new Date(null, null, null, wh.toHours, wh.toMinutes),
+            dateFrom: new Date(null, null, null, wh.fromHours, wh.fromMinutes),
+            dateTo: new Date(null, null, null, wh.toHours, wh.toMinutes),
             day: wh.day,
             isOpen: wh.isOpen,
           };
@@ -39,10 +39,10 @@ export class WorkingHoursService {
       return {
         id: wh.id,
         isOpen: wh.isOpen,
-        fromHours: wh.from.getHours(),
-        fromMinutes: wh.from.getMinutes(),
-        toHours: wh.to.getHours(),
-        toMinutes: wh.to.getMinutes(),
+        fromHours: wh.dateFrom.getHours(),
+        fromMinutes: wh.dateFrom.getMinutes(),
+        toHours: wh.dateTo.getHours(),
+        toMinutes: wh.dateTo.getMinutes(),
         day: wh.day,
       };
     });

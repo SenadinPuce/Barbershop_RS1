@@ -44,10 +44,20 @@ import { AppointmentParams } from 'src/app/models/appointmentParams';
 import { WorkingHoursService } from 'src/app/_services/working-hours.service';
 import { CustomHoursService } from 'src/app/_services/custom-hours.service';
 import { CustomHours } from 'src/app/models/customHours';
+import { WorkingHours } from 'src/app/models/workingHours';
 import { CalendarSlot } from 'src/app/models/calendarSlot';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/models/user';
 
+const dayOfWeek = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 function colorShade(color, amount) {
   return (
     '#' +
@@ -126,6 +136,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   dayEndHour: number;
 
   customHours: CustomHours[] = [];
+  workingHours: WorkingHours[] = [];
   currentUser: User;
 
   @Output() getAppointments = new EventEmitter();
@@ -174,6 +185,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
   loadWorkingHours() {
     this.workingHoursService.get().subscribe((data) => {
+      this.workingHours = data;
       const excludingDays = data.filter((wh) => wh.isOpen !== true);
       excludingDays.forEach((ed) => {
         this.excludeDays.push(DAYS_OF_WEEK[`${ed.day.toUpperCase()}`]);
@@ -184,11 +196,11 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
       const includingDays = data.filter((wh) => wh.isOpen === true);
       includingDays.forEach((wh) => {
-        if (wh.from.getHours() < dayStartHour) {
-          dayStartHour = wh.from.getHours();
+        if (wh.dateFrom.getHours() < dayStartHour) {
+          dayStartHour = wh.dateFrom.getHours();
         }
-        if (wh.to.getHours() > dayEndHour) {
-          dayEndHour = wh.to.getHours();
+        if (wh.dateTo.getHours() > dayEndHour) {
+          dayEndHour = wh.dateTo.getHours();
         }
       });
       this.dayStartHour = dayStartHour;
@@ -420,6 +432,9 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
   segmentIsValid(date: Date) {
     if (date < new Date()) return false;
+    if (!this.checkWorkingHoursAvailability(date)) {
+      return false;
+    }
     if (
       this.closedHours.some((ch) => {
         return ch.dateFrom <= date && ch.dateTo > date;
@@ -448,5 +463,26 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
 
       this.scrollContainer.nativeElement.scrollTop = minutesSinceStartOfDay * 4;
     }
+  }
+
+  checkWorkingHoursAvailability(segmentDate) {
+    const workingDay = this.workingHours.find(
+      (wh) => wh.day === dayOfWeek[segmentDate.getDay()]
+    );
+    if (workingDay.dateFrom.getHours() > segmentDate.getHours()) {
+      return false;
+    } else if (workingDay.dateFrom.getHours() === segmentDate.getHours()) {
+      if (workingDay.dateFrom.getMinutes() > segmentDate.getMinutes()) {
+        return false;
+      }
+    }
+    if (workingDay.dateTo.getHours() < segmentDate.getHours()) {
+      return false;
+    } else if (workingDay.dateTo.getHours() === segmentDate.getHours()) {
+      if (workingDay.dateTo.getMinutes() <= segmentDate.getMinutes()) {
+        return false;
+      }
+    }
+    return true;
   }
 }

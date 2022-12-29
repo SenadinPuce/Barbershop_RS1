@@ -1,7 +1,7 @@
 export interface WorkingHours {
   id: number;
   day: string;
-  from: Date;
-  to: Date;
+  dateFrom: Date;
+  dateTo: Date;
   isOpen: boolean;
 }
