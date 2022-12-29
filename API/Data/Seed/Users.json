@@ -98,5 +98,23 @@
     "Email": "rbyers@gmail.com",
     "PhoneNumber": "(068)/524-853",
     "PhotoId": 10
+  },
+  {
+    "FirstName": "Deni",
+    "LastName": "Brkan",
+    "UserName": "deni.brkan",
+    "DateOfBirth": "1999-11-28",
+    "Created": "2022-12-28",
+    "Email": "brkandeni@gmail.com",
+    "PhoneNumber": "(062)/225-883"
+  },
+  {
+    "FirstName": "Senadin",
+    "LastName": "Puce",
+    "UserName": "senadin.puce",
+    "DateOfBirth": "1999-09-15",
+    "Created": "2022-12-28",
+    "Email": "senadinpuce@gmail.com",
+    "PhoneNumber": "(061)/225-883"
   }
 ]
