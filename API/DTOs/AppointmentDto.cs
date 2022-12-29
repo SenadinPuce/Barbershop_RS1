@@ -17,4 +17,18 @@ namespace API.DTOs
         public int AppointmentStatusId { get; set; }
         public AppointmentStatusDto AppointmentStatus { get; set; }
     }
+
+    public class AppointmentUpdateDto
+    {
+        public int Id { get; set; }
+        public DateTime StartsAt { get; set; }
+        public DateTime EndsAt { get; set; }
+        public int Duration { get; set; }
+        public string Note { get; set; }
+
+        public int? ClientId { get; set; }
+        public int BarberId { get; set; }
+        public int AppointmentTypeId { get; set; }
+        public int AppointmentStatusId { get; set; }
+    }
 }

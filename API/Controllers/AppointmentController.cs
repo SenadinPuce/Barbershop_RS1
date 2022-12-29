@@ -112,7 +112,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<AppointmentDto>> PutAsync(int id, AppointmentDto model)
+        public async Task<ActionResult<AppointmentDto>> PutAsync(int id, AppointmentUpdateDto model)
         {
             var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -122,7 +122,6 @@ namespace API.Controllers
             }
             var entity = _mapper.Map(model, appointment);
 
-            _context.Update(entity);
             await _context.SaveChangesAsync();
 
             return Ok(model);
