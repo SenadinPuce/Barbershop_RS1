@@ -1,5 +1,8 @@
-﻿using API.DTOs;
+﻿using API.Data;
+using API.DTOs;
+using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -10,9 +13,13 @@ namespace API.Services
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
+        private readonly DataContext _db;
 
-        public EmailService(IConfiguration config)
+        public EmailService(IConfiguration config, IMapper mapper, DataContext db)
         {
+            _db = db;
+            _mapper = mapper;
             _config = config;
         }
         public async Task SendEmail(EmailDto emailData)
@@ -29,6 +36,17 @@ namespace API.Services
 
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
+        }
+
+        public async Task SaveEmail(EmailDto emailDto)
+        {
+            var email = new Email();
+            _mapper.Map(emailDto, email);
+
+            email.DateSent = DateTime.UtcNow;
+
+            await _db.AddAsync(email);
+            await _db.SaveChangesAsync();
         }
     }
 }
