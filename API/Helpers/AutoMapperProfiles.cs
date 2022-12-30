@@ -52,6 +52,8 @@ namespace API.Helpers
             CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ?
                 DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
 
+            CreateMap<EmailDto, Email>();
+
         }
     }
 }

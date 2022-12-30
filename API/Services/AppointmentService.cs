@@ -38,6 +38,7 @@ namespace API.Services
             };
 
             await _emailService.SendEmail(email);
+            await _emailService.SaveEmail(email);
         }
 
         public async Task SendAppointmentOneHourDueEmail(Appointment appointment)
@@ -58,6 +59,9 @@ namespace API.Services
             };
 
             await _emailService.SendEmail(email);
+            await _emailService.SaveEmail(email);
         }
+
+
     }
 }
