@@ -9,7 +9,11 @@ import { NotificationService } from 'src/app/_services/notification.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(public accountService: AccountService, private router: Router, private notificationService: NotificationService) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    public notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {}
 

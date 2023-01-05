@@ -24,10 +24,16 @@
             >Clients</a
           >
         </li>
-        <li style="position : relative;"  class="nav-item">
-          <a class="nav-link" routerLink="/messages"  routerLinkActive="active" >Messages 
-            <span class="rounded-circle circle-number" *ngIf="(notificationService.numberOfUnreadMessages$ | async) > 0" >
-              {{notificationService.numberOfUnreadMessages$ | async}}</span></a>
+        <li style="position: relative" class="nav-item">
+          <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+            >Messages
+            <span
+              class="circle-number"
+              *ngIf="(notificationService.numberOfUnreadMessages$ | async) > 0"
+            >
+              {{ notificationService.numberOfUnreadMessages$ | async }}</span
+            ></a
+          >
         </li>
         <li class="nav-item" *appHasRole="'Admin'">
           <a class="nav-link" routerLink="/settings" routerLinkActive="active"

@@ -38,7 +38,7 @@ namespace API.Controllers
         [HttpGet("{id}", Name = "GetBarber")]
         public async Task<ActionResult<BarberDto>> GetBarberAsync(int id)
         {
-            var barber = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.Id == id);
+            var barber = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.AppUserId == id);
             if (barber == null)
             {
                 return NotFound();
@@ -70,8 +70,12 @@ namespace API.Controllers
             var barber = new Barber();
             _mapper.Map(model, barber);
             barber.AppUser.UserName = username;
-            barber.AppUser.Photo.Id = model.Photo!.Id;
-            barber.AppUser.Photo = null;
+
+            if (model.Photo != null)
+            {
+                barber.AppUser.PhotoId = model.Photo.Id;
+                barber.AppUser.Photo = null;
+            }
 
             await _userManager.CreateAsync(barber.AppUser, "Barber0!");
             await _userManager.AddToRoleAsync(barber.AppUser, "Barber");
