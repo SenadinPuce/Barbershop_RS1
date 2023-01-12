@@ -6,10 +6,12 @@ import { delay, shareReplay } from 'rxjs/operators';
 import { AppointmentEditComponent } from 'src/app/components/appointment/appointment-edit/appointment-edit.component';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentParams } from 'src/app/models/appointmentParams';
+import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
 import { Barber } from 'src/app/models/barber';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/_services/account.service';
+import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentTypeService } from 'src/app/_services/appointment-type.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
 import { BarberService } from 'src/app/_services/barber.service';
@@ -24,6 +26,7 @@ export class AppointmentsComponent implements OnInit {
   params: AppointmentParams = {} as AppointmentParams;
   barbers$: Observable<Barber[]>;
   appointments$: Observable<Appointment[]>;
+  appointmentStatuses: AppointmentStatus[];
   appointmentTypes$: Observable<AppointmentType[]>;
   takenSlots$: Observable<any>;
 
@@ -33,6 +36,7 @@ export class AppointmentsComponent implements OnInit {
   constructor(
     private barberService: BarberService,
     private appointmentService: AppointmentService,
+    private appointmentStatusService: AppointmentStatusService,
     private appointmentTypeService: AppointmentTypeService,
     private modalService: BsModalService,
     private accountService: AccountService
@@ -40,6 +44,7 @@ export class AppointmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBarbers();
+    this.loadAppointmentStatuses();
     this.loadAppointmentTypes();
 
     this.accountService.currentUser$.subscribe((user) => {
@@ -60,6 +65,12 @@ export class AppointmentsComponent implements OnInit {
       .pipe(shareReplay(), delay(0));
   }
 
+  loadAppointmentStatuses() {
+    this.appointmentStatusService.get().subscribe((data) => {
+      this.appointmentStatuses = data;
+    });
+  }
+
   loadAppointmentTypes() {
     this.appointmentTypes$ = this.appointmentTypeService.getAppointmentTypes();
   }
@@ -69,6 +80,10 @@ export class AppointmentsComponent implements OnInit {
   }
 
   onChangeBarber() {
+    this.loadAppointments();
+  }
+
+  onChangeStatus() {
     this.loadAppointments();
   }
 

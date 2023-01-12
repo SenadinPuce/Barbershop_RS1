@@ -3,22 +3,43 @@
     <div class="col-2 appt-sidebar">
       <h5>Filters</h5>
       <hr />
-      <label class="lh" for="barber">Barber</label>
-      <ng-select
-        [items]="barbers$ | async"
-        bindLabel="fullName"
-        bindValue="id"
-        [multiple]="true"
-        [closeOnSelect]="false"
-        [markFirst]="true"
-        [hideSelected]="true"
-        name="barber"
-        id="barber"
-        (change)="onChangeBarber()"
-        [(ngModel)]="params.barberIds"
-        placeholder="Select a barber..."
-      >
-      </ng-select>
+      <div class="mb-2">
+        <label class="lh" for="barber">Barber</label>
+        <ng-select
+          [items]="barbers$ | async"
+          bindLabel="fullName"
+          bindValue="id"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          [markFirst]="true"
+          [hideSelected]="true"
+          name="barber"
+          id="barber"
+          (change)="onChangeBarber()"
+          [(ngModel)]="params.barberIds"
+          placeholder="Select a barber..."
+        >
+        </ng-select>
+      </div>
+      <div class="mb-2">
+        <label class="lh" for="status">Status</label>
+        <ng-select
+          [items]="appointmentStatuses"
+          bindLabel="name"
+          bindValue="id"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          [markFirst]="true"
+          [hideSelected]="true"
+          name="status"
+          id="status"
+          (change)="onChangeStatus()"
+          [(ngModel)]="params.statusIds"
+          placeholder="Select a status..."
+        >
+        </ng-select>
+      </div>
+
       <div class="appointment-types">
         <h5>Appointment Types</h5>
         <hr />

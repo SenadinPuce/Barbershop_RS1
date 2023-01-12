@@ -44,6 +44,12 @@ export class AppointmentService {
         params.barberIds.toString()
       );
 
+    if (params.statusIds?.length > 0)
+      queryParams = queryParams.append(
+        'statusIds',
+        params.statusIds.toString()
+      );
+
     return this.http
       .get<Appointment[]>(this.baseUrl, { params: queryParams })
       .pipe(

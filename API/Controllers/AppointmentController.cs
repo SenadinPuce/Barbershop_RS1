@@ -36,6 +36,11 @@ namespace API.Controllers
                 var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
                 appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
             }
+            if (request.StatusIds?.Length > 0)
+            {
+                var statusIds = request.StatusIds.Split(',').Select(x => int.Parse(x));
+                appointmentsQuery = appointmentsQuery.Where(x => statusIds.Any(bId => bId == x.AppointmentStatusId));
+            }
             if (request.ClientId != null)
             {
                 appointmentsQuery = appointmentsQuery.Where(x => x.Client.Id == request.ClientId);
@@ -48,8 +53,10 @@ namespace API.Controllers
         [HttpGet("taken-slots")]
         public async Task<ActionResult<CalendarSlotDto[]>> GetTakenSlotsAsync([FromQuery] AppointmentParams request)
         {
+            var canceledStatus = await _context.AppointmentStatus.SingleAsync(x => x.Name == "Canceled");
             var appointmentsQuery = _context.Appointment.Include(x => x.Client)
-                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).AsQueryable();
+                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo
+                    && x.AppointmentStatusId != canceledStatus.Id).AsQueryable();
             if (request.BarberIds?.Length > 0)
             {
                 var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));

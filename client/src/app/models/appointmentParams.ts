@@ -1,6 +1,7 @@
 export class AppointmentParams {
   dateFrom: Date;
   dateTo: Date;
-  barberIds: number[];
   clientId: number;
+  barberIds: number[];
+  statusIds: number[];
 }
