@@ -20,6 +20,7 @@ export class AppointmentTableComponent implements OnInit, OnChanges {
   @Output() editAppt = new EventEmitter<Appointment>();
   @Output() cancelAppt = new EventEmitter<number>();
   @Output() completeAppt = new EventEmitter<number>();
+  @Output() scheduleAppt = new EventEmitter<number>();
   isEmpty = true;
 
   constructor() {}
@@ -48,5 +49,9 @@ export class AppointmentTableComponent implements OnInit, OnChanges {
 
   onComplete(id: number) {
     this.completeAppt.emit(id);
+  }
+
+  onSchedule(id: number) {
+    this.scheduleAppt.emit(id);
   }
 }

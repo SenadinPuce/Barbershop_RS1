@@ -130,4 +130,15 @@ export class AppointmentService {
       })
     );
   }
+
+  schedule(id) {
+    return this.http
+      .put(this.baseUrl + '/' + id + '/schedule', {}, { responseType: 'text' })
+      .pipe(
+        map(() => {
+          this.apptCache.clear();
+          return true;
+        })
+      );
+  }
 }

@@ -29,6 +29,16 @@
           <button class="btn btn-action" (click)="onEdit(appt)" title="Edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
+          <ng-container *appHasRole="'Barber,Admin'">
+            <button
+              class="btn btn-action"
+              (click)="onSchedule(appt.id)"
+              title="Schedule"
+              *ngIf="appt.appointmentStatus.name === 'Pending'"
+            >
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </ng-container>
           <button
             class="btn btn-action"
             *ngIf="

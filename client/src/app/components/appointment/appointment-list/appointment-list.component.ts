@@ -106,11 +106,10 @@ export class AppointmentListComponent implements OnInit, OnChanges {
     ).length;
   }
 
-  get scheduledStatus() {
-    return this.appointmentStatuses.find((x) => x.name === 'Scheduled');
-  }
-
-  get canceledStatus() {
-    return this.appointmentStatuses.find((x) => x.name === 'Canceled');
+  onSchedule(id: number) {
+    this.appointmentService.schedule(id).subscribe(() => {
+      this.toastr.success('Appointment has been scheduled');
+      this.getAppointments.emit();
+    });
   }
 }

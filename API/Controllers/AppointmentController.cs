@@ -127,6 +127,22 @@ namespace API.Controllers
             return Ok(model);
         }
 
+
+        [HttpPut("{id}/schedule")]
+        public async Task<ActionResult> ScheduleAsync(int id)
+        {
+            var appointment = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == id);
+            if (appointment == null) return BadRequest();
+
+            var scheduledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Scheduled");
+            appointment.AppointmentStatusId = scheduledStatus.Id;
+
+            await _context.SaveChangesAsync();
+            await _appointmentService.OnAppointmentSchedule(appointment);
+
+            return Ok();
+        }
+
         [HttpPut("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id)
         {
