@@ -22,13 +22,14 @@ import { ClientService } from 'src/app/_services/client.service';
 })
 export class AppointmentEditComponent implements OnInit {
   model: Partial<Appointment> = {};
-  refresh = new EventEmitter<void>();
   appointmentStatuses: AppointmentStatus[];
   appointmentTypes: AppointmentType[];
   barbers: Barber[];
   clients: Client[] = [];
   params = new BaseParams(20);
   currentUser: User;
+  draggedAppt: boolean = false;
+  edited: boolean = false;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -54,9 +55,9 @@ export class AppointmentEditComponent implements OnInit {
 
   updateAppointment() {
     this.appointmentService.update(this.model).subscribe((res) => {
+      this.edited = true;
       this.modal.hide();
       this.toastr.info('Appointment edited successfully');
-      this.refresh.emit();
     });
   }
 
@@ -125,7 +126,13 @@ export class AppointmentEditComponent implements OnInit {
     this.model.clientId = appointment.clientId;
     this.model.appointmentStatusId = appointment.appointmentStatusId;
     this.model.note = appointment.note;
-    if (!this.model.startsAt && !this.model.endsAt) {
+    //schedule drag appointment
+    if (
+      (this.model.startsAt && this.model.startsAt !== appointment.startsAt) ||
+      (this.model.endsAt && this.model.endsAt !== appointment.endsAt)
+    ) {
+      this.draggedAppt = true;
+    } else {
       this.model.startsAt = appointment.startsAt;
       this.model.endsAt = appointment.endsAt;
       this.model.duration = appointment.duration;

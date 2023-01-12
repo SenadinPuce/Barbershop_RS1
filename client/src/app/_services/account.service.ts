@@ -16,7 +16,11 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
@@ -54,8 +58,8 @@ export class AccountService {
     if (user) {
       user.role = this.getDecodedToken(user.token).role;
       localStorage.setItem('user', JSON.stringify(user));
-    }
-      this.currentUserSource.next(user);
       this.notificationService.createHubConnection(user);
     }
+    this.currentUserSource.next(user);
+  }
 }

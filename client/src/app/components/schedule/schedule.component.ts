@@ -259,7 +259,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    const appointment: Partial<Appointment> = {
+    let appointment: Partial<Appointment> = {
       id: event.appointmentId,
     };
     if (action === 'Resized or Dragged') {

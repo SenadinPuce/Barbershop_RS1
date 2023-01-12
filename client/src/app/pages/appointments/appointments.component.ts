@@ -88,8 +88,13 @@ export class AppointmentsComponent implements OnInit {
         },
       }
     );
-    this.editAppointmentModal.content.refresh.subscribe((x) => {
-      this.loadAppointments();
+    this.editAppointmentModal.onHidden.subscribe(() => {
+      if (
+        this.editAppointmentModal.content.edited ||
+        this.editAppointmentModal.content.draggedAppt
+      ) {
+        this.loadAppointments();
+      }
     });
   }
 

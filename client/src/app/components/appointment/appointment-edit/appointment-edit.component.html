@@ -155,7 +155,9 @@
         <button
           class="btn btn-success me-2"
           type="submit"
-          [disabled]="!appointmentForm.valid || !appointmentForm.dirty"
+          [disabled]="
+            (!appointmentForm.valid || !appointmentForm.dirty) && !draggedAppt
+          "
         >
           Save
         </button>
