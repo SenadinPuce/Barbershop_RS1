@@ -162,3 +162,9 @@ body{
  body.modal-open{
    overflow-y: auto !important;
  }
+.small-text{
+   font-size: small;
+}
+.custom-tooltip .tooltip-inner{
+   background-color: rgb(50, 50, 50);
+}

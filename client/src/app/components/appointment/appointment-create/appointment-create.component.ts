@@ -56,6 +56,13 @@ export class AppointmentCreateComponent implements OnInit {
     this.appointmentService.post(this.model).subscribe((res) => {
       this.modal.hide();
       this.toastr.success('Appointment created successfully');
+      if (this.currentUser.role === 'Client') {
+        setTimeout(() => {
+          this.toastr.info(
+            'The appointment is in pending status, you may still edit it. Feedback will be notified here and sent via email.'
+          );
+        }, 1500);
+      }
     });
   }
 

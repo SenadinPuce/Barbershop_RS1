@@ -13,7 +13,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TimeagoModule } from 'ngx-timeago';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [],
   imports: [
@@ -32,7 +32,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     TimepickerModule.forRoot(),
     CollapseModule.forRoot(),
     TimeagoModule.forRoot(),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    NgbTooltipModule,
   ],
   exports: [
     BsDropdownModule,
@@ -47,7 +48,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     TimepickerModule,
     CollapseModule,
     TimeagoModule,
-    ButtonsModule
+    ButtonsModule,
+    NgbTooltipModule,
   ],
 })
 export class SharedModule {}

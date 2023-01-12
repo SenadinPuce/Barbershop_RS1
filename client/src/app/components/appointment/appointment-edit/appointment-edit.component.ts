@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { combineLatest, Observable } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
@@ -14,7 +15,6 @@ import { AppointmentTypeService } from 'src/app/_services/appointment-type.servi
 import { AppointmentService } from 'src/app/_services/appointment.service';
 import { BarberService } from 'src/app/_services/barber.service';
 import { ClientService } from 'src/app/_services/client.service';
-
 @Component({
   selector: 'app-appointment-edit',
   templateUrl: './appointment-edit.component.html',
@@ -30,7 +30,8 @@ export class AppointmentEditComponent implements OnInit {
   currentUser: User;
   draggedAppt: boolean = false;
   edited: boolean = false;
-
+  isDisabled: boolean = false;
+  tooltipInfoText: string;
   constructor(
     private appointmentService: AppointmentService,
     private appointmentTypeService: AppointmentTypeService,
@@ -43,14 +44,20 @@ export class AppointmentEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.accountService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-    });
     this.loadAppointmentTypes();
     this.loadAppointmentStatuses();
     this.loadClients();
     this.loadBarbers();
-    this.fetchAppointment(this.model.id);
+    combineLatest({
+      appt: this.fetchAppointment(this.model.id),
+      user: this.getCurrentUser(),
+    }).subscribe({
+      next: ({ appt, user }) => {
+        this.mapAppointment(appt);
+        this.currentUser = user;
+        this.checkRoleAndAppointmentStatus();
+      },
+    });
   }
 
   updateAppointment() {
@@ -59,6 +66,10 @@ export class AppointmentEditComponent implements OnInit {
       this.modal.hide();
       this.toastr.info('Appointment edited successfully');
     });
+  }
+
+  getCurrentUser() {
+    return this.accountService.currentUser$;
   }
 
   setAppointmentDuration() {
@@ -110,10 +121,8 @@ export class AppointmentEditComponent implements OnInit {
     });
   }
 
-  fetchAppointment(id) {
-    this.appointmentService.getById(id).subscribe((data) => {
-      this.mapAppointment(data);
-    });
+  fetchAppointment(id): Observable<Appointment> {
+    return this.appointmentService.getById(id);
   }
 
   cancel() {
@@ -125,6 +134,7 @@ export class AppointmentEditComponent implements OnInit {
     this.model.barberId = appointment.barberId;
     this.model.clientId = appointment.clientId;
     this.model.appointmentStatusId = appointment.appointmentStatusId;
+    this.model.appointmentStatus = appointment.appointmentStatus;
     this.model.note = appointment.note;
     //schedule drag appointment
     if (
@@ -137,5 +147,20 @@ export class AppointmentEditComponent implements OnInit {
       this.model.endsAt = appointment.endsAt;
       this.model.duration = appointment.duration;
     }
+  }
+
+  checkRoleAndAppointmentStatus() {
+    let tooltipInfoText = 'You shall not edit it anymore. ';
+    if (
+      this.currentUser.role === 'Client' &&
+      this.model.appointmentStatus.name !== 'Pending'
+    ) {
+      this.isDisabled = true;
+      if (this.model.appointmentStatus.name === 'Scheduled') {
+        tooltipInfoText +=
+          'Use Cancel button in the appointment list and create a new appointment with a desired date and time.';
+      }
+    }
+    this.tooltipInfoText = tooltipInfoText;
   }
 }
