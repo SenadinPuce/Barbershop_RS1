@@ -169,17 +169,20 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}/cancel")]
-        public async Task<ActionResult> CancelAsync(int id)
+        public async Task<ActionResult> CancelAsync(int id, bool canceledByClient)
         {
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
+            var appointment = await _context.Appointment.Include(x => x.Barber.AppUser).Include(x => x.Client.AppUser).Include(x => x.AppointmentStatus).SingleOrDefaultAsync(x => x.Id == id);
             if (appointment == null)
             {
                 return BadRequest();
             }
+
             var canceledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Canceled");
+            var previousStatus = appointment.AppointmentStatus;
             appointment.AppointmentStatusId = canceledStatus.Id;
 
             await _context.SaveChangesAsync();
+            await _appointmentService.OnAppointmentCancel(appointment, canceledByClient, previousStatus);
 
             return Ok();
         }

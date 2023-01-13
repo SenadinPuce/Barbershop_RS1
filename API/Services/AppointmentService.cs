@@ -1,15 +1,19 @@
-﻿using API.DTOs;
+﻿using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
 {
     public class AppointmentService : IAppointmentService
     {
         private readonly IEmailService _emailService;
+        private readonly DataContext _db;
 
-        public AppointmentService(IEmailService emailService)
+        public AppointmentService(IEmailService emailService, DataContext db)
         {
+            _db = db;
             _emailService = emailService;
         }
 
@@ -20,6 +24,18 @@ namespace API.Services
             if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
             {
                 await SendAppointmentScheduledEmail(appointment);
+            }
+        }
+
+        public async Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, AppointmentStatus previousStatus)
+        {
+            if (appointment == null) throw new Exception("Appointment does not exist");
+            if (!canceledByClient)
+            {
+                if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
+                {
+                    await SendAppointmentCanceledEmail(appointment, previousStatus);
+                }
             }
         }
 
@@ -34,6 +50,34 @@ namespace API.Services
             {
                 To = appointment.Client.AppUser.Email,
                 Subject = "New Appointment Scheduled",
+                Body = body
+            };
+
+            await _emailService.SendEmail(email);
+            await _emailService.SaveEmail(email);
+        }
+
+        public async Task SendAppointmentCanceledEmail(Appointment appointment, AppointmentStatus previousStatus)
+        {
+            var client = appointment.Client;
+            var startDateInLocal = appointment.StartsAt.ToLocalTime();
+            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == "Pending");
+            var body = "";
+            var subject = "";
+            if (previousStatus.Id == pendingStatus.Id)
+            {
+                subject = "Appointment Feedback";
+                body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your suggested appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} hasn't been scheduled.<br>Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>Thank you for understanding. <br><br><br>Regards, BarberShop </p>";
+            }
+            else
+            {
+                subject = "Appointment Canceled";
+                body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your scheduled appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} has been canceled due to unexpected events.<br>Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>Thank you for understanding. <br><br><br>Regards, BarberShop </p>";
+            }
+            var email = new EmailDto
+            {
+                To = appointment.Client.AppUser.Email,
+                Subject = subject,
                 Body = body
             };
 

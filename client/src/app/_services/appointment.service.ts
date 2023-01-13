@@ -128,13 +128,18 @@ export class AppointmentService {
     );
   }
 
-  cancel(id) {
-    return this.http.put(this.baseUrl + '/' + id + '/cancel', {}).pipe(
-      map(() => {
-        this.apptCache.clear();
-        return true;
-      })
-    );
+  cancel(id: number, canceledByClient: boolean) {
+    let params = new HttpParams();
+    params = params.append('canceledByClient', canceledByClient);
+
+    return this.http
+      .put(this.baseUrl + '/' + id + '/cancel', {}, { params })
+      .pipe(
+        map(() => {
+          this.apptCache.clear();
+          return true;
+        })
+      );
   }
 
   schedule(id) {

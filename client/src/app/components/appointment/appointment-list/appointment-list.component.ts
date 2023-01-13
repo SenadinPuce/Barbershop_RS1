@@ -9,9 +9,12 @@ import {
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs';
 import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
+import { User } from 'src/app/models/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { AppointmentStatusService } from 'src/app/_services/appointment-status.service';
 import { AppointmentService } from 'src/app/_services/appointment.service';
 @Component({
@@ -32,16 +35,21 @@ export class AppointmentListComponent implements OnInit, OnChanges {
 
   appointmentStatuses: AppointmentStatus[];
   deleteModalRef: BsModalRef;
+  currentUser: User;
 
   constructor(
     private appointmentService: AppointmentService,
     private apptStatusService: AppointmentStatusService,
     private toastr: ToastrService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
     this.loadAppointmentStatuses();
+    this.accountService.currentUser$.pipe(take(1)).subscribe((user) => {
+      this.currentUser = user;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,7 +93,9 @@ export class AppointmentListComponent implements OnInit, OnChanges {
   }
 
   cancelAppointment(id: number) {
-    this.appointmentService.cancel(id).subscribe(() => {
+    const isClient = this.currentUser.role === 'Client';
+
+    this.appointmentService.cancel(id, isClient).subscribe(() => {
       this.toastr.info('Appointment has been canceled');
       this.getAppointments.emit();
     });
