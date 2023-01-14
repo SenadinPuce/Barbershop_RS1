@@ -80,7 +80,7 @@ namespace API.Controllers
             await _userManager.CreateAsync(barber.AppUser, "Barber0!");
             await _userManager.AddToRoleAsync(barber.AppUser, "Barber");
 
-            _context.Add(barber);
+            await _context.AddAsync(barber);
             await _context.SaveChangesAsync();
 
             return Ok(true);

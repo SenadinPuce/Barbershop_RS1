@@ -22,7 +22,7 @@
         </ng-select>
       </div>
       <div class="mb-2">
-        <label class="lh" for="status">Status</label>
+        <label class="lh" for="status">Appointment Status</label>
         <ng-select
           [items]="appointmentStatuses"
           bindLabel="name"
@@ -70,12 +70,11 @@
         [appointments]="appointments$ | async"
         [takenSlots]="takenSlots$ | async"
       ></app-schedule>
+      <app-appointment-list
+        [appointments]="appointments$ | async"
+        (openEditModal)="onEdit($event)"
+        (getAppointments)="loadAppointments()"
+      ></app-appointment-list>
     </div>
   </div>
-
-  <app-appointment-list
-    [appointments]="appointments$ | async"
-    (openEditModal)="onEdit($event)"
-    (getAppointments)="loadAppointments()"
-  ></app-appointment-list>
 </div>

@@ -17,7 +17,7 @@ export class BarberCreateComponent implements OnInit {
   barber: Partial<Barber> = {
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date(),
+    dateOfBirth: null,
     phoneNumber: '',
     email: '',
   };
