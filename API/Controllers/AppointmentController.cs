@@ -88,6 +88,11 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
         {
             var appt = _mapper.Map<Appointment>(model);
+            var pendingStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Pending");
+            if (appt.AppointmentStatusId == pendingStatus.Id)
+            {
+                appt.CreatedByClient = true;
+            }
 
             await _context.AddAsync(appt);
             if (await _context.SaveChangesAsync() < 1)
@@ -96,10 +101,10 @@ namespace API.Controllers
             }
 
             var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == appt.Id);
-
-            var scheduledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Scheduled");
-            if (newAppt.AppointmentStatusId == scheduledStatus.Id)
+            if (!newAppt.CreatedByClient)
+            {
                 await _appointmentService.OnAppointmentSchedule(newAppt);
+            }
 
             return CreatedAtRoute("GetAppointment", new { id = newAppt.Id }, _mapper.Map<AppointmentDto>(newAppt));
         }

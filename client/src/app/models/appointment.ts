@@ -17,4 +17,5 @@ export interface Appointment {
   appointmentStatusId: number;
   appointmentStatus: AppointmentStatus;
   note: string;
+  createdByClient: boolean;
 }

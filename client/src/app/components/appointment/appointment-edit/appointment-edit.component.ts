@@ -136,6 +136,7 @@ export class AppointmentEditComponent implements OnInit {
     this.model.appointmentStatusId = appointment.appointmentStatusId;
     this.model.appointmentStatus = appointment.appointmentStatus;
     this.model.note = appointment.note;
+    this.model.createdByClient = appointment.createdByClient;
     //schedule drag appointment
     if (
       (this.model.startsAt && this.model.startsAt !== appointment.startsAt) ||
@@ -150,15 +151,22 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   checkRoleAndAppointmentStatus() {
-    let tooltipInfoText = 'You shall not edit it anymore. ';
-    if (
-      this.currentUser.role === 'Client' &&
-      this.model.appointmentStatus.name !== 'Pending'
-    ) {
+    let tooltipInfoText = '';
+    if (this.model.createdByClient && this.currentUser.role !== 'Client') {
       this.isDisabled = true;
-      if (this.model.appointmentStatus.name === 'Scheduled') {
-        tooltipInfoText +=
-          'Use Cancel button in the appointment list and create a new appointment with a desired date and time.';
+      tooltipInfoText =
+        'You shall not edit it. Use the action buttons in the appointment list to schedule/cancel.';
+    } else {
+      if (
+        this.currentUser.role === 'Client' &&
+        this.model.appointmentStatus.name !== 'Pending'
+      ) {
+        tooltipInfoText = 'You shall not edit it anymore. ';
+        this.isDisabled = true;
+        if (this.model.appointmentStatus.name === 'Scheduled') {
+          tooltipInfoText +=
+            'Use Cancel button in the appointment list and create a new appointment with a desired date and time.';
+        }
       }
     }
     this.tooltipInfoText = tooltipInfoText;

@@ -151,34 +151,50 @@
         </div>
       </div>
       <hr />
-      <div>
-        <button
-          class="btn btn-success me-2"
-          type="submit"
-          [disabled]="
-            ((!appointmentForm.valid || !appointmentForm.dirty) &&
-              !draggedAppt) ||
-            isDisabled
-          "
-        >
-          Save
-        </button>
-        <button class="btn btn-secondary me-2" (click)="cancel()" type="button">
-          Cancel
-        </button>
-
-        <span
-          type="span"
-          class="btn btn-primary"
-          *ngIf="isDisabled"
-          class="text-danger small-text"
-          [ngbTooltip]="tooltipInfoText"
-          placement="right"
-          tooltipClass="custom-tooltip"
-        >
-          The appointment is currently in
-          {{ model.appointmentStatus?.name }} status.
-        </span>
+      <div class="d-flex justify-content-between">
+        <div>
+          <button
+            class="btn btn-success me-2"
+            type="submit"
+            [disabled]="
+              ((!appointmentForm.valid || !appointmentForm.dirty) &&
+                !draggedAppt) ||
+              isDisabled
+            "
+          >
+            Save
+          </button>
+          <button
+            class="btn btn-secondary me-2"
+            (click)="cancel()"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+        <div>
+          <span
+            type="span"
+            *ngIf="currentUser.role === 'Client' && isDisabled"
+            class="text-danger small-text"
+            [ngbTooltip]="tooltipInfoText"
+            placement="top"
+            tooltipClass="custom-tooltip"
+          >
+            The appointment is currently in
+            {{ model.appointmentStatus?.name }} status.
+          </span>
+          <span
+            type="span"
+            *ngIf="currentUser.role !== 'Client' && model.createdByClient"
+            class="text-info small-text"
+            [ngbTooltip]="tooltipInfoText"
+            placement="top"
+            tooltipClass="custom-tooltip"
+          >
+            The appointment is created by client.
+          </span>
+        </div>
       </div>
     </form>
   </div>
