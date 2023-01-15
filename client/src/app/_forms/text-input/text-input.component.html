@@ -6,8 +6,11 @@
     [formControl]="$any(ngControl.control)"
     placeholder="{{ label }}"
   />
+  <div *ngIf="ngControl.control.errors?.email" class="invalid-feedback">
+    Enter a valid {{ label.toLowerCase() }}
+  </div>
   <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">
-    Please enter a {{ label }}
+    Please enter a {{ label.toLowerCase() }}
   </div>
   <div *ngIf="ngControl.control.errors?.minlength" class="invalid-feedback">
     {{ label }} must be at least

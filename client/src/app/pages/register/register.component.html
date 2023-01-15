@@ -18,6 +18,11 @@
     [formControl]="$any(registerForm.controls['username'])"
     [label]="'Username'"
   ></app-text-input>
+  <app-text-input
+    [formControl]="$any(registerForm.controls['email'])"
+    [label]="'Email'"
+    [type]="'email'"
+  ></app-text-input>
   <app-date-input
     [formControl]="$any(registerForm.controls['dateOfBirth'])"
     [label]="'Date Of Birth'"
