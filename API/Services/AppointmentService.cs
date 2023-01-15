@@ -119,15 +119,17 @@ namespace API.Services
 
             var workingHours = await _db.WorkingHours.ToListAsync();
             var dayWorkingHours = workingHours.Single(wh => ((int)startsAt.DayOfWeek) == wh.DayOfWeek);
+            var startsAtInLocal = startsAt.ToLocalTime();
+            var endsAtInLocal = endsAt.ToLocalTime();
             //appointment outside of working hours
-            if (startsAt.Hour < dayWorkingHours.FromHours || endsAt.Hour > dayWorkingHours.ToHours) return false;
-            if (startsAt.Hour == dayWorkingHours.FromHours)
+            if (startsAtInLocal.Hour < dayWorkingHours.FromHours || endsAtInLocal.Hour > dayWorkingHours.ToHours) return false;
+            if (startsAtInLocal.Hour == dayWorkingHours.FromHours)
             {
-                if (startsAt.Minute < dayWorkingHours.FromMinutes) return false;
+                if (startsAtInLocal.Minute < dayWorkingHours.FromMinutes) return false;
             }
-            if (endsAt.Hour == dayWorkingHours.ToHours)
+            if (endsAtInLocal.Hour == dayWorkingHours.ToHours)
             {
-                if (endsAt.Minute > dayWorkingHours.ToMinutes) return false;
+                if (endsAtInLocal.Minute > dayWorkingHours.ToMinutes) return false;
             }
             //appointment inside custom closed hours
             var customHours = await _db.CustomHours.ToListAsync();
