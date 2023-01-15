@@ -1,7 +1,8 @@
 [
   {
     "Day": "Monday",
-    "FromHours": 11,
+    "DayOfWeek": 1,
+    "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 17,
     "ToMinutes": 30,
@@ -9,14 +10,16 @@
   },
   {
     "Day": "Tuesday",
+    "DayOfWeek": 2,
     "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 17,
-    "ToMinutes": 10,
+    "ToMinutes": 30,
     "IsOpen": true
   },
   {
     "Day": "Wednesday",
+    "DayOfWeek": 3,
     "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 17,
@@ -25,7 +28,8 @@
   },
   {
     "Day": "Thursday",
-    "FromHours": 6,
+    "DayOfWeek": 4,
+    "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 17,
     "ToMinutes": 30,
@@ -33,6 +37,7 @@
   },
   {
     "Day": "Friday",
+    "DayOfWeek": 5,
     "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 17,
@@ -41,7 +46,8 @@
   },
   {
     "Day": "Saturday",
-    "FromHours": 7,
+    "DayOfWeek": 6,
+    "FromHours": 9,
     "FromMinutes": 0,
     "ToHours": 13,
     "ToMinutes": 0,
@@ -49,6 +55,7 @@
   },
   {
     "Day": "Sunday",
+    "DayOfWeek": 0,
     "FromHours": 0,
     "FromMinutes": 0,
     "ToHours": 0,

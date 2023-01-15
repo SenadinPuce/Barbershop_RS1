@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTOs;
+using API.Entities;
 
 namespace API.Interfaces
 {
@@ -9,5 +10,6 @@ namespace API.Interfaces
         Task SendAppointmentOneHourDueEmail(Appointment appointment);
         Task OnAppointmentSchedule(Appointment appointment);
         Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, AppointmentStatus previousStatus);
+        Task<bool> CanBeCreated(AppointmentDto appointment);
     }
 }

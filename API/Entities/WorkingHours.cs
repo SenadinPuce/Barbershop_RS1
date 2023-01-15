@@ -4,6 +4,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public string Day { get; set; }
+        public int DayOfWeek { get; set; }
         public int FromHours { get; set; }
         public int FromMinutes { get; set; }
         public int ToHours { get; set; }

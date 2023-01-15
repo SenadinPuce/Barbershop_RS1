@@ -28,6 +28,7 @@ export class AppointmentCreateComponent implements OnInit {
   clients: Client[] = [];
   params = new BaseParams(20);
   currentUser: User;
+  datesEnabled: Date[] = [];
 
   constructor(
     private appointmentService: AppointmentService,
@@ -50,6 +51,7 @@ export class AppointmentCreateComponent implements OnInit {
     this.loadClients();
     this.loadBarbers();
     this.initFields();
+    this.setEnabledDates();
   }
 
   insertAppointment() {
@@ -129,6 +131,16 @@ export class AppointmentCreateComponent implements OnInit {
     this.model.appointmentStatusId = this.appointmentStatuses.find(
       (x) => x.name === startingStatus
     ).id;
+  }
+
+  setEnabledDates() {
+    let date = new Date();
+    let enabledDates = [];
+    for (let i = 0; i < 30; i++) {
+      enabledDates.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+    }
+    this.datesEnabled = enabledDates;
   }
 
   cancel() {

@@ -106,6 +106,39 @@ namespace API.Services
             await _emailService.SaveEmail(email);
         }
 
+        public async Task<bool> CanBeCreated(AppointmentDto appointment)
+        {
+            var startsAt = appointment.StartsAt;
+            var endsAt = appointment.EndsAt;
+            var now = DateTime.UtcNow;
 
+            if (startsAt < now) return false;
+
+            var dateIn30Days = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second).AddDays(30);
+            if (startsAt > dateIn30Days) return false;
+
+            var workingHours = await _db.WorkingHours.ToListAsync();
+            var dayWorkingHours = workingHours.Single(wh => ((int)startsAt.DayOfWeek) == wh.DayOfWeek);
+            //appointment outside of working hours
+            if (startsAt.Hour < dayWorkingHours.FromHours || endsAt.Hour > dayWorkingHours.ToHours) return false;
+            if (startsAt.Hour == dayWorkingHours.FromHours)
+            {
+                if (startsAt.Minute < dayWorkingHours.FromMinutes) return false;
+            }
+            if (endsAt.Hour == dayWorkingHours.ToHours)
+            {
+                if (endsAt.Minute > dayWorkingHours.ToMinutes) return false;
+            }
+            //appointment inside custom closed hours
+            var customHours = await _db.CustomHours.ToListAsync();
+            if (customHours.Any(ch => ch.IsOpen != true
+                            && (startsAt > ch.DateFrom && startsAt < ch.DateTo
+                            || endsAt > ch.DateFrom && endsAt < ch.DateTo)))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

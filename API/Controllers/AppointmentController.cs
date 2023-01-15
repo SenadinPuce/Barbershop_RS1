@@ -87,6 +87,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
         {
+            if (await _appointmentService.CanBeCreated(model) == false) return BadRequest("Appointment has not been created. Try with different date and time.");
+
             var appt = _mapper.Map<Appointment>(model);
             var pendingStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Pending");
             if (appt.AppointmentStatusId == pendingStatus.Id)

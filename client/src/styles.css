@@ -168,3 +168,6 @@ body{
 .custom-tooltip .tooltip-inner{
    background-color: rgb(50, 50, 50);
 }
+.ng-select.ng-select-disabled>.ng-select-container{
+   background-color: #e9ecef;
+}
