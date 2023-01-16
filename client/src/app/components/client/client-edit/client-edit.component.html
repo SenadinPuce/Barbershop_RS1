@@ -119,7 +119,7 @@
         <button
           class="btn btn-success me-2"
           type="submit"
-          [disabled]="!editClientForm.valid"
+          [disabled]="!editClientForm.valid || !editClientForm.dirty"
         >
           Save
         </button>

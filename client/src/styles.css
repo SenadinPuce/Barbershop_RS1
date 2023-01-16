@@ -171,3 +171,6 @@ body{
 .ng-select.ng-select-disabled>.ng-select-container{
    background-color: #e9ecef;
 }
+.cal-week-view .cal-hour-odd{
+   background-color: white;
+}
