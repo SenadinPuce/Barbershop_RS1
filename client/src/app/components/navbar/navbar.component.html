@@ -11,8 +11,18 @@
             class="nav-link"
             routerLink="/appointments"
             routerLinkActive="active"
-            >Appointments</a
-          >
+            >Appointments
+            <span
+              class="rounded-notification"
+              *ngIf="
+                (notificationService.numberOfPendingAppointments$ | async) > 0
+              "
+            >
+              {{
+                notificationService.numberOfPendingAppointments$ | async
+              }}</span
+            >
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/barbers" routerLinkActive="active"
@@ -28,7 +38,7 @@
           <a class="nav-link" routerLink="/messages" routerLinkActive="active"
             >Messages
             <span
-              class="circle-number"
+              class="rounded-notification"
               *ngIf="(notificationService.numberOfUnreadMessages$ | async) > 0"
             >
               {{ notificationService.numberOfUnreadMessages$ | async }}</span

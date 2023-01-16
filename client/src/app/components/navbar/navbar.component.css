@@ -18,12 +18,14 @@ a:hover{
   display: inline;
 }
 
-.circle-number {
-  position : absolute; 
-  top:0; 
-  right: -12px; 
-  color: rgb(109, 253, 128);
-  font-weight: bolder;
-  width: 20px;
-  height: 20px;
+.rounded-notification{
+  position: relative;
+  bottom: 10px;
+  right: 2px;
+  padding: 1px 6px;
+  background-color: red;
+  border-radius: 15px;
+  border: 0.2px solid rgb(224, 0, 0);
+  color: white;
+  font-size: 14.5px;
 }
