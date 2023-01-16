@@ -12,6 +12,9 @@ export class NotificationService implements OnDestroy {
   private hubConnection: HubConnection;
   private numberOfUnreadMessagesSource = new BehaviorSubject<number>(0);
   numberOfUnreadMessages$ = this.numberOfUnreadMessagesSource.asObservable();
+  private numberOfPendingAppointmentsSource = new BehaviorSubject<number>(0);
+  numberOfPendingAppointments$ =
+    this.numberOfPendingAppointmentsSource.asObservable();
 
   constructor() {}
 
@@ -32,6 +35,26 @@ export class NotificationService implements OnDestroy {
         this.numberOfUnreadMessagesSource.next(numberOfUnreadMessages);
       });
     });
+
+    this.hubConnection.on(
+      'PendingAppointments',
+      (numberOfPendingAppointments) => {
+        this.numberOfPendingAppointmentsSource.next(
+          numberOfPendingAppointments
+        );
+        this.hubConnection.on('NewPendingAppointment', () => {
+          this.numberOfPendingAppointmentsSource.next(
+            this.numberOfPendingAppointmentsSource.getValue() + 1
+          );
+        });
+
+        this.hubConnection.on('PendingAppointmentLess', () => {
+          this.numberOfPendingAppointmentsSource.next(
+            this.numberOfPendingAppointmentsSource.getValue() - 1
+          );
+        });
+      }
+    );
   }
 
   stopHubConnection() {
