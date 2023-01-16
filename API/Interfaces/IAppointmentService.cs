@@ -8,8 +8,9 @@ namespace API.Interfaces
         Task SendAppointmentScheduledEmail(Appointment appointment);
         Task SendAppointmentCanceledEmail(Appointment appointment, AppointmentStatus previousStatus);
         Task SendAppointmentOneHourDueEmail(Appointment appointment);
-        Task OnAppointmentSchedule(Appointment appointment);
+        Task OnAppointmentCreated(Appointment appointment);
         Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, AppointmentStatus previousStatus);
         Task<bool> CanBeCreated(AppointmentDto appointment);
+        Task OnAppointmentSchedule(Appointment appointment);
     }
 }

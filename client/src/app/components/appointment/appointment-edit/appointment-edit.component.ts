@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, take } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentStatus } from 'src/app/models/appointmentStatus';
 import { AppointmentType } from 'src/app/models/appointmentType';
@@ -51,13 +51,15 @@ export class AppointmentEditComponent implements OnInit {
     combineLatest({
       appt: this.fetchAppointment(this.model.id),
       user: this.getCurrentUser(),
-    }).subscribe({
-      next: ({ appt, user }) => {
-        this.mapAppointment(appt);
-        this.currentUser = user;
-        this.checkRoleAndAppointmentStatus();
-      },
-    });
+    })
+      .pipe(take(1))
+      .subscribe({
+        next: ({ appt, user }) => {
+          this.mapAppointment(appt);
+          this.currentUser = user;
+          this.checkRoleAndAppointmentStatus();
+        },
+      });
   }
 
   updateAppointment() {

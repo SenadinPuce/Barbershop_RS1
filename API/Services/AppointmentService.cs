@@ -2,6 +2,8 @@
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using API.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
@@ -10,26 +12,63 @@ namespace API.Services
     {
         private readonly IEmailService _emailService;
         private readonly DataContext _db;
+        private readonly IHubContext<NotificationHub> _notificationHub;
 
-        public AppointmentService(IEmailService emailService, DataContext db)
+        public AppointmentService(IEmailService emailService, DataContext db, IHubContext<NotificationHub> notificationHub)
         {
+            _notificationHub = notificationHub;
             _db = db;
             _emailService = emailService;
+        }
+
+        public async Task OnAppointmentCreated(Appointment appointment)
+        {
+            if (appointment == null) throw new Exception("Appointment does not exist");
+            //scheduled by barber/admin
+            if (!appointment.CreatedByClient)
+            {
+                if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
+                {
+                    await SendAppointmentScheduledEmail(appointment);
+                }
+            }
+            else
+            {
+                var connections = await PresenceTracker.GetConnectionsForUser(appointment.Barber.AppUser.UserName);
+                if (connections != null)
+                {
+                    await _notificationHub.Clients.Clients(connections).SendAsync("NewPendingAppointment");
+                }
+            }
         }
 
         public async Task OnAppointmentSchedule(Appointment appointment)
         {
             if (appointment == null) throw new Exception("Appointment does not exist");
 
-            if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
+            await SendAppointmentScheduledEmail(appointment);
+
+            var connections = await PresenceTracker.GetConnectionsForUser(appointment.Barber.AppUser.UserName);
+            if (connections != null)
             {
-                await SendAppointmentScheduledEmail(appointment);
+                await _notificationHub.Clients.Clients(connections).SendAsync("PendingAppointmentLess");
             }
+
         }
 
         public async Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, AppointmentStatus previousStatus)
         {
             if (appointment == null) throw new Exception("Appointment does not exist");
+
+            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == "Pending");
+            if (previousStatus.Id == pendingStatus.Id)
+            {
+                var connections = await PresenceTracker.GetConnectionsForUser(appointment.Barber.AppUser.UserName);
+                if (connections != null)
+                {
+                    await _notificationHub.Clients.Clients(connections).SendAsync("PendingAppointmentLess");
+                }
+            }
             if (!canceledByClient)
             {
                 if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
@@ -142,5 +181,6 @@ namespace API.Services
 
             return true;
         }
+
     }
 }

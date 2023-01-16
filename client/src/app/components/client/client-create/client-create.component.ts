@@ -27,8 +27,8 @@ export class ClientCreateComponent implements OnInit {
 
   createClient() {
     this.clientService.post(this.model).subscribe(() => {
-      this.toastr.success('Client successfully created');
       this.router.navigateByUrl('/clients');
+      this.toastr.success('Client successfully created');
     });
   }
 

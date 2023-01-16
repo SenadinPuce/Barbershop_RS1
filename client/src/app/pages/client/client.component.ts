@@ -8,6 +8,7 @@ import { ClientService } from 'src/app/_services/client.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from 'src/app/common/modal/confirm-modal/confirm-modal.component';
 import { ClientEditComponent } from '../../components/client/client-edit/client-edit.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-client',
@@ -32,7 +33,8 @@ export class ClientComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +67,7 @@ export class ClientComponent implements OnInit {
     this.editModalRef.onHide.subscribe((e) => {
       if (this.editModalRef.content?.edited) {
         this.ngOnInit();
+        this.toastr.info('Client successfuly edited.');
       }
     });
   }
@@ -91,6 +94,7 @@ export class ClientComponent implements OnInit {
   deleteClient(id) {
     this.clientService.delete(id).subscribe(() => {
       this.ngOnInit();
+      this.toastr.warning('Client successfuly deleted.');
     });
   }
 }

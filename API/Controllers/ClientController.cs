@@ -100,8 +100,13 @@ namespace API.Controllers
                 {
                     item.ClientId = null;
                 }
-                await _context.SaveChangesAsync();
             }
+            var messages = await _context.Messages.Where(x => x.SenderId == client.AppUserId || x.RecipientId == client.AppUserId).ToListAsync();
+            if (messages.Any())
+            {
+                _context.RemoveRange(messages);
+            }
+            await _context.SaveChangesAsync();
             var user = await _userManager.FindByIdAsync(client.AppUserId.ToString());
 
             var result = await _userManager.DeleteAsync(user);

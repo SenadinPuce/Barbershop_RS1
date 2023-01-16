@@ -103,10 +103,7 @@ namespace API.Controllers
             }
 
             var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == appt.Id);
-            if (!newAppt.CreatedByClient)
-            {
-                await _appointmentService.OnAppointmentSchedule(newAppt);
-            }
+            await _appointmentService.OnAppointmentCreated(newAppt);
 
             return CreatedAtRoute("GetAppointment", new { id = newAppt.Id }, _mapper.Map<AppointmentDto>(newAppt));
         }
