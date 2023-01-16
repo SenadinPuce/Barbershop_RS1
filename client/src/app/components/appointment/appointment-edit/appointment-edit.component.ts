@@ -141,8 +141,10 @@ export class AppointmentEditComponent implements OnInit {
     this.model.createdByClient = appointment.createdByClient;
     //schedule drag appointment
     if (
-      (this.model.startsAt && this.model.startsAt !== appointment.startsAt) ||
-      (this.model.endsAt && this.model.endsAt !== appointment.endsAt)
+      (this.model.startsAt &&
+        this.model.startsAt.getTime() !== appointment.startsAt.getTime()) ||
+      (this.model.endsAt &&
+        this.model.endsAt.getTime() !== appointment.endsAt.getTime())
     ) {
       this.draggedAppt = true;
     } else {
