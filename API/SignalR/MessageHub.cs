@@ -1,11 +1,9 @@
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.SignalR
 {
@@ -13,7 +11,6 @@ namespace API.SignalR
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly DataContext _context;
         private readonly IHubContext<NotificationHub> _notificationHub;
         public MessageHub(IUnitOfWork uow, IMapper mapper, IHubContext<NotificationHub> notificationHub)
         {
