@@ -19,7 +19,6 @@ namespace API
             services.AddControllers();
             services.AddCors();
             services.AddIdentityServices(_config);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

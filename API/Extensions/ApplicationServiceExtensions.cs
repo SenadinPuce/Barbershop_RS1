@@ -4,6 +4,7 @@ using API.Interfaces;
 using API.Services;
 using API.SignalR;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace API.Extensions
 {
@@ -25,6 +26,12 @@ namespace API.Extensions
             services.AddSignalR();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<PresenceTracker>();
+             services.AddSingleton<IConnectionMultiplexer>(c => 
+            {
+                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(options);
+            });
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
             return services;
         }

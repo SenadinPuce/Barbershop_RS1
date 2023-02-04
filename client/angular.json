@@ -21,12 +21,13 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/angular-calendar/css/angular-calendar.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootswatch/dist/united/bootstrap.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/ngx-toastr/toastr.css",
               "./node_modules/ngx-spinner/animations/ball-spin-clockwise-fade-rotating.css",
+              "node_modules/ngx-spinner/animations/timer.css",
               "src/styles.css"
             ],
             "scripts": []

@@ -51,6 +51,9 @@ import { MessagesComponent } from './pages/messages/messages.component';
 import { MemberMessagesComponent } from './components/member-messages/member-messages.component';
 import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
 import { AppointmentTableComponent } from './components/appointment/appointment-list/appointment-table/appointment-table.component';
+import { HomeComponent } from './pages/home/home.component';
+import { OrderTotalsComponent } from './components/order-totals/order-totals.component';
+
 
 @NgModule({
   declarations: [
@@ -94,6 +97,7 @@ import { AppointmentTableComponent } from './components/appointment/appointment-
     MemberMessagesComponent,
     ClientDetailComponent,
     AppointmentTableComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +107,7 @@ import { AppointmentTableComponent } from './components/appointment/appointment-
     BrowserAnimationsModule,
     ReactiveFormsModule,
     SharedModule,
-    ScheduleModule,
+    ScheduleModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

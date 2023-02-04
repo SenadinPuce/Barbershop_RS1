@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
-import { BarberCardComponent } from './components/barber/barber-card/barber-card.component';
 import { BarberCreateComponent } from './components/barber/barber-create/barber-create.component';
 import { BarberDetailComponent } from './components/barber/barber-detail/barber-detail.component';
 import { BarberEditComponent } from './components/barber/barber-edit/barber-edit.component';
@@ -9,7 +8,6 @@ import { ServiceCreateComponent } from './components/service/service-create/serv
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
-import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.component';
 import { LoginComponent } from './pages/login/login.component';
 import { BarberComponent } from './pages/barber/barber.component';
 import { AdminGuard } from './_guards/admin.guard';
@@ -22,15 +20,16 @@ import { MessagesComponent } from './pages/messages/messages.component';
 import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
 import { ClientDetailedResolver } from './_resolvers/client-detailed.resolver';
 import { BarberDetailedResolver } from './_resolvers/barber-detailed.resolver';
+import { HomeComponent } from './pages/home/home.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  {path: '', component: HomeComponent},
   {
     path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: AppointmentsComponent },
       { path: 'appointments', component: AppointmentsComponent },
       {
         path: 'appointment-types/create',
@@ -54,7 +53,8 @@ const routes: Routes = [
       },
       {
         path: 'barbers/:id',
-        component: BarberDetailComponent, resolve: {barber: BarberDetailedResolver}
+        component: BarberDetailComponent,
+        resolve: { barber: BarberDetailedResolver },
       },
       {
         path: 'barbers',
@@ -82,23 +82,33 @@ const routes: Routes = [
       },
       {
         path: 'messages',
-        component: MessagesComponent
+        component: MessagesComponent,
       },
       {
         path: 'client/:id',
-        component: ClientDetailComponent, resolve: {client: ClientDetailedResolver}
+        component: ClientDetailComponent,
+        resolve: { client: ClientDetailedResolver },
       }
     ],
   },
-
-  { path: 'errors', component: TestErrorsComponent },
+  {
+    path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule)
+  },
+  {
+    path: 'basket', loadChildren: () => import('./basket/basket.module').then(mod => mod.BasketModule)
+  },
+  {
+    path: 'checkout',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule)
+  },
+  { path: 'login', component: LoginComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
   {
     path: '**',
-    component: AppointmentsComponent,
-    pathMatch: 'full',
-    canActivate: [AuthGuard],
+    component: NotFoundComponent,
+    pathMatch: 'full'
   },
 ];
 
@@ -106,4 +116,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

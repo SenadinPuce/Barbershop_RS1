@@ -29,3 +29,16 @@ a:hover{
   color: white;
   font-size: 14.5px;
 }
+
+.shop-rounded-notification {
+  position: absolute;
+  top: -12px;
+  right: -18px;
+  padding: 1px 6px;
+  background-color: red;
+  border-radius: 50%;
+  border: 0.2px solid rgb(224, 0, 0);
+  color: white;
+  font-size: 14.5px;
+}
+
