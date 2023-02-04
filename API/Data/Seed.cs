@@ -39,9 +39,20 @@ namespace API.Data
                 await roleManager.CreateAsync(role);
             }
 
+            var i = 0;
             foreach (var user in users)
             {
+                i++;
                 await userManager.CreateAsync(user, "Barber0!");
+                user.Address = new Address
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Street = "Street" + i,
+                    City = "City" + i,
+                    ZipCode = "000" + i,
+                    Country = "Country" + i,
+                };
             }
 
             var admin = new AppUser
@@ -201,6 +212,53 @@ namespace API.Data
             }
 
         }
-    }
 
+        public static async Task SeedProducts(DataContext context)
+        {
+
+            if (!context.ProductBrands.Any())
+            {
+                var brandsData = File.ReadAllText("Data/Seed/Brands.json");
+
+                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+
+                foreach (var item in brands)
+                {
+                    context.ProductBrands.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.ProductTypes.Any())
+            {
+                var typesData = File.ReadAllText("Data/Seed/Types.json");
+
+                var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
+
+                foreach (var item in types)
+                {
+                    context.ProductTypes.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.Products.Any())
+            {
+                var productsData = File.ReadAllText("Data/Seed/Products.json");
+
+                var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+
+                foreach (var item in products)
+                {
+                    context.Products.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+        }
+
+    }
 }

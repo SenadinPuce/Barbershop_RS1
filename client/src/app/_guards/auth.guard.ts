@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,14 +15,20 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): Observable<boolean> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     return this.accountService.currentUser$.pipe(
       map((user) => {
         if (user) {
           return true;
         }
+        else {
         this.toastr.error('You cannot enter this area');
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
+        return false;
+      }
       })
     );
   }

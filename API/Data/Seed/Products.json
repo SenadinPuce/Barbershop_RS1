@@ -1,0 +1,122 @@
+[
+    {
+        "Name": "American Crew Pomade",
+        "Description": "A high-hold, high-shine pomade that gives hair a classic, polished look. American Crew's Pomade is perfect for creating sleek, smooth styles with a strong hold.",
+        "Price": 15,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 1
+    },
+    {
+        "Name": "Jack Black Beard Oil",
+        "Description": "A lightweight, non-greasy beard oil that conditions and softens facial hair while providing a subtle shine. Jack Black's Beard Oil is perfect for maintaining a healthy, well-groomed beard.",
+        "Price": 20,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 2,
+        "ProductBrandId": 2
+    },
+    {
+        "Name": "Baxter of California Shaving Cream",
+        "Description": "A luxury shaving cream that provides a close, smooth shave. Baxter of California's Shaving Cream is formulated with natural ingredients that soothe and protect the skin.",
+        "Price": 25,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 3,
+        "ProductBrandId": 3
+    },
+    {
+        "Name": "Beardbrand Comb",
+        "Description": "A high-quality, handmade comb that is perfect for detangling and shaping beards. Beardbrand's Comb is crafted from premium materials that won't damage facial hair.",
+        "Price": 10,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 4,
+        "ProductBrandId": 4
+    },
+    {
+        "Name": "Suavecito Pomade",
+        "Description": "A medium-hold, water-soluble pomade that is easy to wash out. Suavecito's Pomade is perfect for creating classic, vintage styles with a natural finish.",
+        "Price": 15,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 5
+    },
+    {
+        "Name": "Uppercut Deluxe Shampoo",
+        "Description": "A premium, sulfate-free shampoo that gently cleanses hair and scalp. Uppercut Deluxe's Shampoo is perfect for maintaining healthy, well-groomed hair.",
+        "Price": 18,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 3,
+        "ProductBrandId": 6
+    },
+    {
+        "Name": "Beardbrand Utility Balm",
+        "Description": "A versatile, all-in-one balm that conditions, styles, and protects facial hair. Beardbrand's Utility Balm is perfect for maintaining a healthy, well-groomed beard.",
+        "Price": 18,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 2,
+        "ProductBrandId": 4
+    },
+    {
+        "Name": "Baxter of California After Shave",
+        "Description": "A soothing, hydrating after-shave balm that helps to prevent irritation and razor burn. Baxter of California's After Shave is perfect for maintaining healthy, smooth skin.",
+        "Price": 25,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 3,
+        "ProductBrandId": 3
+    },
+    {
+        "Name": "Jack Black Lip Balm",
+        "Description": "A moisturizing, SPF 25 lip balm that protects and nourishes the lips. Jack Black's Lip Balm is perfect for maintaining healthy, hydrated lips.",
+        "Price": 8,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 3,
+        "ProductBrandId": 2
+    },
+    {
+        "Name": "American Crew Fiber",
+        "Description": "A high-hold, low-shine styling cream that gives hair a natural, textured look. American Crew's Fiber is perfect for creating messy, spiky hairstyles with a strong hold.",
+        "Price": 15,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 1
+    },
+    {
+        "Name": "Beardbrand Sea Salt Spray",
+        "Description": "A texturizing spray that gives hair a tousled, beachy look. Beardbrand's Sea Salt Spray is perfect for creating natural, effortless styles with a matte finish.",
+        "Price": 20,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 2,
+        "ProductBrandId": 4
+    },
+    {
+        "Name": "Baxter of California Clay Pomade",
+        "Description": "A medium-hold pomade that gives hair a matte, natural finish. Baxter of California's Clay Pomade is perfect for creating textured, modern hairstyles.",
+        "Price": 22,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 3
+    },
+    {
+        "Name": "Jack Black Face Moisturizer",
+        "Description": "A lightweight, fast-absorbing moisturizer that hydrates and protects the skin. Jack Black's Face Moisturizer is perfect for maintaining a healthy, youthful complexion.",
+        "Price": 30,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 3,
+        "ProductBrandId": 2
+    },
+    {
+        "Name": "American Crew Grooming Cream",
+        "Description": "A versatile, all-in-one styling cream that gives hair a natural, polished look. American Crew's Grooming Cream is perfect for creating classic, sophisticated hairstyles.",
+        "Price": 18,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 1
+    },
+    {
+        "Name": "Uppercut Deluxe Pomade",
+        "Description": "A high-hold, water-based pomade that gives hair a classic, shiny finish. Uppercut Deluxe's Pomade is perfect for creating sleek, vintage hairstyles.",
+        "Price": 22,
+        "PictureUrl": "assets/images/box.png",
+        "ProductTypeId": 1,
+        "ProductBrandId": 6
+    }
+]

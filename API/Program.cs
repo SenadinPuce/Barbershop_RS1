@@ -22,6 +22,7 @@ namespace API
                 await Seed.ClearConnections(context);
                 await Seed.SeedUsers(context, userManager, roleManager);
                 await Seed.SeedEntities(context, userManager);
+                await Seed.SeedProducts(context);
             }
             catch (Exception ex)
             {

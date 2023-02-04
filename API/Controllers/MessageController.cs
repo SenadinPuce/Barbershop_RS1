@@ -78,6 +78,8 @@ namespace API.Controllers
                 _uow.MessageRepository.DeleteMessage(message);
             }
 
+            
+
             if(await _uow.Complete()) return Ok();
 
             return BadRequest("Problem deleting the message");

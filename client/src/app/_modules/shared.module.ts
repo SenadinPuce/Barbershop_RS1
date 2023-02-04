@@ -14,8 +14,19 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TimeagoModule } from 'ngx-timeago';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { PagingHeaderComponent } from '../components/paging-header/paging-header.component';
+import { PagerComponent } from '../components/pager/pager.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { OrderTotalsComponent } from '../components/order-totals/order-totals.component';
+
+
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    PagingHeaderComponent,
+    PagerComponent,
+    OrderTotalsComponent
+  ],
   imports: [
     CommonModule,
     BsDropdownModule.forRoot(),
@@ -34,6 +45,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     TimeagoModule.forRoot(),
     ButtonsModule.forRoot(),
     NgbTooltipModule,
+    CarouselModule.forRoot()
   ],
   exports: [
     BsDropdownModule,
@@ -50,6 +62,10 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     TimeagoModule,
     ButtonsModule,
     NgbTooltipModule,
+    PagerComponent,
+    PagingHeaderComponent,
+    CarouselModule,
+    OrderTotalsComponent
   ],
 })
 export class SharedModule {}

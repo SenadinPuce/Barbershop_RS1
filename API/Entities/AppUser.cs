@@ -13,5 +13,6 @@ namespace API.Entities
         public Photo Photo { get; set; }
         public List<Message> MessagesSent { get; set; }
         public List<Message> MessagesReceived { get; set; }
+        public Address Address {get; set; }
     }
 }

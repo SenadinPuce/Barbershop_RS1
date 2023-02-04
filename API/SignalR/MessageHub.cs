@@ -13,7 +13,6 @@ namespace API.SignalR
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly DataContext _context;
         private readonly IHubContext<NotificationHub> _notificationHub;
         public MessageHub(IUnitOfWork uow, IMapper mapper, IHubContext<NotificationHub> notificationHub)
         {

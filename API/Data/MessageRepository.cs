@@ -99,7 +99,7 @@ namespace API.Data
             int numberOfUnreadMessages;
 
             numberOfUnreadMessages = await _context.Messages
-                .Where(m => m.DateRead == null && m.RecipientUsername == username).CountAsync();
+                .Where(m => m.DateRead == null && m.RecipientUsername == username && m.RecipientDeleted == false).CountAsync();
 
             return numberOfUnreadMessages;
         }

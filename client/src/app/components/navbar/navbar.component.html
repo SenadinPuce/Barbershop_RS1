@@ -5,82 +5,68 @@
     </a>
 
     <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+      </li>
       <ng-container *ngIf="accountService.currentUser$ | async">
         <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="/appointments"
-            routerLinkActive="active"
-            >Appointments
-            <span
-              class="rounded-notification"
-              *ngIf="
+          <a class="nav-link" routerLink="/appointments" routerLinkActive="active">Appointments
+            <span class="rounded-notification" *ngIf="
                 (notificationService.numberOfPendingAppointments$ | async) > 0
-              "
-            >
+              ">
               {{
-                notificationService.numberOfPendingAppointments$ | async
-              }}</span
-            >
+              notificationService.numberOfPendingAppointments$ | async
+              }}</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/barbers" routerLinkActive="active"
-            >Barbers</a
-          >
+          <a class="nav-link" routerLink="/barbers" routerLinkActive="active">Barbers</a>
         </li>
         <li class="nav-item" *appHasRole="'Barber,Admin'">
-          <a class="nav-link" routerLink="/clients" routerLinkActive="active"
-            >Clients</a
-          >
+          <a class="nav-link" routerLink="/clients" routerLinkActive="active">Clients</a>
         </li>
         <li style="position: relative" class="nav-item">
-          <a class="nav-link" routerLink="/messages" routerLinkActive="active"
-            >Messages
-            <span
-              class="rounded-notification"
-              *ngIf="(notificationService.numberOfUnreadMessages$ | async) > 0"
-            >
-              {{ notificationService.numberOfUnreadMessages$ | async }}</span
-            ></a
-          >
+          <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages
+            <span class="rounded-notification" *ngIf="(notificationService.numberOfUnreadMessages$ | async) > 0">
+              {{ notificationService.numberOfUnreadMessages$ | async }}</span></a>
         </li>
         <li class="nav-item" *appHasRole="'Admin'">
-          <a class="nav-link" routerLink="/settings" routerLinkActive="active"
-            >Settings</a
-          >
+          <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
         </li>
       </ng-container>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/shop" routerLinkActive="active">Shop</a>
+      </li>
     </ul>
 
-    <div
-      class="dropdown"
-      *ngIf="accountService.currentUser$ | async as user"
-      dropdown
-    >
-      <img
-        src="{{ user.photo?.url || './assets/images/user.png' }}"
-        alt="{{ user.username }}"
-        class="profilePhoto"
-      />
 
-      <a
-        class="dropdown-toggle text-light ms-2 text-decoration-none"
-        dropdownToggle
-        >Welcome {{ user.username | titlecase }}</a
-      >
-      <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a
-          class="dropdown-item"
-          routerLink="{{
+    <div class="d-flex align-items-center">
+      <a routerLink="/basket"  class="position-relative me-5">
+        <i class="fa fa-shopping-cart fa-2x text-dark"></i>
+        <span *ngIf="(basketService.basketSource$ | async) as basket"  class="shop-rounded-notification" >{{getCount(basket.items)}}</span>
+      </a>
+
+      <ng-container *ngIf="(accountService.currentUser$ | async) === null">
+        <a routerLink="/login" class="btn btn-success me-2">Sign In</a>
+      </ng-container>
+
+      <ng-container *ngIf="accountService.currentUser$ | async as user">
+        <div class="dropdown ms-4" *ngIf="accountService.currentUser$ | async as user" dropdown>
+          <img src="{{ user.photo?.url || './assets/images/user.png' }}" alt="{{ user.username }}"
+            class="profilePhoto" />
+
+          <a class="dropdown-toggle text-light ms-2 text-decoration-none" dropdownToggle>Welcome {{ user.username |
+            titlecase }}</a>
+          <div class="dropdown-menu mt-3" *dropdownMenu>
+            <a class="dropdown-item" routerLink="{{
             '/edit-profile/' + (accountService.currentUser$ | async).username
-          }}"
-          *appHasRole="'Barber'"
-          >Edit Profile</a
-        >
-        <div class="dropdown-divider" *appHasRole="'Barber'"></div>
-        <a class="dropdown-item" (click)="logout()">Logout</a>
-      </div>
+          }}" *appHasRole="'Barber'">Edit Profile</a>
+            <div class="dropdown-divider" *appHasRole="'Barber'"></div>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+
+        </div>
+      </ng-container>
     </div>
   </div>
 </nav>
