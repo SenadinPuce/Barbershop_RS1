@@ -252,15 +252,13 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
       }
       return iEvent;
     });
-    const changedEvent = this.events.find(
-      (e) => e.appointmentId === event.appointmentId
-    );
+    const changedEvent = this.events.find((e) => e.id === event.id);
     this.handleEvent('Resized or Dragged', changedEvent);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
     let appointment: Partial<Appointment> = {
-      id: event.appointmentId,
+      id: event.id as number,
     };
     if (action === 'Resized or Dragged') {
       appointment.startsAt = event.start;
@@ -302,7 +300,7 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
           afterEnd: true,
         },
         draggable: true,
-        appointmentId: appt.id,
+        id: appt.id,
       };
     });
     this.refresh.next();
@@ -320,7 +318,6 @@ export class ScheduleComponent implements OnInit, OnChanges, AfterViewInit {
       meta: {
         tmpEvent: true,
       },
-      appointmentId: null,
     };
     this.events = [...this.events, dragToSelectEvent];
     const segmentPosition = segmentElement.getBoundingClientRect();
