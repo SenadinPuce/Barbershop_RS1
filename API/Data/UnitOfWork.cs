@@ -19,9 +19,18 @@ namespace API.Data
 
         public IProductRepository ProductRepository => new ProductRepository(_context, _mapper);
 
-        public async Task<bool> Complete()
+        public IDeliveryMethodRepository DeliveryMethodRepository => new DeliveryMethodRepository(_context);
+
+        public IOrderRepository OrderRepository => new OrderRepository(_context);
+
+        public async Task<int> Complete()
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         public bool HasChanges()

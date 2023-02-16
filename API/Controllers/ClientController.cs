@@ -63,6 +63,19 @@ namespace API.Controllers
             return _mapper.Map<ClientDto>(client);
         }
 
+        [HttpGet("username/{username}")]
+        public async Task<ActionResult<ClientDto>> GetClientByUsernameAsync(string username)
+        {
+             var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound();
+
+            var client = await _context.Client.Include(x => x.AppUser)
+                .ThenInclude(x => x.Photo).SingleOrDefaultAsync(x => x.AppUserId == user.Id);
+            if (client == null) return NotFound();
+
+            return _mapper.Map<ClientDto>(client);
+        }
+
         [HttpPost]
         public async Task<ActionResult<bool>> PostClientAsync(ClientDto model)
         {

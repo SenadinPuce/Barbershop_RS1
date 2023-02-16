@@ -71,6 +71,15 @@ export class ClientService {
     );
   }
 
+  getByUsername(username: string) {
+    return this.http.get<Client>(this.baseUrl + '/username/' + username).pipe(
+      map((client) => {
+        client.fullName = client.firstName + ' ' + client.lastName;
+        return client;
+      })
+    );
+  }
+
   post(resource: Partial<Client>) {
     return this.http.post(this.baseUrl, resource).pipe(
       map(() => {
@@ -80,7 +89,7 @@ export class ClientService {
   }
 
   put(resource: Client) {
-    return this.http.put(this.baseUrl + '/' + resource.id, resource).pipe(
+    return this.http.put<Client>(this.baseUrl + '/' + resource.id, resource).pipe(
       map(() => {
         this.clientCache.clear();
       })

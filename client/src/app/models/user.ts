@@ -15,3 +15,12 @@ export class User {
   clientId?: number;
   barberId?: number;
 }
+
+export class Address {
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  zipCode: string;
+  country: string;
+}

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
+import { Address, User } from '../models/user';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -61,5 +61,13 @@ export class AccountService {
       this.notificationService.createHubConnection(user);
     }
     this.currentUserSource.next(user);
+  }
+
+  getUserAddress() {
+    return this.http.get<Address>(this.baseUrl + 'account/address');
+  }
+
+  updateUserAddress(address: Address) {
+    return this.http.put(this.baseUrl + 'account/address', address);
   }
 }

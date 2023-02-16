@@ -86,7 +86,7 @@ namespace API.SignalR
 
             _uow.MessageRepository.AddMessage(message);
 
-            if (await _uow.Complete())
+            if (await _uow.Complete() >= 1)
             {
                 var connections = await PresenceTracker.GetConnectionsForUser(recipient.UserName);
 
@@ -121,7 +121,7 @@ namespace API.SignalR
 
             group.Connections.Add(connection);
 
-            if (await _uow.Complete()) return group;
+            if (await _uow.Complete() >= 1) return group;
 
             throw new HubException("Failed to add to group");
         }
@@ -132,7 +132,7 @@ namespace API.SignalR
             var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
             _uow.MessageRepository.RemoveConnection(connection);
 
-            if (await _uow.Complete()) return group;
+            if (await _uow.Complete()  >= 1) return group;
 
             throw new HubException("Failed to remove from group");
         }

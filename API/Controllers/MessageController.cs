@@ -42,7 +42,7 @@ namespace API.Controllers
 
             _uow.MessageRepository.AddMessage(message);
 
-            if(await _uow.Complete()) return Ok(_mapper.Map<MessageDto>(message));
+            if(await _uow.Complete() >= 1) return Ok(_mapper.Map<MessageDto>(message));
 
             return BadRequest("Failed to send message");
         }
@@ -80,7 +80,7 @@ namespace API.Controllers
 
             
 
-            if(await _uow.Complete()) return Ok();
+            if(await _uow.Complete()  >= 1) return Ok();
 
             return BadRequest("Problem deleting the message");
         }  

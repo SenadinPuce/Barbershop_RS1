@@ -18,14 +18,24 @@ import { PagingHeaderComponent } from '../components/paging-header/paging-header
 import { PagerComponent } from '../components/pager/pager.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { OrderTotalsComponent } from '../components/order-totals/order-totals.component';
-
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import { BasketSummaryComponent } from '../components/basket-summary/basket-summary.component';
+import { StepperComponent } from '../components/stepper/stepper.component';
+import { TextInputComponent } from '../_forms/text-input/text-input.component';
+import { DateInputComponent } from '../_forms/date-input/date-input.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
     PagingHeaderComponent,
     PagerComponent,
-    OrderTotalsComponent
+    OrderTotalsComponent,
+    BasketSummaryComponent,
+    StepperComponent,
+    TextInputComponent,
+    DateInputComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +55,10 @@ import { OrderTotalsComponent } from '../components/order-totals/order-totals.co
     TimeagoModule.forRoot(),
     ButtonsModule.forRoot(),
     NgbTooltipModule,
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    CdkStepperModule,
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     BsDropdownModule,
@@ -65,7 +78,14 @@ import { OrderTotalsComponent } from '../components/order-totals/order-totals.co
     PagerComponent,
     PagingHeaderComponent,
     CarouselModule,
-    OrderTotalsComponent
+    OrderTotalsComponent,
+    CdkStepperModule,
+    BasketSummaryComponent,
+    StepperComponent,
+    TextInputComponent,
+    DateInputComponent,
+    ReactiveFormsModule,
+    RouterModule
   ],
 })
 export class SharedModule {}

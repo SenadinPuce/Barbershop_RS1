@@ -15,8 +15,6 @@ import { TestErrorsComponent } from './pages/errors/test-errors/test-errors.comp
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/errors/server-error/server-error.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-import { TextInputComponent } from './_forms/text-input/text-input.component';
-import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { AppointmentTypeComponent } from './components/appointment-type/appointment-type.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { AppointmentTypeCreateComponent } from './components/appointment-type/appointment-type-create/appointment-type-create.component';
@@ -52,7 +50,7 @@ import { MemberMessagesComponent } from './components/member-messages/member-mes
 import { ClientDetailComponent } from './pages/client-detail/client-detail.component';
 import { AppointmentTableComponent } from './components/appointment/appointment-list/appointment-table/appointment-table.component';
 import { HomeComponent } from './pages/home/home.component';
-import { OrderTotalsComponent } from './components/order-totals/order-totals.component';
+import { ClientProfileComponent } from './pages/client-profile/client-profile.component';
 
 
 @NgModule({
@@ -66,8 +64,6 @@ import { OrderTotalsComponent } from './components/order-totals/order-totals.com
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    TextInputComponent,
-    DateInputComponent,
     AppointmentTypeComponent,
     AppointmentsComponent,
     AppointmentTypeCreateComponent,
@@ -97,7 +93,8 @@ import { OrderTotalsComponent } from './components/order-totals/order-totals.com
     MemberMessagesComponent,
     ClientDetailComponent,
     AppointmentTableComponent,
-    HomeComponent
+    HomeComponent,
+    ClientProfileComponent
   ],
   imports: [
     BrowserModule,

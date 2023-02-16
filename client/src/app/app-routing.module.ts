@@ -22,6 +22,7 @@ import { ClientDetailedResolver } from './_resolvers/client-detailed.resolver';
 import { BarberDetailedResolver } from './_resolvers/barber-detailed.resolver';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ClientProfileComponent } from './pages/client-profile/client-profile.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -88,9 +89,17 @@ const routes: Routes = [
         path: 'client/:id',
         component: ClientDetailComponent,
         resolve: { client: ClientDetailedResolver },
+      },
+      {
+        path: 'profile/:username',
+        component: ClientProfileComponent
+      },
+      {
+        path: 'orders',
+        loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule),
       }
     ],
-  },
+  }, 
   {
     path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule)
   },

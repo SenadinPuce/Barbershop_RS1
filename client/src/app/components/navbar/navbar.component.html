@@ -43,7 +43,7 @@
     <div class="d-flex align-items-center">
       <a routerLink="/basket"  class="position-relative me-5">
         <i class="fa fa-shopping-cart fa-2x text-dark"></i>
-        <span *ngIf="(basketService.basketSource$ | async) as basket"  class="shop-rounded-notification" >{{getCount(basket.items)}}</span>
+        <span *ngIf="(basketService.basketSource$ | async) as basket" class="shop-rounded-notification" >{{getCount(basket.items)}}</span>
       </a>
 
       <ng-container *ngIf="(accountService.currentUser$ | async) === null">
@@ -60,8 +60,18 @@
           <div class="dropdown-menu mt-3" *dropdownMenu>
             <a class="dropdown-item" routerLink="{{
             '/edit-profile/' + (accountService.currentUser$ | async).username
-          }}" *appHasRole="'Barber'">Edit Profile</a>
+          }}" *appHasRole="'Barber'"> <i class="fa fa-user me-3"></i> Edit Profile</a>
             <div class="dropdown-divider" *appHasRole="'Barber'"></div>
+            <a class="dropdown-item" routerLink="{{
+              '/profile/' + (accountService.currentUser$ | async).username
+            }}" *appHasRole="'Client'">  <i class="fa fa-user me-3"></i> Edit Profile</a>
+              <div class="dropdown-divider" *appHasRole="'Client'"></div>
+
+              <a routerLink="/orders" class="dropdown-item" *appHasRole="'Client'">
+                <i class="fa fa-history me-3"></i> View orders
+            </a>
+            <div class="dropdown-divider" *appHasRole="'Client'"></div>
+
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
 

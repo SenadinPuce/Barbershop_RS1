@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.2.12",
-    "@angular/cdk": "^14.2.7",
+    "@angular/cdk": "^13.0.3",
     "@angular/common": "^14.2.12",
     "@angular/compiler": "^14.2.12",
     "@angular/core": "^14.2.12",
@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ng-select/ng-select": "^7.4.0",
     "@paralleldrive/cuid2": "^2.0.1",
+    "@stripe/stripe-js": "^1.46.0",
     "angular-calendar": "^0.29.0",
     "bootstrap": "^5.2.3",
     "bootswatch": "^5.2.2",

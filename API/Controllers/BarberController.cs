@@ -117,7 +117,7 @@ namespace API.Controllers
         }
 
         [HttpPost("add-photo")]
-        [Authorize("RequireBarberOrAdminRole")]
+        // [Authorize("RequireBarberOrAdminRole")]
         public async Task<ActionResult<PhotoDto>> UploadPhotoAsync(int barberId, IFormFile file)
         {
             var result = await _photoService.AddPhotoAsync(file);

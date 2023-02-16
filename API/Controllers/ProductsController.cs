@@ -20,7 +20,7 @@ namespace API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<PagedList<ProductToReturnDto>>> GetProducts(
-          [FromQuery]ProductParams productParams)
+        [FromQuery]ProductParams productParams)
         {
             var products = await _uow.ProductRepository.GetProductsAsync(productParams);
 
@@ -40,13 +40,15 @@ namespace API.Controllers
         {
            return await _uow.ProductRepository.GetProductByIdAsync(id);
         }
-            
+
+
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
            return Ok(await _uow.ProductRepository.GetProductBrandsAsync());
         }
         
+
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductType()
         {

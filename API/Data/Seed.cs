@@ -1,5 +1,6 @@
 using System.Text.Json;
 using API.Entities;
+using API.Entities.Order;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,7 +45,7 @@ namespace API.Data
             {
                 i++;
                 await userManager.CreateAsync(user, "Barber0!");
-                user.Address = new Address
+                user.Address = new Entities.Address
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -253,6 +254,19 @@ namespace API.Data
                 foreach (var item in products)
                 {
                     context.Products.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            if(!context.DeliveryMethods.Any())
+            {
+                var deliveryData = File.ReadAllText("Data/Seed/Delivery.json");
+                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+                
+                foreach(var item in methods)
+                {
+                    context.DeliveryMethods.Add(item);
                 }
 
                 await context.SaveChangesAsync();

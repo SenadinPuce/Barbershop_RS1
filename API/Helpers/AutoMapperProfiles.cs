@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Entities;
 using AutoMapper;
 using API.Extensions;
+using API.Entities.Order;
 
 namespace API.Helpers
 {
@@ -34,6 +35,7 @@ namespace API.Helpers
                 .ForMember(x => x.FirstName, opt => opt.MapFrom(y => y.AppUser.FirstName))
                 .ForMember(x => x.LastName, opt => opt.MapFrom(y => y.AppUser.LastName))
                 .ForMember(x => x.Email, opt => opt.MapFrom(y => y.AppUser.Email))
+                .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.AppUser.DateOfBirth))
                 .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(y => y.AppUser.PhoneNumber))
                 .ForMember(x => x.Photo, opt => opt.MapFrom(y => y.AppUser.Photo))
                 .ForMember(x => x.Username, opt => opt.MapFrom(y => y.AppUser.UserName)).ReverseMap();
@@ -58,9 +60,19 @@ namespace API.Helpers
               .ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
               .ForMember(d => d.PictureUrl, o => o.MapFrom<ProductUrlResolver>());
 
-            CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<API.Entities.Address, AddressDto>().ReverseMap();
             CreateMap<CustomerBasketDto, CustomerBasket>();
             CreateMap<BasketItemDto, BasketItem>();
+
+            CreateMap<AddressDto, API.Entities.Order.Address>();
+            CreateMap<Order, OrderToReturnDto>()
+                .ForMember(d => d.DeliveryMethod, o => o.MapFrom(s => s.DeliveryMethod.ShortName))
+                .ForMember(d => d.ShippingPrice, o => o.MapFrom(s => s.DeliveryMethod.Price));
+
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ItemOrdered.ProductItemId))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ItemOrdered.ProductName))
+                .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl));
         }
     }
 }

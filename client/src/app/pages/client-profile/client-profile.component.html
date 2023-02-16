@@ -1,0 +1,251 @@
+<div class="container" style="margin-top: 95px;">
+    <div *ngIf="client && address">
+        <div class="my-5">
+          <h3>Edit Profile</h3>
+          <hr />
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class="card">
+              <img
+                src="{{ client.photo?.url || './assets/images/user.png' }}"
+                alt="{{ client.fullName }}"
+                class="card-img-top img-thumbnail"
+              />
+              <div class="card-footer text-center p-0">
+                <div class="d-flex align-items-center justify-content-center p-2">
+                  <label
+                    for="imageUpload"
+                    class="btn btn-secondary mx-1 mb-0"
+                    [ngClass]="loading ? 'disabled' : ''"
+                    >Choose Image</label
+                  >
+                  <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  <input
+                    type="file"
+                    ng2FileSelect
+                    [uploader]="uploader"
+                    class="mt-2"
+                    id="imageUpload"
+                    *ngIf="!loading"
+                  />
+                </div>
+                <div>
+                  <span class="form-label">{{ fileName }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-9 barber-tabset ps-3">
+            <tabset #barberTabs>
+              <tab heading="About">
+                <div class="my-4">
+                  <form #editProfileForm="ngForm" autocomplete="off">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="firstName" class="lh form-label"
+                          >First Name</label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="client.firstName"
+                          id="firstName"
+                          name="firstName"
+                          required
+                          maxLength="50"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="lastName" class="lh form-label">Last Name</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="client.lastName"
+                          id="lastName"
+                          name="lastName"
+                          required
+                          maxlength="50"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="lh form-label" for="dateOfBirth"
+                        >Date Of Birth
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="client.dateOfBirth"
+                        name="dateOfBirth"
+                        [bsConfig]="{
+                          dateInputFormat: 'DD/MM/YYYY',
+                          containerClass: 'theme-red'
+                        }"
+                        id="dateOfBirth"
+                        bsDatepicker
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="phone" class="lh form-label">Phone</label>
+                      <label
+                        *ngIf="
+                          phoneNumber.invalid &&
+                          (phoneNumber.dirty || phoneNumber.touched) &&
+                          phoneNumber.errors?.pattern
+                        "
+                        class="invalid"
+                      >
+                        Phone Number is not in the correct format.
+                      </label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="(XXX)/XXX-XXX"
+                        [(ngModel)]="client.phoneNumber"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        required
+                        pattern="\(?\d{3}\)?[-\/]?(\d{3,4})-?(\d{3})"
+                        #phoneNumber="ngModel"
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="lh form-label">Email</label>
+                      <label
+                        *ngIf="
+                          email.invalid &&
+                          (email.dirty || email.touched) &&
+                          email.errors?.email
+                        "
+                        class="invalid"
+                      >
+                        Email is not in the correct format.
+                      </label>
+                      <input
+                        class="form-control"
+                        type="email"
+                        [(ngModel)]="client.email"
+                        id="email"
+                        name="email"
+                        required
+                        email
+                        #email="ngModel"
+                      />
+                    </div>
+                   
+                  </form>
+                </div>
+              </tab>
+              <tab heading="Address">
+                <div class="my-4">
+                  <form #editAddressForm="ngForm" autocomplete="off">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="firstName" class="lh form-label"
+                          >First Name</label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.firstName"
+                          id="firstName"
+                          name="firstName"
+                          required
+                          maxLength="50"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="lastName" class="lh form-label">Last Name</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.lastName"
+                          id="lastName"
+                          name="lastName"
+                          required
+                          maxlength="50"
+                        />
+                      </div>
+                    </div>
+                   
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="street" class="lh form-label"
+                          >Street</label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.street"
+                          id="street"
+                          name="street"
+                          required
+                          maxLength="50"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="city" class="lh form-label">City</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.city"
+                          id="city"
+                          name="city"
+                          required
+                          maxlength="50"
+                        />
+                      </div>
+                    </div>
+              
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="zipCode" class="lh form-label"
+                          >Zip Code</label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.zipCode"
+                          id="zipCode"
+                          name="zipCode"
+                          required
+                          maxLength="50"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="country" class="lh form-label">Country</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          [(ngModel)]="address.country"
+                          id="country"
+                          name="country"
+                          required
+                          maxlength="50"
+                        />
+                      </div>
+                    </div>
+                   
+                   
+                  </form>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+          <div class="buttons-margin">
+            <button
+              class="btn btn-success me-2"
+              type="submit"
+              [disabled]="(!editProfileForm.valid || !editProfileForm.dirty) && (!editAddressForm.valid || !editAddressForm.dirty) || loading"
+              (click)="updateProfile()"
+            >
+              Save Changes
+            </button>
+
+          </div>
+        </div>
+      </div>
+</div>

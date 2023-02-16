@@ -483,6 +483,89 @@ namespace API.Data.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("API.Entities.Order.DeliveryMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DeliveryTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeliveryMethods");
+                });
+
+            modelBuilder.Entity("API.Entities.Order.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("DeliveryMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryMethodId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("API.Entities.Order.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("API.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -878,6 +961,81 @@ namespace API.Data.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("API.Entities.Order.Order", b =>
+                {
+                    b.HasOne("API.Entities.Order.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId");
+
+                    b.OwnsOne("API.Entities.Order.Address", "ShipToAddress", b1 =>
+                        {
+                            b1.Property<int>("OrderId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FirstName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("LastName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Street")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ZipCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("OrderId");
+
+                            b1.ToTable("Orders");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
+
+                    b.Navigation("DeliveryMethod");
+
+                    b.Navigation("ShipToAddress")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Entities.Order.OrderItem", b =>
+                {
+                    b.HasOne("API.Entities.Order.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("API.Entities.Order.ProductItemOrdered", "ItemOrdered", b1 =>
+                        {
+                            b1.Property<int>("OrderItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("PictureUrl")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("ProductItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("ProductName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
+
+                    b.Navigation("ItemOrdered");
+                });
+
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
                     b.HasOne("API.Entities.ProductBrand", "ProductBrand")
@@ -962,6 +1120,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("API.Entities.Order.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("API.Entities.Service", b =>
