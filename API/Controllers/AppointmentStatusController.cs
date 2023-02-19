@@ -1,44 +1,31 @@
-using API.Data;
 using API.DTOs;
-using API.Entities;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/appointment-status")]
-    public class AppointmentStatusController : ControllerBase
+    public class AppointmentStatusController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AppointmentStatusController(DataContext context, IMapper mapper)
+        public AppointmentStatusController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentStatusDto[]>> GetAppointmentStatusAsync()
+        public async Task<ActionResult<List<AppointmentStatusDto>>> GetAsync()
         {
-            var statuses = await _context.AppointmentStatus.ToListAsync();
-            return _mapper.Map<AppointmentStatusDto[]>(statuses);
+            var apptStatuses = await _unitOfWork.AppointmentStatusRepository.GetAllAsync();
+
+            return _mapper.Map<List<AppointmentStatusDto>>(apptStatuses);
         }
-
-        [HttpPost]
-        public async Task<ActionResult<bool>> PostAppointmentStatusAsync(AppointmentStatusDto model)
-        {
-            var statuses = _mapper.Map<AppointmentStatus>(model);
-            await _context.AddAsync(statuses);
-            await _context.SaveChangesAsync();
-
-            return Created(this.Url.ToString(), true);
-        }
-
 
     }
 }

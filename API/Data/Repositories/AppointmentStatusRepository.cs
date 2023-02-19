@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTOs;
+using API.Entities;
 using API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,15 @@ namespace API.Data.Repositories
         {
             _db = db;
         }
+
         public async Task<AppointmentStatus> GetAsync(string status)
         {
             return await _db.AppointmentStatus.SingleOrDefaultAsync(s => s.Name == status);
+        }
+
+        public async Task<List<AppointmentStatus>> GetAllAsync()
+        {
+            return await _db.AppointmentStatus.ToListAsync();
         }
     }
 }
