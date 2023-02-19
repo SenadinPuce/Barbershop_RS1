@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using API.Helpers.Constants;
 
 namespace API.Controllers
 {
@@ -15,94 +16,55 @@ namespace API.Controllers
     [Route("api/appointments")]
     public class AppointmentController : ControllerBase
     {
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IAppointmentService _appointmentService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AppointmentController(DataContext context, IMapper mapper, IAppointmentService appointmentService)
+        public AppointmentController(IMapper mapper, IAppointmentService appointmentService, IUnitOfWork unitOfWork)
         {
-            _context = context;
             _mapper = mapper;
             _appointmentService = appointmentService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentDto[]>> GetAppointmentAsync([FromQuery] AppointmentParams request)
+        public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentAsync([FromQuery] AppointmentParams request)
         {
-            var appointmentsQuery = _context.Appointment.Include(x => x.AppointmentType).Include(x => x.AppointmentStatus).Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser)
-                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo).AsQueryable();
-            if (request.BarberIds?.Length > 0)
-            {
-                var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
-                appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
-            }
-            if (request.StatusIds?.Length > 0)
-            {
-                var statusIds = request.StatusIds.Split(',').Select(x => int.Parse(x));
-                appointmentsQuery = appointmentsQuery.Where(x => statusIds.Any(bId => bId == x.AppointmentStatusId));
-            }
-            if (request.ClientId != null)
-            {
-                appointmentsQuery = appointmentsQuery.Where(x => x.Client.Id == request.ClientId);
-            }
-            var appointments = await appointmentsQuery.OrderBy(appt => appt.StartsAt).ToListAsync();
-
-            return _mapper.Map<AppointmentDto[]>(appointments);
+            return await _unitOfWork.AppointmentRepository.GetAppointmentsAsync(request);
         }
 
         [HttpGet("taken-slots")]
-        public async Task<ActionResult<CalendarSlotDto[]>> GetTakenSlotsAsync([FromQuery] AppointmentParams request)
+        public async Task<ActionResult<List<CalendarSlotDto>>> GetTakenSlotsAsync([FromQuery] AppointmentParams request)
         {
-            var canceledStatus = await _context.AppointmentStatus.SingleAsync(x => x.Name == "Canceled");
-            var appointmentsQuery = _context.Appointment.Include(x => x.Client)
-                .Where(x => x.StartsAt >= request.DateFrom && x.StartsAt <= request.DateTo
-                    && x.AppointmentStatusId != canceledStatus.Id).AsQueryable();
-            if (request.BarberIds?.Length > 0)
-            {
-                var barberIds = request.BarberIds.Split(',').Select(x => int.Parse(x));
-                appointmentsQuery = appointmentsQuery.Where(x => barberIds.Any(bId => bId == x.BarberId));
-            }
-            if (request.ClientId != null)
-            {
-                appointmentsQuery = appointmentsQuery.Where(x => x.ClientId != request.ClientId);
-            }
-            var slots = await appointmentsQuery.OrderBy(appt => appt.StartsAt).Select(x =>
-                 new CalendarSlotDto
-                 {
-                     DateFrom = x.StartsAt,
-                     DateTo = x.EndsAt
-                 }
-            ).ToArrayAsync();
-
-            return slots;
+           return await _unitOfWork.AppointmentRepository.GetTakenSlotsAsync(request);
         }
 
         [HttpGet("{id}", Name = "GetAppointment")]
         public async Task<ActionResult<AppointmentDto>> GetAppointmentByIdAsync(int id)
         {
-            var appointmentType = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
-            return _mapper.Map<AppointmentDto>(appointmentType);
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+
+            return _mapper.Map<AppointmentDto>(appointment);
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentDto model)
+        public async Task<ActionResult<bool>> PostAppointmentAsync(AppointmentUpdateDto model)
         {
-            if (await _appointmentService.CanBeCreated(model) == false) return BadRequest("Appointment has not been created. Try with different date and time.");
+            if (!await _appointmentService.CanBeCreated(model)) 
+                return BadRequest("Appointment has not been created. Try with different date and time.");
 
             var appt = _mapper.Map<Appointment>(model);
-            var pendingStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Pending");
+            var pendingStatus = await _unitOfWork.AppointmentStatusRepository.GetAsync(AppointmentStatuses.Pending);
             if (appt.AppointmentStatusId == pendingStatus.Id)
             {
                 appt.CreatedByClient = true;
             }
 
-            await _context.AddAsync(appt);
-            if (await _context.SaveChangesAsync() < 1)
-            {
+            await _unitOfWork.AppointmentRepository.AddAsync(appt);
+            if (await _unitOfWork.Complete() < 1)
                 return BadRequest("Error while inserting the appointment");
-            }
 
-            var newAppt = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == appt.Id);
+            var newAppt = await _unitOfWork.AppointmentRepository.GetByIdWithBarberAndClient(appt.Id);
             await _appointmentService.OnAppointmentCreated(newAppt);
 
             return CreatedAtRoute("GetAppointment", new { id = newAppt.Id }, _mapper.Map<AppointmentDto>(newAppt));
@@ -111,15 +73,11 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteAsync(int id)
         {
-            var appointment = await _context.Appointment.FindAsync(id);
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (appointment == null) return BadRequest();
 
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-
-            _context.Remove(appointment);
-            await _context.SaveChangesAsync();
+            _unitOfWork.AppointmentRepository.Remove(appointment);
+            await _unitOfWork.Complete();
 
             return true;
         }
@@ -127,15 +85,12 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<AppointmentDto>> PutAsync(int id, AppointmentUpdateDto model)
         {
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (appointment == null) return BadRequest();
 
-            if (appointment == null)
-            {
-                return BadRequest();
-            }
-            var entity = _mapper.Map(model, appointment);
+            _mapper.Map(model, appointment);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Complete();
 
             return Ok(model);
         }
@@ -144,13 +99,13 @@ namespace API.Controllers
         [HttpPut("{id}/schedule")]
         public async Task<ActionResult> ScheduleAsync(int id)
         {
-            var appointment = await _context.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser).SingleOrDefaultAsync(x => x.Id == id);
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdWithBarberAndClient(id);
             if (appointment == null) return BadRequest();
 
-            var scheduledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Scheduled");
+            var scheduledStatus = await _unitOfWork.AppointmentStatusRepository.GetAsync(AppointmentStatuses.Scheduled);
             appointment.AppointmentStatusId = scheduledStatus.Id;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Complete();
             await _appointmentService.OnAppointmentSchedule(appointment);
 
             return Ok();
@@ -159,15 +114,13 @@ namespace API.Controllers
         [HttpPut("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id)
         {
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(x => x.Id == id);
-            if (appointment == null)
-            {
-                return BadRequest();
-            }
-            var completedStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Completed");
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (appointment == null) return BadRequest();
+
+            var completedStatus = await _unitOfWork.AppointmentStatusRepository.GetAsync(AppointmentStatuses.Completed);
             appointment.AppointmentStatusId = completedStatus.Id;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Complete();
 
             return Ok();
         }
@@ -175,18 +128,15 @@ namespace API.Controllers
         [HttpPut("{id}/cancel")]
         public async Task<ActionResult> CancelAsync(int id, bool canceledByClient)
         {
-            var appointment = await _context.Appointment.Include(x => x.Barber.AppUser).Include(x => x.Client.AppUser).Include(x => x.AppointmentStatus).SingleOrDefaultAsync(x => x.Id == id);
-            if (appointment == null)
-            {
-                return BadRequest();
-            }
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdWithBarberAndClient(id);
+            if (appointment == null) return BadRequest();
 
-            var canceledStatus = await _context.AppointmentStatus.SingleAsync(status => status.Name == "Canceled");
-            var previousStatus = appointment.AppointmentStatus;
+            var canceledStatus = await _unitOfWork.AppointmentStatusRepository.GetAsync(AppointmentStatuses.Canceled);
+            var previousStatusId = appointment.AppointmentStatusId;
             appointment.AppointmentStatusId = canceledStatus.Id;
 
-            await _context.SaveChangesAsync();
-            await _appointmentService.OnAppointmentCancel(appointment, canceledByClient, previousStatus);
+            await _unitOfWork.Complete();
+            await _appointmentService.OnAppointmentCancel(appointment, canceledByClient, previousStatusId);
 
             return Ok();
         }

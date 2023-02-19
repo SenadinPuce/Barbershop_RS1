@@ -1,8 +1,8 @@
 using API.Entities.Order;
-using API.Interfaces;
+using API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data
+namespace API.Data.Repositories
 {
     public class DeliveryMethodRepository : IDeliveryMethodRepository
     {
@@ -14,7 +14,7 @@ namespace API.Data
 
         public async Task<DeliveryMethod> GetDeliveryMethodByIdAsync(int id)
         {
-           return await _context.DeliveryMethods.FindAsync(id);
+            return await _context.DeliveryMethods.FindAsync(id);
         }
 
         public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()

@@ -1,3 +1,5 @@
+using API.Interfaces.Repositories;
+
 namespace API.Interfaces
 {
     public interface IUnitOfWork : IDisposable
@@ -7,6 +9,8 @@ namespace API.Interfaces
         IProductRepository ProductRepository {get;}
         IDeliveryMethodRepository DeliveryMethodRepository {get;}
         IOrderRepository OrderRepository {get;}
+        IAppointmentRepository AppointmentRepository { get;}
+        IAppointmentStatusRepository AppointmentStatusRepository { get;}
         Task<int> Complete();
         bool HasChanges();
     }

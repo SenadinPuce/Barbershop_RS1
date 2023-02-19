@@ -1,9 +1,9 @@
 using System.Text.Json;
 using API.Entities;
-using API.Interfaces;
+using API.Interfaces.Repositories;
 using StackExchange.Redis;
 
-namespace API.Data
+namespace API.Data.Repositories
 {
     public class BasketRepository : IBasketRepository
     {

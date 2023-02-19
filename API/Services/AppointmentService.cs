@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Helpers.Constants;
 using API.Interfaces;
 using API.SignalR;
 using Microsoft.AspNetCore.SignalR;
@@ -56,12 +57,12 @@ namespace API.Services
 
         }
 
-        public async Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, AppointmentStatus previousStatus)
+        public async Task OnAppointmentCancel(Appointment appointment, bool canceledByClient, int previousStatusId)
         {
             if (appointment == null) throw new Exception("Appointment does not exist");
 
-            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == "Pending");
-            if (previousStatus.Id == pendingStatus.Id)
+            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == AppointmentStatuses.Pending);
+            if (previousStatusId == pendingStatus.Id)
             {
                 var connections = await PresenceTracker.GetConnectionsForUser(appointment.Barber.AppUser.UserName);
                 if (connections != null)
@@ -73,7 +74,7 @@ namespace API.Services
             {
                 if (appointment.Client != null && appointment.Client.AppUser.Email != null && appointment.Client.EmailNotification == true)
                 {
-                    await SendAppointmentCanceledEmail(appointment, previousStatus);
+                    await SendAppointmentCanceledEmail(appointment, previousStatusId);
                 }
             }
         }
@@ -84,7 +85,14 @@ namespace API.Services
             var barber = appointment.Barber;
             var startDateInLocal = appointment.StartsAt.ToLocalTime();
 
-            var body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that a new appointment has been scheduled for you!<br><br>Date and Time: <b>{startDateInLocal.ToString("dddd, dd MMMM HH:mm")}</b><br>Duration: {appointment.Duration} minutes<br>Barber: {barber.AppUser.FirstName} {barber.AppUser.LastName}<br><br>We are looking forward to seeing you. :) <br><br><br>Regards, BarberShop </p>";
+            var body = $"<p>Hello {client.AppUser.FirstName},<br><br>" +
+                $"this email confirms that a new appointment has been scheduled for you!<br><br>" +
+                $"Date and Time: <b>{startDateInLocal.ToString("dddd, dd MMMM HH:mm")}</br><br>" +
+                $"Duration: {appointment.Duration} minutes<br>" +
+                $"Barber: {barber.AppUser.FirstName} {barber.AppUser.LastName}<br><br>" +
+                $"We are looking forward to seeing you. :) <br><br><br>" +
+                $"Regards, BarberShop </p>";
+
             var email = new EmailDto
             {
                 To = appointment.Client.AppUser.Email,
@@ -96,22 +104,30 @@ namespace API.Services
             await _emailService.SaveEmail(email);
         }
 
-        public async Task SendAppointmentCanceledEmail(Appointment appointment, AppointmentStatus previousStatus)
+        public async Task SendAppointmentCanceledEmail(Appointment appointment, int previousStatusId)
         {
             var client = appointment.Client;
             var startDateInLocal = appointment.StartsAt.ToLocalTime();
-            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == "Pending");
+            var pendingStatus = await _db.AppointmentStatus.SingleAsync(x => x.Name == AppointmentStatuses.Pending);
             var body = "";
             var subject = "";
-            if (previousStatus.Id == pendingStatus.Id)
+            if (previousStatusId == pendingStatus.Id)
             {
                 subject = "Appointment Feedback";
-                body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your suggested appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} hasn't been scheduled.<br>Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>Thank you for understanding. <br><br><br>Regards, BarberShop </p>";
+                body = $"<p>Hello {client.AppUser.FirstName},<br><br>" +
+                    $"this email confirms that your suggested appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} hasn't been scheduled.<br>" +
+                    $"Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>" +
+                    $"Thank you for understanding. <br><br><br>" +
+                    $"Regards, BarberShop </p>";
             }
             else
             {
                 subject = "Appointment Canceled";
-                body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your scheduled appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} has been canceled due to unexpected events.<br>Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>Thank you for understanding. <br><br><br>Regards, BarberShop </p>";
+                body = $"<p>Hello {client.AppUser.FirstName},<br><br>" +
+                    $"this email confirms that your scheduled appointment on {startDateInLocal.ToString("dddd, dd MMMM HH:mm")} has been canceled due to unexpected events.<br>" +
+                    $"Be free to use our calendar and schedule a new appointment with desired date and time or contact us directly. <br><br>" +
+                    $"Thank you for understanding. <br><br><br>" +
+                    $"Regards, BarberShop </p>";
             }
             var email = new EmailDto
             {
@@ -132,7 +148,13 @@ namespace API.Services
             var barber = appointment.Barber;
             var startDateInLocal = appointment.StartsAt.ToLocalTime();
 
-            var body = $"<p>Hello {client.AppUser.FirstName},<br><br>this email confirms that your scheduled appointment is in one hour due.<br><br>Date and Time: <b>{startDateInLocal.ToString("dddd, dd MMMM HH:mm")}</b><br>Duration: {appointment.Duration} minutes<br>Barber: {barber.AppUser.FirstName} {barber.AppUser.LastName}<br><br>We are looking forward to seeing you. :) <br><br><br>Regards, BarberShop </p>";
+            var body = $"<p>Hello {client.AppUser.FirstName},<br><br>" +
+                $"this email confirms that your scheduled appointment is in one hour due.<br><br>" +
+                $"Date and Time: <b>{startDateInLocal.ToString("dddd, dd MMMM HH:mm")}</b><br>" +
+                $"Duration: {appointment.Duration} minutes<br>" +
+                $"Barber: {barber.AppUser.FirstName} {barber.AppUser.LastName}<br><br>" +
+                $"We are looking forward to seeing you. :) <br><br><br>" +
+                $"Regards, BarberShop </p>";
 
             var email = new EmailDto
             {
@@ -145,7 +167,7 @@ namespace API.Services
             await _emailService.SaveEmail(email);
         }
 
-        public async Task<bool> CanBeCreated(AppointmentDto appointment)
+        public async Task<bool> CanBeCreated(AppointmentUpdateDto appointment)
         {
             var startsAt = appointment.StartsAt;
             var endsAt = appointment.EndsAt;
@@ -157,9 +179,10 @@ namespace API.Services
             if (startsAt > dateIn30Days) return false;
 
             var workingHours = await _db.WorkingHours.ToListAsync();
-            var dayWorkingHours = workingHours.Single(wh => ((int)startsAt.DayOfWeek) == wh.DayOfWeek);
-            var startsAtInLocal = startsAt.ToLocalTime();
-            var endsAtInLocal = endsAt.ToLocalTime();
+            var dayWorkingHours = workingHours.Single(wh => ((int)startsAt.Value.DayOfWeek) == wh.DayOfWeek);
+            var startsAtInLocal = startsAt.Value.ToLocalTime();
+            var endsAtInLocal = endsAt.Value.ToLocalTime();
+
             //appointment outside of working hours
             if (startsAtInLocal.Hour < dayWorkingHours.FromHours || endsAtInLocal.Hour > dayWorkingHours.ToHours) return false;
             if (startsAtInLocal.Hour == dayWorkingHours.FromHours)
@@ -170,11 +193,12 @@ namespace API.Services
             {
                 if (endsAtInLocal.Minute > dayWorkingHours.ToMinutes) return false;
             }
+
             //appointment inside custom closed hours
             var customHours = await _db.CustomHours.ToListAsync();
-            if (customHours.Any(ch => ch.IsOpen != true
-                            && (startsAt > ch.DateFrom && startsAt < ch.DateTo
-                            || endsAt > ch.DateFrom && endsAt < ch.DateTo)))
+            if (customHours.Any(ch => ch.IsOpen != true &&
+                                (startsAt > ch.DateFrom && startsAt < ch.DateTo ||
+                                endsAt > ch.DateFrom && endsAt < ch.DateTo)))
             {
                 return false;
             }
