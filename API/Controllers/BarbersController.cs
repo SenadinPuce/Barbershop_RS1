@@ -11,16 +11,14 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
-    [Route("api/barbers")]
-    public class BarberController : ControllerBase
+    public class BarbersController : BaseApiController
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly IPhotoService _photoService;
 
-        public BarberController(DataContext context, IMapper mapper, UserManager<AppUser> userManager, IPhotoService photoService)
+        public BarbersController(DataContext context, IMapper mapper, UserManager<AppUser> userManager, IPhotoService photoService)
         {
             _photoService = photoService;
             _userManager = userManager;
@@ -31,7 +29,12 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<BarberDto[]>> GetBarberAsync()
         {
-            var barbers = await _context.Barber.Include(x => x.AppUser).ThenInclude(x => x.Photo).Include(x => x.BarberServices).ThenInclude(x => x.Service).ToListAsync();
+            var barbers = await _context.Barber
+                .Include(x => x.AppUser.Photo)
+                .Include(x => x.BarberServices)
+                .ThenInclude(x => x.Service)
+                .ToListAsync();
+
             return _mapper.Map<BarberDto[]>(barbers);
         }
 

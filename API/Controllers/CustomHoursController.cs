@@ -11,12 +11,12 @@ namespace API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/custom-hours")]
-    public class CustomHourController : ControllerBase
+    public class CustomHoursController : ControllerBase
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public CustomHourController(DataContext context, IMapper mapper)
+        public CustomHoursController(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

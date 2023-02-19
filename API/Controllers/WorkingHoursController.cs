@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/working-hours")]
-    public class WorkingHoursController : ControllerBase
+    public class WorkingHoursController : BaseApiController
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;

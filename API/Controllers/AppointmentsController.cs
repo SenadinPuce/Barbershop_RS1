@@ -1,8 +1,6 @@
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Helpers;
@@ -12,15 +10,13 @@ using API.Helpers.Constants;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
-    [Route("api/appointments")]
-    public class AppointmentController : ControllerBase
+    public class AppointmentsController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly IAppointmentService _appointmentService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AppointmentController(IMapper mapper, IAppointmentService appointmentService, IUnitOfWork unitOfWork)
+        public AppointmentsController(IMapper mapper, IAppointmentService appointmentService, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _appointmentService = appointmentService;
