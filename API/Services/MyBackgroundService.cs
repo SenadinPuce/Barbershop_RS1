@@ -28,8 +28,11 @@ namespace API.Services
                     dateTime = dateTime.AddHours(1).AddSeconds(-dateTime.Second).AddMilliseconds(-dateTime.Millisecond);
 
                     var appointmentsInHour = dbContext.Appointment.Include(x => x.Client.AppUser).Include(x => x.Barber.AppUser)
-                    .Where(x => x.StartsAt.Year == dateTime.Year && x.StartsAt.Month == dateTime.Month &&
-                        x.StartsAt.Day == dateTime.Day && x.StartsAt.Hour == dateTime.Hour && x.StartsAt.Minute == dateTime.Minute);
+                         .Where(x => x.StartsAt.Year == dateTime.Year &&
+                                     x.StartsAt.Month == dateTime.Month &&
+                                     x.StartsAt.Day == dateTime.Day &&
+                                     x.StartsAt.Hour == dateTime.Hour &&
+                                     x.StartsAt.Minute == dateTime.Minute);
 
                     if (appointmentsInHour.Any())
                     {

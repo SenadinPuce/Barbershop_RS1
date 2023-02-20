@@ -1,6 +1,8 @@
 using API.Data;
+using API.Data.Repositories;
 using API.Helpers;
 using API.Interfaces;
+using API.Interfaces.Repositories;
 using API.Services;
 using API.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +30,10 @@ namespace API.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<PresenceTracker>();
-             services.AddSingleton<IConnectionMultiplexer>(c => 
+            services.AddSingleton<IConnectionMultiplexer>(c =>
             {
-                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
-                return ConnectionMultiplexer.Connect(options);
+               var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+               return ConnectionMultiplexer.Connect(options);
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
 

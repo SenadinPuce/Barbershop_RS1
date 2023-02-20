@@ -9,14 +9,12 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
-    [Route("api/services")]
-    public class ServiceController : ControllerBase
+    public class ServicesController : BaseApiController
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public ServiceController(DataContext context, IMapper mapper)
+        public ServicesController(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

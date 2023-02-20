@@ -12,15 +12,13 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
-    [Route("api/clients")]
-    public class ClientController : ControllerBase
+    public class ClientsController : BaseApiController
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
 
-        public ClientController(DataContext context, IMapper mapper, UserManager<AppUser> userManager)
+        public ClientsController(DataContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
             _userManager = userManager;
             _context = context;

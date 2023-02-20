@@ -1,4 +1,6 @@
+using API.Data.Repositories;
 using API.Interfaces;
+using API.Interfaces.Repositories;
 using AutoMapper;
 
 namespace API.Data
@@ -22,6 +24,8 @@ namespace API.Data
         public IDeliveryMethodRepository DeliveryMethodRepository => new DeliveryMethodRepository(_context);
 
         public IOrderRepository OrderRepository => new OrderRepository(_context);
+        public IAppointmentRepository AppointmentRepository => new AppointmentRepository(_context, _mapper);
+        public IAppointmentStatusRepository AppointmentStatusRepository => new AppointmentStatusRepository(_context);
 
         public async Task<int> Complete()
         {
