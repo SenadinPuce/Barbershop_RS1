@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/appointment-types")]
-    public class AppointmentTypeController : ControllerBase
+    public class AppointmentTypeController : BaseApiController
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -23,49 +22,48 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<AppointmentTypeDto[]>> GetAppointmentTypeAsync()
+        public async Task<ActionResult<AppointmentTypeDto[]>> GetAsync()
         {
             var appointmentTypes = await _context.AppointmentType.Include(x => x.AppointmentTypeServices).ThenInclude(x => x.Service).ToListAsync();
             return _mapper.Map<AppointmentTypeDto[]>(appointmentTypes);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppointmentTypeDto>> GetAppointmentTypeByIdAsync(int id)
+        [HttpGet("{id}", Name = "GetAppointmentType")]
+        public async Task<ActionResult<AppointmentTypeDto>> GetByIdAsync(int id)
         {
-            var appointmentType = await _context.AppointmentType.Include(x => x.AppointmentTypeServices).ThenInclude(x => x.Service).SingleOrDefaultAsync(x => x.Id == id);
+            var appointmentType = await _context.AppointmentType
+                                        .Include(x => x.AppointmentTypeServices)
+                                        .ThenInclude(x => x.Service)
+                                        .SingleOrDefaultAsync(x => x.Id == id);
+
             return _mapper.Map<AppointmentTypeDto>(appointmentType);
         }
 
         [HttpPost]
         public async Task<ActionResult<bool>> PostAppointmentTypeAsync(AppointmentTypeDto model)
         {
-            if (!model.Services.Any() == true)
-            {
-                return BadRequest();
-            }
+            if (!model.Services.Any()) return BadRequest();
 
             var appt = _mapper.Map<AppointmentType>(model);
             await _context.AddAsync(appt);
 
-            if (_context.SaveChanges() > 0)
+            if (await _context.SaveChangesAsync() == 0) return BadRequest();
+
+            var newAppt = _context.AppointmentType.SingleOrDefault(x => x.Name.Equals(model.Name));
+            var apptTypeServices = new List<AppointmentTypeService>();
+            foreach (var service in model.Services)
             {
-                var newAppt = _context.AppointmentType.SingleOrDefault(x => x.Name.Equals(model.Name));
-                var apptTypeServices = new List<AppointmentTypeService>();
-                foreach (var service in model.Services)
+                apptTypeServices.Add(new AppointmentTypeService
                 {
-                    apptTypeServices.Add(new AppointmentTypeService
-                    {
-                        AppointmentTypeId = newAppt.Id,
-                        ServiceId = service.Id
-                    });
-                }
-                _context.AddRange(apptTypeServices);
-                _context.SaveChanges();
-
-                return Created(this.Url.ToString(), true);
+                    AppointmentTypeId = newAppt.Id,
+                    ServiceId = service.Id
+                });
             }
+            _context.AddRange(apptTypeServices);
+            await _context.SaveChangesAsync();
 
-            return BadRequest();
+            return CreatedAtRoute("GetAppointmentType", new { id = newAppt.Id }, _mapper.Map<AppointmentTypeDto>(newAppt));
+
         }
 
         [HttpDelete("{id}")]
@@ -73,13 +71,10 @@ namespace API.Controllers
         {
             var apptType = await _context.AppointmentType.FindAsync(id);
 
-            if (apptType == null)
-            {
-                return NotFound();
-            }
+            if (apptType == null) return NotFound();
 
             _context.Remove(apptType);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return true;
         }
@@ -89,10 +84,8 @@ namespace API.Controllers
         {
             var apptType = await _context.AppointmentType.Include(x => x.AppointmentTypeServices).FirstOrDefaultAsync(x => x.Id == id);
 
-            if (apptType == null)
-            {
-                return BadRequest();
-            }
+            if (apptType == null) return BadRequest();
+
             var entity = _mapper.Map(model, apptType);
 
             var appointmentTypeServices = new List<AppointmentTypeService>();
@@ -107,8 +100,7 @@ namespace API.Controllers
             _context.RemoveRange(entity.AppointmentTypeServices);
             entity.AppointmentTypeServices = appointmentTypeServices;
 
-            _context.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(model);
         }
